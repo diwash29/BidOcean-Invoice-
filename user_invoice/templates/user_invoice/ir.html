@@ -1,6 +1,7 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<form>
 	<article>
 			  <legend class="border-bottom mb-4">Internet Researcher Specialist Invoice </legend>
 		
@@ -35,29 +36,9 @@
 			  </select>
 			  
 			</div>
-			<div class="form-row">
-				<div class="form-group col-md-3">
-				  <label for="inputEmail4">val1</label>
-				  <input id="a1" class ="form-control "type="text" />
-				</div>
-				<div class="form-group col-md-3">
-				  <label for="inputPassword4">val2</label>
-				  <input id="a2" type="text" class ="form-control " onblur="calculate()"  />
-				</div>
-				<div class="form-group col-md-3">
-					<label for="inputPassword4">calculate rate</label>
-					<input id="a3" type="text" class ="form-control " name="total_amt" />
-				  </div>
+			
 
-				  <script>
-					calculate = function()
-					{
-						var resources = document.getElementById('a1').value;
-						var minutes = document.getElementById('a2').value; 
-						document.getElementById('a3').value = parseInt(resources) + parseInt(minutes);
-						
-					}
-					</script>
+				 
 			  </div>
 			
 	
@@ -77,73 +58,518 @@
 			</thead>
 			
 			<tr>
-				<td></a><span >Daily Pay Rate</span></td>
-                <td>
-					
-                    <input value="0" class ="txtMult" name="txtEmmail" />
-                </td>
-                <td>
-                    <input value="0"  class ="txtMult" name="txtEmmail"/>
-                </td>
-                <td>
-                    <span class="multTotal">0.00</span>
-                </td>
-			</tr>
+				<td></a><span style="font-weight:bold">Additional Authorized Days Worked</span></td>
+				
+					<td><input id="z1" type="text" value="0" oninput="calci()" /></td>
+					<td><span data-prefix>$</span><input value="0" id="z2" type="text" oninput="calci()" /></td>
+					<td><span data-prefix>$</span><input value="0" id="authres" /></td>
+				 
 			
-            <tr>
-				<td></a><span >Additional Authorized Days Worked</span></td>
-                <td>
-                    <input value="0"  class ="txtMult" name="txtEmmail"/>
-                </td>
-                <td>
-                    <input value="0"  class ="txtMult" name="txtEmmail"/>
-                </td>
-                <td>
-                    <span class="multTotal">0.00</span>
-                </td>
 			</tr>
+			<script>
+				function calci() {
+				var myBox1 = document.getElementById('z1').value;	
+				var myBox2 = document.getElementById('z2').value;
+				var result = document.getElementById('authres');	
+				var myResult = myBox1 * myBox2;
+				result.value = myResult;
+			
+	
+				}
+				</script>
 			<tr>
                 <td  align="right">
-                   <span id="wds">WDS Work Prdouction</span>
+                   <span id="wds" style="color:#6a57be; font-weight:bold">WDS WORK PRODUCTION:</span>
                 </td>
 			</tr>
 				
             <tr>
 		
-				<td></a><span >WDS Sources checked completely</span></td>
-				<td><input class="txt" type="text" name="txt"/></td>
+				<td></a><span style="font-weight:bold">WDS Sources checked completely</span></td>
+				<td><input class="txt" value="0" type="text" name="txt"/></td>
 			</tr>
 			<tr>
 			
-				<td></a><span >New Solicitations entered correctly</span></td>
-				<td><input class="txt" type="text" name="txt"/></td>
+				<td></a><span style="font-weight:bold">New Solicitations entered correctly</span></td>
+				<td><input class="txt" value="0" type="text" name="txt"/></td>
 			</tr>
 			<tr>
 		
-				<td></a><span >Updated Solicitations by addenda</span></td>
-				<td><input class="txt" type="text" name="txt"/></td>
+				<td></a><span style="font-weight:bold">Updated Solicitations by addenda</span></td>
+				<td><input class="txt" value="0" type="text" name="txt"/></td>
 			</tr>
 			
 			
 			
 			<tr id="summation">
 				
-				<td align="right">Total :</td>
+				<td align="right" style="font-weight:bold">Total :</td>
 				<td align="center"><span id="sum">0</span></td>
 			</tr>
 				
-			<tr name="qty" class="qty-txt">
+			<tr>
+				<td align="right" style="font-weight:bold">Total :</td>
+				<td><span id="box1" value="0" onClick="calculate()"></span></td>
+				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" /></td>
+				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
+			  </tr>
+			  <tr>
+
+				<tr>
+					<td></a><span style="font-weight:bold">Difficult and Non-Productive Source</span></td>
+					
+						<td><input value="0"  id="val1" type="text" oninput="cal()" /></td>
+						<td><span data-prefix>$</span><input value="0.50" id="val2" type="text" oninput="cal()" /></td>
+						<td><span data-prefix>$</span><input value="0" id="diffres" /></td>
+					 
 				
-				<td align="right">Total :</td>
-				<td align="center"><span name ="sumtwo" id="sumtwo" oninput="calculate()"></span></td>
-				<td align="center"><span name ="rate" id="rate" value = "0.17" oninput="calculate()">0.17</span></td>
-				<td align="center"><span name= "wtotal" id="wtotal" oninput="calculate()"></span></td>
-			</tr>
-            <tr>
-                <td colspan="3" align="right">
-                    Grand Total# <span id="grandTotal">0.00</span>
-                </td>
-            </tr>
+				</tr>
+				<script>
+					function cal() {
+					var myBox1 = document.getElementById('val1').value;	
+					var myBox2 = document.getElementById('val2').value;
+					var result = document.getElementById('diffres');	
+					var myResult = myBox1 * myBox2;
+					result.value = myResult;
+				
+		
+					}
+					</script>
+				
+
+				
+					
+				<tr>
+					<td></a><span style="color:#6a57be; font-weight:bold">OTHER WORK: </span></td>
+					
+					
+				</tr>
+				
+			
+				<tr>
+					<td></a><span style="font-weight:bold">Extra Hours Worked</span></td>
+					
+						<td><input id="g1" type="text" value="0" oninput="godcal()" /></td>
+						<td><span data-prefix>$</span><input value="0" id="g2" type="text" oninput="godcal()" /></td>
+						<td><span data-prefix>$</span><input value="0" id="godres" /></td>
+					 
+				
+				</tr>
+				<script>
+					function godcal() {
+					var myBox1 = document.getElementById('g1').value;	
+					var myBox2 = document.getElementById('g2').value;
+					var result = document.getElementById('godres');	
+					var myResult = myBox1 * myBox2;
+					result.value = myResult;
+				
+		
+					}
+					</script>
+
+
+				<tr>
+					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
+						Total Amount: <span data-prefix>$</span><input id = "amtotal" name = "money" onclick="sum()"/>
+					</td>
+					
+				</tr>
+				<script>
+						function sum() {
+						var txtFirstNumberValue = document.getElementById('authres').value;
+						
+						var txtThirdNumberValue = document.getElementById('diffres').value;
+						var txtFourthNumberValue = document.getElementById('result').value;
+						var txtSecondNumberValue = document.getElementById('godres').value;
+						var result =parseFloat(txtFourthNumberValue)+ parseFloat(txtFirstNumberValue)
+						var result = result +  + parseFloat(txtSecondNumberValue)+parseFloat(txtThirdNumberValue)	
+						if (!isNaN(result)) {
+							document.getElementById('amtotal').value = result;
+						}
+					}
+				</script>
+
+			
+				<tr>
+					<td></a><span style="color:#6a57be; font-weight:bold">DEDUCTIONS:</span></td>
+					
+					
+				</tr>
+				
+				<tr>
+					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					
+				
+				</tr>
+				
+				<tr>
+					<td></a><span style="font-weight:bold">Total Working Days</span></td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					
+					
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>					
+				</tr>
+				<thead>
+					<tr>
+					
+						<th><span style="color:#6a57be;font-weight:bold">ERROR DETAILS:</span></th>
+					</tr>
+				</thead>
+				
+				<thead>
+					<tr>
+					
+						<th><span style="font-weight:bold">Description</span></th>
+						<th><span style="font-weight:bold">Rate</span></th>
+						<th><span style="font-weight:bold">Errors Incurred</span></th>
+						<th><span style="font-weight:bold">Deduction</span></th>
+					</tr>
+				</thead>
+				<tr>
+					<td></a><span style="font-weight:bold">(11) Duplicate Solic. </span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(1) Entity/Contact wrong/incomplete/not edited
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(21) False Referral
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(13) Fraudulent solicitation 'update'
+
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="2.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(17) Source returned without good reason
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="3.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(22) Missed Bid Bond/Incomplete Plans & Specs
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(3) Missed Categories
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(10) Missed Solic./Addend. From Source
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(23) Missed/Incorrect File Type
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(7) Missing or Wrong Outside Link
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(20) Missing or wrong Term Contract
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="0.35"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(9) Not Posted As Lead
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="1.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(12) Other error
+					</span></td>
+					<td>
+						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(18) Other serious error
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(14) Refreshing WDS page to a different source
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(19)Setaside/Prequalification/<br>Prevailing Wage not selected
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(15) Skipped solicitation
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="2.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(16) Source returned without a note
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(24) Unexcused/unjustified absence
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(6) Wrong bid/pre-bid, mandatory
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.75"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(2) Wrong categories
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(8) Wrong geographic location
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(4) Incomplete or incorrect scope
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">(5) Wrong text format
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" style="color:#c90000; font-weight:bold" align="right">
+						Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">0.00</span>
+					</td>
+					
+				</tr>
+				
+				<tr>
+					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
+						 Total Amount Payable: <span data-prefix>$</span><input id = "finaltotal" value="0" onclick="minus()"/>
+					</td>
+					
+				</tr>
+
+
         </table>
 
 		<script>
@@ -174,125 +600,32 @@
 			});
 			//.toFixed() method will roundoff the final sum to 2 decimal places
 			$("#sum").html(sum.toFixed(2));
-			$("#sumtwo").html(sum.toFixed(2));
+			$("#box1").html(sum.toFixed(2));
 			// var sumtwo = $('#sumtwo').val();
 			// var rate = $('#rate').val();
 			// var totalTotalOne = (sumtwo * rate);
 			// $("#wtotal").html(totalTotalOne.toFixed(2));
 			}
-		</script>
-		<script>
-				function calculate() {
-		var myBox1 = document.getElementById('sumtwo').value;	
-		var myBox2 = document.getElementById('rate').value;
-		var result = document.getElementById('wtotal');	
-		var myResult = myBox1 * myBox2;
-		result.value = myResult;
-      
-		
-	}
+
+			function calculate(tot) {
+			var quan = document.getElementsByName('quantity')[0].value;
+			var pri = document.getElementById('box1').innerHTML;
+			var pr = parseInt(pri, 10);
+			var tot = quan * pr;
+			document.getElementById("result").value = tot.toFixed(2);;
+			}
 		</script>
 
-		  
-	
-		<table class="balance">
-			<tr>
-				<th><span contenteditable>Total</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Amount Paid</span></th>
-				<td><span data-prefix>$</span><span contenteditable>0.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Balance Due</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-		</table>
-		<table class="meta">
-			<tr>
-				<th><span contenteditable>Invoice #</span></th>
-				<td><span contenteditable>101138</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Date</span></th>
-				<td><span contenteditable>January 1, 2012</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Amount Due</span></th>
-				<td><span id="prefix" contenteditable>$</span><span>600.00</span></td>
-			</tr>
-		</table>
-		<table class="inventory">
-			<thead>
-				<tr>
-					<th><span contenteditable>Item</span></th>
-					<th><span contenteditable>Description</span></th>
-					<th><span contenteditable>Rate</span></th>
-					<th><span contenteditable>Quantity</span></th>
-					<th><span contenteditable>Price</span></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><a class="cut">-</a><span contenteditable>Front End Consultation</span></td>
-					<td><span contenteditable>Experience Review</span></td>
-					<td><span data-prefix>$</span><span contenteditable>150.00</span></td>
-					<td><span contenteditable>4</span></td>
-					<td><span data-prefix>$</span><span>600.00</span></td>
-				</tr>
-			</tbody>
-		</table>
-
-		<table class="balance">
-			<tr>
-				<th><span contenteditable>Total</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Amount Paid</span></th>
-				<td><span data-prefix>$</span><span contenteditable>0.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Balance Due</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-		</table>
-		<table class="sd">
-			<tr>
-				<th><span contenteditable>Total</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Amount Paid</span></th>
-				<td><span data-prefix>$</span><span contenteditable>0.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Balance Due</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-		</table>
-		<table class="ud">
-			<tr>
-				<th><span contenteditable>Total</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Amount Paid</span></th>
-				<td><span data-prefix>$</span><span contenteditable>0.00</span></td>
-			</tr>
-			<tr>
-				<th><span contenteditable>Balance Due</span></th>
-				<td><span data-prefix>$</span><span>600.00</span></td>
-			</tr>
 		</table>
 	</article>
 	<aside>
 		<h1><span contenteditable>Additional Notes</span></h1>
 		<div contenteditable>
-			<p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+			<p>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations. </p>
 		</div>
 	</aside>
+	
+</form>	
 	<style>
  *
 {
@@ -666,6 +999,16 @@ $(function(){
                     $('.in #grandTotal').html(parseFloat(total).toFixed(2))
                 });
             })
-    </script>
 
+
+    </script>
+<script>
+function minus(tot) {
+			var quan = document.getElementsByName('money')[0].value;
+			var pri = document.getElementById('grandTotal').innerHTML;
+			var pr = parseInt(pri, 10);
+			var tot = quan - pr;
+			document.getElementById("finaltotal").value = tot.toFixed(2);;
+			}
+</script>
 {% endblock content %}
