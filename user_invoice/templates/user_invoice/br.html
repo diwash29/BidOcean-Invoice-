@@ -115,7 +115,7 @@
 			  </tr>
 			  <tr>
 
-				<tr>
+				<!-- <tr>
 					<td></a><span style="font-weight:bold">Difficult and Non-Productive Source</span></td>
 					
 						<td><input value="0"  id="val1" type="text" oninput="cal()" /></td>
@@ -134,20 +134,16 @@
 				
 		
 					}
-					</script>
+					</script> -->
 				
 
 				
 					
-				<tr>
-					<td></a><span style="color:#6a57be; font-weight:bold">OTHER WORK: </span></td>
-					
-					
-				</tr>
+			
 				
 			
 				<tr>
-					<td></a><span style="font-weight:bold">Extra Hours Worked</span></td>
+					<td></a><span style="font-weight:bold">Extra Day Worked</span></td>
 					
 						<td><input id="g1" type="text" value="0" oninput="godcal()" /></td>
 						<td><span data-prefix>$</span><input value="0" id="g2" type="text" oninput="godcal()" /></td>
@@ -178,11 +174,11 @@
 						function sum() {
 						var txtFirstNumberValue = document.getElementById('authres').value;
 						
-						var txtThirdNumberValue = document.getElementById('diffres').value;
+						// var txtThirdNumberValue = document.getElementById('diffres').value;
 						var txtFourthNumberValue = document.getElementById('result').value;
 						var txtSecondNumberValue = document.getElementById('godres').value;
 						var result =parseFloat(txtFourthNumberValue)+ parseFloat(txtFirstNumberValue)
-						var result = result +  + parseFloat(txtSecondNumberValue)+parseFloat(txtThirdNumberValue)	
+						var result = result  + parseFloat(txtSecondNumberValue)
 						if (!isNaN(result)) {
 							document.getElementById('amtotal').value = result;
 						}
@@ -195,6 +191,7 @@
 					
 					
 				</tr>
+			
 				
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
@@ -234,6 +231,16 @@
 					</tr>
 				</thead>
 				
+				<thead>
+					<tr>
+						
+						<th><span style="font-weight:bold">Description</span></th>
+						<th><span style="font-weight:bold">Rate</span></th>
+						<th><span style="font-weight:bold">Quantity</span></th>
+					
+						<th><span style="font-weight:bold">Deduction</span></th>
+					</tr>
+				</thead>
 				
 				<tr>
 					<td></a><span style="font-weight:bold">Duplicate Entities </span></td>
@@ -265,6 +272,35 @@
 					</span></td>
 					<td>
 						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+
+				<tr>
+					<td></a><span style="font-weight:bold">Authorized Days Off
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<input value="0"  class ="txtMult" name="txtEmmail"/>
+					</td>
+					<td>
+						<span data-prefix>$</span><span class="multTotal">0.00</span>
+					</td>
+				</tr>
+
+
+                <tr>
+					<td></a><span style="font-weight:bold">Unauthorized Days Off
+					</span></td>
+					<td>
+						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<input value="0"  class ="txtMult" name="txtEmmail"/>
