@@ -169,6 +169,29 @@
 
 
 				<tr>
+					<td></a><span style="font-weight:bold">File Attached</span></td>
+					
+						<td><input id="f1" type="text" value="0" oninput="godcal()" /></td>
+						<td><span data-prefix>$</span><input value="0" id="f2" type="text" oninput="fcal()" /></td>
+						<td><span data-prefix>$</span><input value="0" id="ftotal" /></td>
+					
+
+				</tr>
+				<script>
+					function fcal() {
+					var myBox1 = document.getElementById('f1').value;	
+					var myBox2 = document.getElementById('f2').value;
+					var result = document.getElementById('ftotal');	
+					var myResult = myBox1 * myBox2;
+					result.value = myResult;
+
+
+					}
+					</script>
+
+
+
+				<tr>
 					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
 						Total Amount: <span data-prefix>$</span><input id = "amtotal" name = "money" onclick="sum()"/>
 					</td>
@@ -181,8 +204,10 @@
 						var txtThirdNumberValue = document.getElementById('diffres').value;
 						var txtFourthNumberValue = document.getElementById('result').value;
 						var txtSecondNumberValue = document.getElementById('godres').value;
+						var txtFifthNumberValue = document.getElementById('ftotal').value;
 						var result =parseFloat(txtFourthNumberValue)+ parseFloat(txtFirstNumberValue)
-						var result = result +  + parseFloat(txtSecondNumberValue)+parseFloat(txtThirdNumberValue)	
+						var result = result + parseFloat(txtFifthNumberValue)
+						var result = result  + parseFloat(txtSecondNumberValue)+parseFloat(txtThirdNumberValue)	
 						if (!isNaN(result)) {
 							document.getElementById('amtotal').value = result;
 						}
