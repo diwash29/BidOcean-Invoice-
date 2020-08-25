@@ -1,5 +1,45 @@
 {% extends 'user_invoice/base.html' %}
 {% load static %}
 {% block content %}
+<style type="text/css">
+	.bg{
+	background: url({% static 'images/invoice.jpg' %}) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	width: 1290px;
+	min-height: 600px;
+	margin-left: -100px;
+	margin-top:-25px;
+	}
+	/*div.transbox {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.0;
+}
+
+div.transbox h1 {
+  margin: 5%;
+  font-weight: bold;
+  color: #000000;
+}*/
+/*.button{
+	padding: 10%
+}*/
+	
+</style>
+<div class='container'>
+<!-- <div class="bg"> -->
+	<!-- <div class="row"> -->
+		<div class="bg">
+		<a href="{% url url %}"><button style="text-align: center;margin-top: 400px;margin-left: 550px; height: 60px; width:200px" class="btn btn-sm btn-info">ADD INVOICE</button></a>
+	<!-- </div> -->
+</div>
+<!-- </div> -->
+</div>
+<!-- 
+<button>Hello</button> -->
 
 {% endblock %}
