@@ -8,15 +8,16 @@
 		<div class="form-group">
 			<h6><u>Please Fill in the details below:</u></h6>
 			<label for="formGropuNameInput">Name</label>
-			<input name="name" class="form-control" id="formGroupNameInput" placeholder="Enter your name" required>
+			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required>
 			</div>
 			<div class="form-group">	
 			<label for="formGropuNameInput">Address</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" required>
+			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required>
 			</div>	
 			<div class="form-group">
 			<label for="mobile_no">Mobile No:</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No">
+			<input type="number" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No">
+
 			</div>	
 			<div class="form-group">
 			<label for="formGroupExampleInput2">Invoice Date</label>
@@ -676,9 +677,9 @@
 	</article>
 	<div class="col-auto my-1">
 		<button type="submit" class="btn btn-primary">Submit</button>
+
 		<button type="submit" class="btn btn-primary" onclick="window.print();">Download</button>
 	  </div>
-	  
 	<aside>
 		<h1><span contenteditable>Additional Notes</span></h1>
 		<div contenteditable>
@@ -1069,6 +1070,7 @@ function minus(tot) {
 			var pri = document.getElementById('grandTotal').innerHTML;
 			var pr = parseInt(pri, 10);
 			var tot = quan - pr;
+
 			document.getElementById("finaltotal").value = tot.toFixed(2);9498
 			}
 </script>

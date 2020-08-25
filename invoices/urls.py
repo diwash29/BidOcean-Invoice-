@@ -26,9 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/',auth_views.LoginView.as_view(template_name='user_invoice/login.html'),name='login'),
     path('logout/',auth_views.LogoutView.as_view(template_name='user_invoice/logout.html'),name='logout'),
-    path('ir/',auth_views.LogoutView.as_view(template_name='user_invoice/ir.html'),name='ir'),
-    path('br/',auth_views.LogoutView.as_view(template_name='user_invoice/br.html'),name='br'),
-    path('fixed/',auth_views.LogoutView.as_view(template_name='user_invoice/fixed.html'),name='fixed'),
+
     
 ]
 
