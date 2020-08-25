@@ -1,16 +1,29 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
-{% block content %}
+{% load static %}
+{% block content%}
+<div class="col-md-6">
+
+
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Log In</legend>
                 {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
-            </div>
+             </fieldset>
+             <div class="form-group">
+              <!--recaptcha-->
+                <div class="g-recaptcha" data-sitekey="6LfaLdgUAAAAAPunnOQe5tyUsgCYjiotCTHy5NW6"></div>
+                 <button class="btn btn-outline-info" type="submit">Login</button>
+             </div>
         </form>
-    </div>
-{% endblock content %}
+  
+    
+  
+</div>
+
+
+
+{% endblock %}
+
