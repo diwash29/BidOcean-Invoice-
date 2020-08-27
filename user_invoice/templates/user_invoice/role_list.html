@@ -127,23 +127,24 @@ tr:hover .cut { opacity: 1; }
 		<!-- <div class='container'>	  -->
 		<table  width="100%">
 			<tr>
-				<td><h3>Role list</h3></td>
-				<td align="right"><a href="{% url 'role_add' %}"><input class="btn btn-primary" type='button' value='Add Role'></a></td>
+				<td><legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b>Role list</b> </legend></td>
+				
 			</tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
 			<tr>
-				<th>Name </th>
-				<th>Created At</th>
-				<th>Action</th>
+				<th style="color: teal;"><b> Name</b> </th>
+				<th style="color: teal;"><b> Creation Date/Time</b></th>
+				<th style="color: teal;"><b> Action </b></th>
 			</tr>
 			{% for role in roles %}
 				<tr>
-					<td>{{role.name}}</td>
-					<td>{{role.created_at}}</td>
-					<td><a href="{% url 'role_edit' role.pk %}"><button class="btn btn-secondary">Edit</button></a></td>
+					<td style="color: black;">{{role.name}}</td>
+					<td style="color: black;">{{role.created_at}}</td>
+					<td><a href="{% url 'role_edit' role.pk %}"><button class="btn btn-primary">Edit</button></a></td>
 				</tr>
 			{% endfor %}
+			<td align="left"><a href="{% url 'role_add' %}"><input class="btn btn-primary" type='button' value='Add Role'></a></td>
 		</table>
 
 		<!-- </div> -->
