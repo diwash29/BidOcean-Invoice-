@@ -636,7 +636,7 @@
 
 
         </table>
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script>
 					$(document).ready(function(){
 
@@ -684,8 +684,13 @@
 		</table>
 	</article>
 	<div class="col-auto my-1">
-		<button type="submit" class="btn btn-primary">Submit</button>
-	
+		<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;"><b> Submit</b></button>
+       <style>
+		   .btn-primary:hover {
+    background-color: green !important;
+}
+
+	   </style>
 
 		
 	  </div>
@@ -1084,4 +1089,5 @@ function minus(tot) {
 			document.getElementById("finaltotal").value = tot.toFixed(2);9498
 			}
 </script>
+
 {% endblock content %}

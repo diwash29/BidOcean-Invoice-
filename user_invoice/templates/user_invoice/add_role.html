@@ -2,12 +2,11 @@
 {% load crispy_forms_tags %}
 {% block content %}
 	<article>
-		<legend class="border-bottom mb-4">Add Role </legend>
-		
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Add Role </b></legend>
 		<form method='POST'>
 			{% csrf_token %}
 			<div class="form-group">
-				<label for="formGropuNameInput">Name</label>
+				<label for="formGropuNameInput">Name*</label>
 				{{role_form.name}}
 			</div>
 				
