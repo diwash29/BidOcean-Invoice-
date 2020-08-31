@@ -33,6 +33,8 @@ class Rate(models.Model):
 	base_ir             = models.CharField(max_length=300, null=True, blank=True) 
 	base_br             = models.CharField(max_length=200, null=True, blank=True)
 
+	total_pay           = models.CharField(max_length=200, null=True, blank=True)
+
 	difficultnp         = models.CharField(max_length=300, null=True, blank=True)
 	extra_hours         = models.CharField(max_length=300, null=True, blank=True)
 	file_attach         = models.CharField(max_length=300, null=True, blank=True)
@@ -97,6 +99,9 @@ class Invoice(models.Model):
 	ph_edited_in_bid_list              = models.CharField(max_length=200, null=True, blank=True)
 	ph_deleted_in_bid_list             = models.CharField(max_length=200, null=True, blank=True)
 	extra_days_worked                  = models.CharField(max_length=200, null=True, blank=True)
+
+	#fixed invoice
+	total_pay                          = models.CharField(max_length=200, null=True, blank=True)
 
 	authorised_day_off                 = models.CharField(max_length=200, null=True, blank=True)
 	unauthorised_day_off               = models.CharField(max_length=200, null=True, blank=True)

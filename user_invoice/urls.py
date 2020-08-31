@@ -21,5 +21,6 @@ urlpatterns = [
     path('invoice-list/', views.InvoiceDisplayView.as_view(), name='invoice_list' ),
     
     path('ir/<int:pk>', views.IrEditView.as_view(), name='edit_ir'),
-    path('br/<int:pk>', views.BrEditView.as_view(), name='edit_br')
+    path('br/<int:pk>', views.BrEditView.as_view(), name='edit_br'),
+    path('fixed/<int:pk>', views.FixedEditView.as_view(), name='edit_fixed')
 ]

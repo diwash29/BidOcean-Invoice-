@@ -145,7 +145,7 @@ tr:hover .cut { opacity: 1; }
 				<td>{{invoice.total_payable}}</td>
 				<td>{{invoice.invoice_date}}</td>
 				<td>{{invoice.monthdate|date:"M, Y"}}</td>
-				<td><a href="{% if invoice.emp_ownwer.role.name|lower == 'ir' %}{% url 'edit_ir' invoice.pk %}{% elif invoice.emp_ownwer.role.name|lower == 'br' %}{% url 'edit_br' invoice.pk %}{% endif %}"><button class="btn btn-secondary">view</button></a></td>
+				<td><a href="{% if invoice.emp_ownwer.role.name|lower == 'ir' %}{% url 'edit_ir' invoice.pk %}{% elif invoice.emp_ownwer.role.name|lower == 'br' %}{% url 'edit_br' invoice.pk %}{% else %}{% url 'edit_fixed' invoice.pk %}{% endif %}"><button class="btn btn-secondary">view</button></a></td>
 			</tr>
 			{% endfor %}
 			

@@ -1,38 +1,46 @@
+
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
 <form method='POST'>
 	{% csrf_token %}
 	<article>
-			  <legend class="border-bottom mb-4">Bids Reporter Invoice </legend>
-		
-		<div class="form-group">
-			<h6><u>Please Fill in the details below:</u></h6>
-			<label for="formGropuNameInput">Name</label>
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Bids Reporter Invoice </b></legend>
+
+			  <div class="form-group">
+				<p><u class="spelling">Please fill in the details below.</u> </p>
+	<style>
+		.spelling {
+	  text-decoration-line: underline;
+	 
+	  text-decoration-color: black;
+	}
+	</style>
+			<label for="formGropuNameInput">Name*</label>
 			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required>
 			</div>
 			<div class="form-group">	
-			<label for="formGropuNameInput">Address</label>
+			<label for="formGropuNameInput">Address*</label>
 			<input name="address" class="form-control" id="formGroupNameInput" value="{{employee.address}}" placeholder="Enter your address" required>
 			</div>	
 			<div class="form-group">
-			<label for="mobile_no">Mobile No:</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no" value="{{employee.phone_no}}" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No">
+			<label for="mobile_no">Mobile No*</label>
+			<input type="text" class="form-control" id="mobile_no" value="{{employee.phone_no}}" name="mobile_no" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No">
 			</div>	
 			<div class="form-group">
-			<label for="formGroupExampleInput2">Invoice Date</label>
+			<label for="formGroupExampleInput2">Invoice Date*</label>
 			<input type="date" id="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}" name="invoice_date">
 			</div>
 		
 		<div class="form-group">
-		<label for="formGroupExampleInput2">Month and Year Billed For:</label>
+		<label for="formGroupExampleInput2">Month and Year Billed For*</label>
 		<input type="month" id="monthdate" value="{{invoice.monthdate|date:'Y-m'}}" name="monthdate">
 		</div>	
 			<div class="form-group">
-			  <label for="formGroupDistrict">Work Days</label>
-			  <select name="emp_type" id="formGroupDistrict" required>
-				<option {% if invoice.emp_type == 'with 2 saturdays' %}selected{% endif %} value='with 2 saturdays'>With 2 Saturdays</option>
-				<option {% if invoice.emp_type == 'without saturdays' %}selected{% endif %} value='without saturdays'>Without Saturdays</option>				
+			  <label for="formGroupDistrict">Work Days:</label>
+			  <select name="district" id="formGroupDistrict" required>
+				<option {% if invoice.emp_type == 'with 2 saturdays' %}selected{% endif %} value="with 2 saturdays" >With 2 Saturdays</option>
+				<option {% if invoice.emp_type == 'without saturdays' %}selected{% endif %} value='without saturdays'>Without Saturdays</option>
 			  </select>
 			  
 			</div>
@@ -327,7 +335,32 @@
 
 
         </table>
-
+        <script type="text/javascript">
+        	$(document).ready(function(){
+        		calci()
+        		calculateSum()
+        		calculate()
+        		godcal()
+        		sum()
+        		$(function(){
+                $('.in input').each(function(){
+                    var p=$(this).parent().parent()
+                    var m=p.find('input.txtMult')
+                    var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
+                    var res=p.find('.multTotal')
+                    res.html(mul);
+                    
+                });
+            })
+				/*cal()
+				calci()
+				calculateSum()
+				calculate()
+				godcal()
+				fcal()
+				sum()*/
+			})
+        </script>
 		<script>
 					$(document).ready(function(){
 
@@ -376,12 +409,13 @@
 	</article>
 	<div class="col-auto my-1">
 		<button type="submit" class="btn btn-primary">Submit</button>
-		<button type="submit" class="btn btn-primary" onclick="window.print();">Download</button>
+	
 	  </div>
 	<aside>
-		<h1><span contenteditable>Additional Notes</span></h1>
-		<div contenteditable>
-			<p>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations. </p>
+		<h1><span  style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
+		<div >
+			<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
+			<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
 		</div>
 	</aside>
 	

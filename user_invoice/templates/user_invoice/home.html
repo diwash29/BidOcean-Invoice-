@@ -1,45 +1,184 @@
+
 {% extends 'user_invoice/base.html' %}
 {% load static %}
 {% block content %}
-<style type="text/css">
-	.bg{
-	background: url({% static 'images/invoice.jpg' %}) no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	width: 1290px;
-	min-height: 600px;
-	margin-left: -100px;
-	margin-top:-25px;
-	}
-	/*div.transbox {
-  margin: 30px;
-  background-color: #ffffff;
-  border: 1px solid black;
-  opacity: 0.0;
-}
 
-div.transbox h1 {
-  margin: 5%;
-  font-weight: bold;
-  color: #000000;
-}*/
-/*.button{
-	padding: 10%
-}*/
+
+<!-- Slider Wrapper -->
+<!-- <div class="css-slider-wrapper">
+	<input type="radio" name="slider" class="slide-radio1" checked id="slider_1">
+	<input type="radio" name="slider" class="slide-radio2" id="slider_2">
+	<input type="radio" name="slider" class="slide-radio3" id="slider_3">
+	<input type="radio" name="slider" class="slide-radio4" id="slider_4">
+   
 	
+	<div class="slider-pagination">
+	  <label for="slider_1" class="page1"></label>
+	  <label for="slider_2" class="page2"></label>
+	  <label for="slider_3" class="page3"></label>
+	  <label for="slider_4" class="page4"></label>
+	</div>
+   
+	
+	<div class="slider slide-1">
+	  <img src="{% static 'images/c1.jpg' %}" alt="">
+	  <div class="slider-content">
+		<h4>New Product</h4>
+		<h2>Denim Longline T-Shirt Dress With Split</h2>
+		<button type="button" class="buy-now-btn" name="button">$130</button>
+	  </div>
+	  <div class="number-pagination">
+		<span>1</span>
+	  </div>
+	</div>
+   
+
+	<div class="slider slide-2">
+	  <img src="{% static 'images/c2.jpg' %}" alt="">
+	  <div class="slider-content">
+		<h4>New Product</h4>
+		<h2>Denim Longline T-Shirt Dress With Split</h2>
+		<button type="button" class="buy-now-btn" name="button">$130</button>
+	  </div>
+	  <div class="number-pagination">
+		<span>2</span>
+	  </div>
+	</div>
+   
+
+	<div class="slider slide-3">
+	  <img src="{% static 'images/c3.jpg' %}" alt="">
+	  <div class="slider-content">
+		<h4>New Product</h4>
+		<h2>Denim Longline T-Shirt Dress With Split</h2>
+		<button type="button" class="buy-now-btn" name="button">$130</button>
+	  </div>
+	  <div class="number-pagination">
+		<span>3</span>
+	  </div>
+	</div>
+   
+
+	<div class="slider slide-4">
+	  <img src="{% static 'images/c1.jpg' %}" alt="">
+	  <div class="slider-content">
+		<h4>New Product</h4>
+		<h2>Denim Longline T-Shirt Dress With Split</h2>
+		<button type="button" class="buy-now-btn" name="button">$130</button>
+	  </div>
+	  <div class="number-pagination">
+		<span>4</span>
+	  </div>
+	</div>
+
+
+
+
+
+	<a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+</div>
+ -->
+
+
+<!---->
+
+<div class="slider fullscreen">
+	<ul class="slides">
+	  <li>
+		<img src="{% static 'images/bg2.jpg' %}" alt="">
+		<div class="caption center-align">
+		  <h3 style="color: aliceblue;">Welcome to Bid Ocean Invoice!</h3>
+		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+		</div>
+	  </li>
+	  <li>
+		<img src="{% static 'images/bag2.jpg' %}" alt="">
+		<div class="caption center-align">
+			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
+		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+		</div>
+	  </li>
+	  <li>
+		<img src="{% static 'images/c3.jpg' %}" alt="">
+		<div class="caption center-align">
+			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
+		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+		</div>
+	  </li>
+	  <li>
+		<img src="{% static 'images/bag1.jpg' %}" alt="">
+		<div class="caption center-align">
+			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
+		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+		</div>
+	  </li>
+	  <li>
+		<img src="{% static 'images/c2.jpg' %}" alt="">
+		<div class="caption center-align">
+			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
+		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+		</div>
+	  </li>
+	</ul>
+  </div>
+
+  
+  
+  <div class="buysellads buysellads-demo hide-on-small-only">
+	<a href="#!" class="close"><i class="material-icons">close</i></a>
+	<!-- CarbonAds Zone Code -->
+	<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=materializecss" id="_carbonads_js"></script>
+  </div>
+	  <!--  Scripts-->
+	  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	  <script>if (!window.jQuery) { document.write('<script src="bin/jquery-2.1.1.min.js"><\/script>'); }
+	  </script>
+	  <script src="js/jquery.timeago.min.js"></script>
+	  <script src="js/prism.js"></script>
+	  <script src="jade/lunr.min.js"></script>
+	  <script src="jade/search.js"></script>
+	  <script src="bin/materialize.js"></script>
+	  <script src="js/init.js"></script>
+	  <!-- Twitter Button -->
+	  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  
+	  <!-- Google Plus Button-->
+	  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  
+	  <!--  Google Analytics  -->
+	  <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+	  ga('create', 'UA-56218128-1', 'auto');
+	  ga('require', 'displayfeatures');
+	  ga('send', 'pageview');
+	  </script>
+  
+	
+
+
+<style>
+	
+        
 </style>
-<div class='container'>
-<!-- <div class="bg"> -->
-	<!-- <div class="row"> -->
-		<div class="bg">
-		<a href="{% url url %}"><button style="text-align: center;margin-top: 400px;margin-left: 550px; height: 60px; width:200px" class="btn btn-sm btn-info">ADD INVOICE</button></a>
-	<!-- </div> -->
-</div>
-<!-- </div> -->
-</div>
-<!-- 
-<button>Hello</button> -->
+<script>
+	$(document).ready(function(){
+      $('.slider').slider();
+    });
+        
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		
+
+
 
 {% endblock %}
