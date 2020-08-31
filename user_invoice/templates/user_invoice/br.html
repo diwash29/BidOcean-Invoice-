@@ -5,6 +5,13 @@
 <form>
 	<article>
 		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Bids Reporter Invoice </b></legend>
+		<aside>
+			<h1><span  style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
+			<div >
+				<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
+				<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
+			</div>
+		</aside>
 		
 			  <div class="form-group">
 				<p><u class="spelling">Please fill in the details below.</u> </p>
@@ -16,15 +23,15 @@
 	}
 	</style>
 			<label for="formGropuNameInput">Name*</label>
-			<input name="name" class="form-control" id="formGroupNameInput" placeholder="Enter your name" required>
+			<input name="name" class="form-control" id="formGroupNameInput" placeholder="Enter your name" required readonly>
 			</div>
 			<div class="form-group">	
 			<label for="formGropuNameInput">Address*</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" required>
+			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" required readonly>
 			</div>	
 			<div class="form-group">
 			<label for="mobile_no">Mobile No*</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No">
+			<input type="text" class="form-control" id="mobile_no" name="mobile_no" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No" readonly>
 			</div>	
 			<div class="form-group">
 			<label for="formGroupExampleInput2">Invoice Date*</label>
@@ -68,8 +75,8 @@
 			<tr>
 				<td></a><span style="font-weight:bold">New Entities Added</span></td>
 				
-					<td><input id="z1" type="text" value="0" oninput="calci()" /></td>
-					<td><span data-prefix>$</span><input value="0" id="z2" type="text" oninput="calci()" /></td>
+					<td><input id="z1" type="text" value="0" style="background-color: rgb(96, 221, 96);" oninput="calci()" /></td>
+					<td><span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);" id="z2" type="text" oninput="calci()" /></td>
 					<td><span data-prefix>$</span><input value="0" id="authres" /></td>
 				 
 			
@@ -94,17 +101,17 @@
             <tr>
 		
 				<td></a><span style="font-weight:bold">PH Added to Bid List</span></td>
-				<td><input class="txt" value="0" type="text" name="txt"/></td>
+				<td><input class="txt" value="0" style="background-color: rgb(96, 221, 96);" type="text" name="txt"/></td>
 			</tr>
 			<tr>
 			
 				<td></a><span style="font-weight:bold">PH Edited im Bid List</span></td>
-				<td><input class="txt" value="0" type="text" name="txt"/></td>
+				<td><input class="txt" value="0" style="background-color: rgb(96, 221, 96);" type="text" name="txt"/></td>
 			</tr>
 			<tr>
 		
 				<td></a><span style="font-weight:bold">PH Deleted in Bid List</span></td>
-				<td><input class="txt" value="0" type="text" name="txt"/></td>
+				<td><input class="txt" value="0" style="background-color: rgb(96, 221, 96);" type="text" name="txt"/></td>
 			</tr>
 			
 			
@@ -118,7 +125,7 @@
 			<tr>
 				<td align="right" style="font-weight:bold">Total :</td>
 				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" /></td>
+				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" readonly/></td>
 				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
 			  </tr>
 			  <tr>
@@ -153,8 +160,8 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Extra Day Worked</span></td>
 					
-						<td><input id="g1" type="text" value="0" oninput="godcal()" /></td>
-						<td><span data-prefix>$</span><input value="0" id="g2" type="text" oninput="godcal()" /></td>
+						<td><input id="g1" type="text" value="0" style="background-color: rgb(96, 221, 96);" oninput="godcal()" /></td>
+						<td><span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);" id="g2" type="text" oninput="godcal()" /></td>
 						<td><span data-prefix>$</span><input value="0" id="godres" /></td>
 					 
 				
@@ -204,7 +211,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
 					</td>
 					
 				
@@ -212,7 +219,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
 					</td>
 					
 				
@@ -221,7 +228,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
 					</td>
 					
 					
@@ -229,7 +236,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
 					</td>					
 				</tr>
 				<thead>
@@ -253,10 +260,10 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Duplicate Entities </span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.00"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -266,10 +273,10 @@
 					<td></a><span style="font-weight:bold">Errors
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -279,10 +286,10 @@
 					<td></a><span style="font-weight:bold">Fines
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -293,10 +300,10 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -308,10 +315,10 @@
 					<td></a><span style="font-weight:bold">Unauthorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail"/>
+						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -380,24 +387,18 @@
 		</script>
 
 		</table>
-	</article>
-	<div class="col-auto my-1">
-		<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;"><b> Submit</b></button>
-       <style>
-		   .btn-primary:hover {
-    background-color: green !important;
-}
-
-	   </style>
-	  </div>
-	<aside>
-		<h1><span  style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
-		<div >
-			<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
-			<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
-		</div>
-	</aside>
+		<div class="col-auto my-1">
+			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b> Submit</b></button>
+		   <style>
+			   .btn-primary:hover {
+		background-color: green !important;
+	}
 	
+		   </style>
+		  </div>
+	</article>
+
+
 </form>	
 	<style>
  *

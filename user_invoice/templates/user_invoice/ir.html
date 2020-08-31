@@ -5,7 +5,13 @@
 <form>
 	<article>
 		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Internet Researcher Specialist Invoice </b></legend>
-		
+		<aside>
+			<h1><span style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
+			<div >
+				<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
+				<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
+			</div>
+		</aside>
 			  <div class="form-group">
 				<p><u class="spelling">Please fill in the details below.</u> </p>
 	<style>
@@ -16,15 +22,15 @@
 	}
 	</style>
 			<label for="formGropuNameInput">Name*</label>
-			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required>
+			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required readonly>
 			</div>
 			<div class="form-group">	
 			<label for="formGropuNameInput">Address*</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required>
+			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required readonly>
 			</div>	
 			<div class="form-group">
 			<label for="mobile_no">Mobile No*</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No">
+			<input type="text" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No" readonly>
 
 			</div>	
 			<div class="form-group">
@@ -119,7 +125,7 @@
 			<tr>
 				<td align="right" style="font-weight:bold">Total :</td>
 				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" /></td>
+				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" readonly/></td>
 				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
 			  </tr>
 			  <tr>
@@ -128,7 +134,7 @@
 					<td></a><span style="font-weight:bold">Difficult and Non-Productive Source</span></td>
 					
 						<td><input value="0"  style="background-color: rgb(96, 221, 96);" id="val1" type="text" oninput="cal()" /></td>
-						<td><span data-prefix>$</span><input value="0.50" id="val2" type="text" oninput="cal()" /></td>
+						<td><span data-prefix>$</span><input value="0.50" id="val2" type="text" oninput="cal()" readonly/></td>
 						<td><span data-prefix>$</span><input value="0" id="diffres" /></td>
 					 
 				
@@ -280,7 +286,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">(11) Duplicate Solic. </span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
@@ -293,7 +299,7 @@
 					<td></a><span style="font-weight:bold">(1) Entity/Contact wrong/incomplete/not edited
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"   class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.25"   class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
@@ -306,7 +312,7 @@
 					<td></a><span style="font-weight:bold">(21) False Referral
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
@@ -320,7 +326,7 @@
 
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="2.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="2.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -333,7 +339,7 @@
 					<td></a><span style="font-weight:bold">(17) Source returned without good reason
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="3.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="3.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -346,7 +352,7 @@
 					<td></a><span style="font-weight:bold">(22) Missed Bid Bond/Incomplete Plans & Specs
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
@@ -359,7 +365,7 @@
 					<td></a><span style="font-weight:bold">(3) Missed Categories
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
@@ -372,7 +378,7 @@
 					<td></a><span style="font-weight:bold">(10) Missed Solic./Addend. From Source
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -385,7 +391,7 @@
 					<td></a><span style="font-weight:bold">(23) Missed/Incorrect File Type
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -398,7 +404,7 @@
 					<td></a><span style="font-weight:bold">(7) Missing or Wrong Outside Link
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -411,7 +417,7 @@
 					<td></a><span style="font-weight:bold">(20) Missing or wrong Term Contract
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.35"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.35"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -424,7 +430,7 @@
 					<td></a><span style="font-weight:bold">(9) Not Posted As Lead
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="1.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="1.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -437,7 +443,7 @@
 					<td></a><span style="font-weight:bold">(12) Other error
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -450,7 +456,7 @@
 					<td></a><span style="font-weight:bold">(18) Other serious error
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -463,7 +469,7 @@
 					<td></a><span style="font-weight:bold">(14) Refreshing WDS page to a different source
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -476,7 +482,7 @@
 					<td></a><span style="font-weight:bold">(19)Setaside/Prequalification/<br>Prevailing Wage not selected
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -489,7 +495,7 @@
 					<td></a><span style="font-weight:bold">(15) Skipped solicitation
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="2.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="2.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -502,7 +508,7 @@
 					<td></a><span style="font-weight:bold">(16) Source returned without a note
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -515,7 +521,7 @@
 					<td></a><span style="font-weight:bold">(24) Unexcused/unjustified absence
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -528,7 +534,7 @@
 					<td></a><span style="font-weight:bold">(6) Wrong bid/pre-bid, mandatory
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.75"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.75"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -541,7 +547,7 @@
 					<td></a><span style="font-weight:bold">(2) Wrong categories
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -554,7 +560,7 @@
 					<td></a><span style="font-weight:bold">(8) Wrong geographic location
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -567,7 +573,7 @@
 					<td></a><span style="font-weight:bold">(4) Incomplete or incorrect scope
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -580,7 +586,7 @@
 					<td></a><span style="font-weight:bold">(5) Wrong text format
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -594,7 +600,7 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -609,7 +615,7 @@
 					<td></a><span style="font-weight:bold">Unauthorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail"/>
+						<span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<input value="0" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -635,7 +641,8 @@
 				</tr>
 
 
-        </table>
+		</table>
+		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script>
 					$(document).ready(function(){
@@ -682,25 +689,18 @@
 		</script>
 
 		</table>
+		<div class="col-auto my-1">
+			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b> Submit</b></button>
+		   <style>
+			   .btn-primary:hover {
+		background-color: green !important;
+	}
+	
+		   </style>
+		  </div>
+	
 	</article>
-	<div class="col-auto my-1">
-		<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;"><b> Submit</b></button>
-       <style>
-		   .btn-primary:hover {
-    background-color: green !important;
-}
 
-	   </style>
-
-		
-	  </div>
-	<aside>
-		<h1><span style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
-		<div >
-			<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
-			<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
-		</div>
-	</aside>
 	
 </form>	
 	<style>
