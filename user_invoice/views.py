@@ -58,6 +58,7 @@ class RoleAddView(AdminOrHRPanelMixin,TemplateView):
             messages.success(request, "Successfully created new Role")
             return HttpResponseRedirect('/role-list/')
         else:
+            print(role_form.errors)
             messages.error(request, "There was a problem adding the role")
             return render(request, self.template_name, {
                 'role_form'   : role_form,

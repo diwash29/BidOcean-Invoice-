@@ -21,7 +21,7 @@ class RoleAddForm(forms.ModelForm):
 		))     
 	class Meta:
 		model   = Role
-		exclude = ['name']
+		exclude = ['status']
 
 class RateAddForm(forms.ModelForm):
     base = forms.CharField(widget=forms.TextInput(
