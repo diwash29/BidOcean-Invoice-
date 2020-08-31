@@ -126,7 +126,7 @@
 			<tr>
 				<td align="right" style="font-weight:bold">Total :</td>
 				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "{{rates.base_br}}" onClick="calculate()" readonly="" /></td>
+				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "{{rates.base_br}}" style="background-color: rgb(96, 221, 96);" onClick="calculate()"  /></td>
 				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
 			  </tr>
 			  <tr>
@@ -161,7 +161,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Extra Day Worked</span></td>
 						<td><input id="g1" style="background-color: rgb(96, 221, 96);" type="text" name='extra_days_worked' value="{{invoice.extra_days_worked}}" oninput="godcal()" /></td>
-						<td><span data-prefix>$</span><input value="{{rates.extra_days}}" id="g2" type="text" oninput="godcal()" readonly="" /></td>
+						<td><span data-prefix>$</span><input value="{{rates.extra_days}}" style="background-color: rgb(96, 221, 96);" id="g2" type="text" oninput="godcal()" /></td>
 						<td><span data-prefix>$</span><input value="0" id="godres" /></td>
 					 
 				
@@ -260,7 +260,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Duplicate Entities </span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="{{rates.duplicate_entities}}"  class ="txtMult" name="txtEmmail" readonly="" />
+						<span data-prefix>$</span>	<input value="{{rates.duplicate_entities}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail" />
 					</td>
 					<td>
 						<input value="{{invoice.duplicate_entities}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="duplicate_entities"/>
@@ -273,7 +273,7 @@
 					<td></a><span style="font-weight:bold">Errors
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.errors}}"  class ="txtMult" name="txtEmmail" readonly="" />
+						<span data-prefix>$</span><input value="{{rates.errors}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
 					</td>
 					<td>
 						<input value="{{invoice.errors}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="errors"/>
@@ -286,7 +286,7 @@
 					<td></a><span style="font-weight:bold">Fines
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.fines}}"  class ="txtMult" name="txtEmmail" readonly="" />
+						<span data-prefix>$</span><input value="{{rates.fines}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
 					</td>
 					<td>
 						<input value="{{invoice.fines}}"  style="background-color: rgb(96, 221, 96);" class ="txtMult" name="fines"/>
@@ -300,7 +300,7 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
+						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
 					</td>
 					<td>
 						<input value="{{invoice.authorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
@@ -315,7 +315,7 @@
 					<td></a><span style="font-weight:bold">Unauthorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
+						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
 					</td>
 					<td>
 						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
