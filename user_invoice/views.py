@@ -8,6 +8,7 @@ from .forms import EmployeeForm, RoleAddForm, RateAddForm
 from django.contrib.auth.models import User
 from .mixin import AdminOrHRPanelMixin, AdminPanelMixin
 from datetime import datetime
+from django.core.paginator import Paginator
 # Create your views here.
 
 # 3650-8243-248
@@ -132,8 +133,12 @@ class RateAddView(TemplateView):
 class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
+        employee_list    = Employee.objects.all()
+        paginator        = Paginator(employee_list,10)
+        page             = request.GET.get('page')
+        paginatedcontent = paginator.get_page(page)
         context = {
-            'employees' : Employee.objects.all(),
+            'employees' : paginatedcontent,
             'title'     : 'Employee list',
             'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
