@@ -2,7 +2,8 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<form>
+<form method="POST">
+	{% csrf_token %}
 	<article>
 			  <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Fixed Invoice </b></legend>
 			  <aside>
@@ -22,15 +23,15 @@
 }
 </style>
 			<label for="formGropuNameInput">Name*</label>
-			<input name="name" class="form-control" id="formGroupNameInput" placeholder="Enter your name"  required readonly>
+			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required readonly>
 			</div>
 			<div class="form-group">	
 			<label for="formGropuNameInput">Address*</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" required readonly>
+			<input name="address" class="form-control" id="formGroupNameInput" value="{{employee.address}}" placeholder="Enter your address" required readonly>
 			</div>	
 			<div class="form-group">
 			<label for="mobile_no">Mobile No*</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No" readonly>
+			<input type="text" class="form-control" id="mobile_no" name="mobile_no" value="{{employee.phone_no}}" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No" readonly>
 			</div>	
 			<div class="form-group">
 			<label for="formGroupExampleInput2">Invoice Date*</label>
@@ -64,9 +65,10 @@
 			
 			<tr>
 				<td></a><span style="font-weight:bold">Total Pay</span></td>
-				
-					<td><input id="z1" type="text" value="1" oninput="calci()" readonly/></td>
-					<td><span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);" id="z2" type="text" oninput="calci()" /></td>
+
+					<td><input id="z1" type="text" value="1" oninput="calci()" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="{% if invoice.total_pay %}{{invoice.total_pay}}{% else %}{{employee.salary}}{% endif %}" style="background-color: rgb(96, 221, 96);" id="z2" type="text" oninput="calci()" name="total_pay" /></td>
+
 					<td><span data-prefix>$</span><input value="0" id="authres" /></td>
 				 
 			
@@ -120,7 +122,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.authorised_day_off}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="authorised_day_off"/>
 					</td>
 					
 				
@@ -128,7 +130,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="unauthorised_day_off"/>
 					</td>
 					
 				
@@ -137,7 +139,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="total_working_days"/>
 					</td>
 					
 					
@@ -145,7 +147,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.total_days_worked}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="total_days_worked"/>
 					</td>					
 				</tr>
 				<thead>
@@ -167,10 +169,10 @@
 				<tr>
 					<td></a><span style="font-weight:bold">(11) Duplicate Solic. </span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail"readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.duplicate_solic}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.duplicate_solic}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="duplicate_solic" />
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -180,10 +182,10 @@
 					<td></a><span style="font-weight:bold">(1) Entity/Contact wrong/incomplete/not edited
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.entity_cont_wrong}}"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
-						<input value="0"  style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.entity_cont_wrong}}"  style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="entity_cont_wrong"  />
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -193,10 +195,10 @@
 					<td></a><span style="font-weight:bold">(21) False Referral
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.false_referal}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.false_referal}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="false_referal"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -207,10 +209,10 @@
 
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="2.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.fraudsolic_update}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.fraudulent_solicitation_update}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="fraudulent_solicitation_update"/>
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -220,10 +222,10 @@
 					<td></a><span style="font-weight:bold">(17) Source returned without good reason
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="3.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.source_ret_wo_res}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.source_returned_without_good_res}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="source_returned_without_good_res"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -233,10 +235,10 @@
 					<td></a><span style="font-weight:bold">(22) Missed Bid Bond/Incomplete Plans & Specs
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.missed_bond}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.missed_bidbond_and_specs}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="missed_bidbond_and_specs"/>
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -246,10 +248,10 @@
 					<td></a><span style="font-weight:bold">(3) Missed Categories
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.missed_categories}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.missed_categories}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="missed_categories"/>
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -259,10 +261,10 @@
 					<td></a><span style="font-weight:bold">(10) Missed Solic./Addend. From Source
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.missed_solic_src}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.missed_solic_or_addend_from_source}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="missed_solic_or_addend_from_source"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -272,10 +274,10 @@
 					<td></a><span style="font-weight:bold">(23) Missed/Incorrect File Type
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.10"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.missed_file}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0"  style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.missed_incorrect_filetype}}"  style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="missed_incorrect_filetype"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -285,10 +287,10 @@
 					<td></a><span style="font-weight:bold">(7) Missing or Wrong Outside Link
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.missed_link}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.missing_or_wrong_outside_link}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="missing_or_wrong_outside_link"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -298,10 +300,10 @@
 					<td></a><span style="font-weight:bold">(20) Missing or wrong Term Contract
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.35"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.missed_term}}"  class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.missing_or_wrong_term_contract}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="missing_or_wrong_term_contract"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -311,10 +313,10 @@
 					<td></a><span style="font-weight:bold">(9) Not Posted As Lead
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="1.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.not_posted_lead}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.not_posted_as_lead}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="not_posted_as_lead"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -324,10 +326,10 @@
 					<td></a><span style="font-weight:bold">(12) Other error
 					</span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span>	<input value="{{rates.other_error}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.other_error}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="other_error"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -337,10 +339,10 @@
 					<td></a><span style="font-weight:bold">(18) Other serious error
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.other_serious_err}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.other_serious_error}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="other_serious_error"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -350,10 +352,10 @@
 					<td></a><span style="font-weight:bold">(14) Refreshing WDS page to a different source
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.refreshing_wds}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.refreshing_wds_page_to_diff_source}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="refreshing_wds_page_to_diff_source"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -363,10 +365,10 @@
 					<td></a><span style="font-weight:bold">(19)Setaside/Prequalification/<br>Prevailing Wage not selected
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.35"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.wage_not_selected}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.prevailing_wage_not_selected}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="prevailing_wage_not_selected"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -376,10 +378,10 @@
 					<td></a><span style="font-weight:bold">(15) Skipped solicitation
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="2.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.skipped_solic}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.skipped_solicitation}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="skipped_solicitation"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -389,10 +391,10 @@
 					<td></a><span style="font-weight:bold">(16) Source returned without a note
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.source_ret_wo_note}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.source_returned_without_a_note}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="source_returned_without_a_note"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -402,10 +404,10 @@
 					<td></a><span style="font-weight:bold">(24) Unexcused/unjustified absence
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="5.00"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.unjustified_absence}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.unexcused_unjustified_absence}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="unexcused_unjustified_absence"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -415,10 +417,10 @@
 					<td></a><span style="font-weight:bold">(6) Wrong bid/pre-bid, mandatory
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.75"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.wrong_pre_bid}}"  class ="txtMult" name="txtEmmail" readonly=""/>
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.wrongbid_prebid_mandatory}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="wrongbid_prebid_mandatory"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -428,10 +430,10 @@
 					<td></a><span style="font-weight:bold">(2) Wrong categories
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.wrong_categories}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.wrong_categories}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="wrong_categories"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -441,10 +443,10 @@
 					<td></a><span style="font-weight:bold">(8) Wrong geographic location
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.wrong_geo_location}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.wrong_geographic_location}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="wrong_geographic_location"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -454,10 +456,10 @@
 					<td></a><span style="font-weight:bold">(4) Incomplete or incorrect scope
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.50"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.incorrect_scope}}"  class ="txtMult" name="txtEmmail" required="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.incomplete_and_incorrect_scope}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="incomplete_and_incorrect_scope"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -467,10 +469,10 @@
 					<td></a><span style="font-weight:bold">(5) Wrong text format
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.25"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.wrong_text_format}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.wrong_text_format}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="wrong_text_format"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -481,10 +483,10 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="11.1111111111111"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.authorised_day_off}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -496,10 +498,10 @@
 					<td></a><span style="font-weight:bold">Unauthorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="16.6666666666667"  class ="txtMult" name="txtEmmail" readonly/>
+						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -510,14 +512,15 @@
 
 				<tr>
 					<td colspan="3" style="color:#c90000; font-weight:bold" align="right">
-						Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">0.00</span>
+						Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">{{invoice.total_deduction}}</span>
+						<input type="hidden" id="total_deduction" value="{{invoice.total_deduction}}" name="total_deduction">
 					</td>
 					
 				</tr>
 				
 				<tr>
 					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
-						 Total Amount Payable: <span data-prefix>$</span><input id = "finaltotal" value="0" onclick="minus()"/>
+						 Total Amount Payable: <span data-prefix>$</span><input id = "finaltotal" value="{{invoice.total_payable}}" onclick="minus()" name="total_payable"/>
 					</td>
 					
 				</tr>
@@ -955,6 +958,7 @@ $(function(){
                         total+=parseFloat($(this).html())
                     })
                     $('.in #grandTotal').html(parseFloat(total).toFixed(2))
+                    $('.in #total_deduction').val(parseFloat(total).toFixed(2))
                 });
             })
 
@@ -968,5 +972,27 @@ function minus(tot) {
 			var tot = quan - pr;
 			document.getElementById("finaltotal").value = tot.toFixed(2);;
 			}
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		calci()
+		sum()
+		$(function(){
+                $('.in input').each(function(){
+                    var p=$(this).parent().parent()
+                    var m=p.find('input.txtMult')
+                    var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
+                    var res=p.find('.multTotal')
+                    res.html(mul);
+                    /*var total=0;
+                    $('.in .multTotal').each(function(){
+                        total+=parseFloat($(this).html())
+                    })
+                    $('.in #grandTotal').html(parseFloat(total).toFixed(2))
+                    $('.in #hidden_total_deduction').val(parseFloat(total).toFixed(2))*/
+                });
+            })
+
+	})
 </script>
 {% endblock content %}

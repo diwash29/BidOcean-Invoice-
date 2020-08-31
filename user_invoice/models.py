@@ -30,10 +30,22 @@ class Employee(models.Model):
 
 class Rate(models.Model):
 	id                  = models.AutoField(primary_key=True)
-	base                = models.CharField(max_length=300, null=True, blank=True)  
+	base_ir             = models.CharField(max_length=300, null=True, blank=True) 
+	base_br             = models.CharField(max_length=200, null=True, blank=True)
+
+	total_pay           = models.CharField(max_length=200, null=True, blank=True)
+
 	difficultnp         = models.CharField(max_length=300, null=True, blank=True)
 	extra_hours         = models.CharField(max_length=300, null=True, blank=True)
 	file_attach         = models.CharField(max_length=300, null=True, blank=True)
+	add_auth_days       = models.CharField(max_length=300, null=True, blank=True)
+
+	new_entities_added  = models.CharField(max_length=300, null=True, blank=True)
+	extra_days          = models.CharField(max_length=300, null=True, blank=True)
+
+	duplicate_entities  = models.CharField(max_length=300, null=True, blank=True)
+	errors              = models.CharField(max_length=300, null=True, blank=True)
+	fines               = models.CharField(max_length=300, null=True, blank=True)
 
 	duplicate_solic     = models.CharField(max_length=300)
 	entity_cont_wrong   = models.CharField(max_length=300)
@@ -63,3 +75,72 @@ class Rate(models.Model):
 	unauth_day_off      = models.CharField(max_length=300)
 	added_by            = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
 	is_approved         = models.SmallIntegerField(default=0) 
+
+
+
+class Invoice(models.Model):
+	id                                 = models.AutoField(primary_key=True)
+	invoice_date                       = models.DateField()
+	monthdate                          = models.DateField()
+	emp_type                           = models.CharField(max_length=150, null=True, blank=True)
+
+	#ir invoice
+	additional_auth_days               = models.CharField(max_length=100, null=True, blank=True)
+	wds_source_checked_completely      = models.CharField(max_length=200, null=True, blank=True)
+	new_solicitation_entered_correctly = models.CharField(max_length=200, null=True, blank=True)
+	updated_solicitation_by_addenda    = models.CharField(max_length=200, null=True, blank=True)
+	difficult_and_nonproductive_source = models.CharField(max_length=200, null=True, blank=True)
+	extra_hours_worked                 = models.CharField(max_length=200, null=True, blank=True)
+	file_attached                      = models.CharField(max_length=200, null=True, blank=True)
+
+	#br invoice
+	new_entities_added                 = models.CharField(max_length=200, null=True, blank=True)
+	ph_added_to_bid_list               = models.CharField(max_length=200, null=True, blank=True)
+	ph_edited_in_bid_list              = models.CharField(max_length=200, null=True, blank=True)
+	ph_deleted_in_bid_list             = models.CharField(max_length=200, null=True, blank=True)
+	extra_days_worked                  = models.CharField(max_length=200, null=True, blank=True)
+
+	#fixed invoice
+	total_pay                          = models.CharField(max_length=200, null=True, blank=True)
+
+	authorised_day_off                 = models.CharField(max_length=200, null=True, blank=True)
+	unauthorised_day_off               = models.CharField(max_length=200, null=True, blank=True)
+	total_working_days                 = models.CharField(max_length=200, null=True, blank=True)
+	total_days_worked                  = models.CharField(max_length=200, null=True, blank=True)
+
+	#br_invoice
+	duplicate_entities                 = models.CharField(max_length=200, null=True, blank=True)
+	errors                             = models.CharField(max_length=200, null=True, blank=True)
+	fines                              = models.CharField(max_length=200, null=True, blank=True)
+
+	#ir and fixed invoice
+	duplicate_solic                    = models.CharField(max_length=200, null=True, blank=True)
+	entity_cont_wrong                  = models.CharField(max_length=200, null=True, blank=True)
+	false_referal                      = models.CharField(max_length=200, null=True, blank=True)
+	fraudulent_solicitation_update     = models.CharField(max_length=200, null=True, blank=True)
+	source_returned_without_good_res   = models.CharField(max_length=200, null=True, blank=True)
+	missed_bidbond_and_specs           = models.CharField(max_length=200, null=True, blank=True)
+	missed_categories                  = models.CharField(max_length=200, null=True, blank=True)
+	missed_solic_or_addend_from_source = models.CharField(max_length=200, null=True, blank=True)
+	missed_incorrect_filetype          = models.CharField(max_length=200, null=True, blank=True)
+	missing_or_wrong_outside_link      = models.CharField(max_length=200, null=True, blank=True)
+	missing_or_wrong_term_contract     = models.CharField(max_length=200, null=True, blank=True)
+	not_posted_as_lead                 = models.CharField(max_length=200, null=True, blank=True)
+	other_error                        = models.CharField(max_length=200, null=True, blank=True)
+	other_serious_error                = models.CharField(max_length=200, null=True, blank=True)
+	refreshing_wds_page_to_diff_source = models.CharField(max_length=200, null=True, blank=True)
+	prevailing_wage_not_selected       = models.CharField(max_length=200, null=True, blank=True)
+	skipped_solicitation               = models.CharField(max_length=200, null=True, blank=True)
+	source_returned_without_a_note     = models.CharField(max_length=200, null=True, blank=True)
+	unexcused_unjustified_absence      = models.CharField(max_length=200, null=True, blank=True)
+	wrongbid_prebid_mandatory          = models.CharField(max_length=200, null=True, blank=True)
+	wrong_categories                   = models.CharField(max_length=200, null=True, blank=True)
+	wrong_geographic_location          = models.CharField(max_length=200, null=True, blank=True)
+	incomplete_and_incorrect_scope     = models.CharField(max_length=200, null=True, blank=True)
+	wrong_text_format                  = models.CharField(max_length=200, null=True, blank=True)
+	total_deduction                    = models.CharField(max_length=200, null=True, blank=True)
+	total_payable                      = models.CharField(max_length=200, null=True, blank=True)
+	emp_ownwer                         = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
+	is_approved                        = models.SmallIntegerField(default=0)
+
+

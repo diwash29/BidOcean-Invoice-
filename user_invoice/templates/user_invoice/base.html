@@ -20,9 +20,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.js' %}">
 
     {% if title %}
-        <title> Bid Ocean Invoice - {{ title }}</title>
+        <title> Invoice - {{ title }}</title>
     {% else %}
-        <title>Bid Ocean Invoice</title>
+        <title>Invoice</title>
     {% endif %}
 </head>
 <body>
@@ -35,6 +35,7 @@
                 <a class="nav-item nav-link" href="{% url 'role_list' %}" >Role</a>
                 <a class="nav-item nav-link" href="{% url 'employee_list' %}" >Employee</a>              
               {% endif %}
+              <a class="nav-item nav-link" href="{% url 'invoice_list' %}" >Invoices</a>
         <div class="container">
       
 <style>

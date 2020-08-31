@@ -1,39 +1,7 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<article>
-		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Add Role </b></legend>
-		<form method='POST'>
-			{% csrf_token %}
-			<div class="form-group">
-				<label for="formGropuNameInput">Name</label>
-				{{role_form.name}}
-			</div>
-				
-			<div class="form-group">
-				
-				<input type="submit" class="form-control" id="submit" value="{{submit}}">
-			</div>	
-		</form>
-	</article>
-			
-		
-		
-			
-			
-	
-
-		
-		
-			
-		  
-
-		
-
-		  
-	
-		
-	<style>
+<style>
  *
 {
 	border: 0;
@@ -61,8 +29,8 @@ span[contenteditable] { display: inline-block; }
 
 h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
 table { font-size: 75%; table-layout: fixed; width: 100%; }
-table { border-collapse: separate; border-spacing: 2px; }
-th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
+table { border-collapse: collapse; border-spacing: 2px; }
+th, td { border-width: 0px; padding: 0.5em; position: relative;  }
 th, td { border-radius: 0.25em; border-style: solid; }
 th { background: #EEE; border-color: #BBB; }
 td { border-color: #DDD; }
@@ -150,4 +118,43 @@ tr:hover .cut { opacity: 1; }
 
     </style>
 
+    <div class='container'>	 
+		<table  width="100%">
+			<tr>
+				<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Invoice List </b></legend>
+				<td align="right"></td>
+			</tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
+			<tr>
+				<th style="color: teal;"><b> Emp Name </b></th>
+				<th style="color: teal;"><b> Invoice Type</b></th>
+				<th style="color: teal;"><b> Phone No </b></th>
+				<th style="color: teal;"><b> Total Deduction </b></th>
+				<th style="color: teal;"><b> Total Payable </b></th>
+				<th style="color: teal;"><b> Invoice Date</b></th>
+				<th style="color: teal;"><b> Invoice for</b></th>
+				<th style="color: teal;"><b> Action</b></th>
+			</tr>
+			{% for invoice in invoices %}
+			<tr>
+				<td style="color: black;">{{invoice.emp_ownwer.name}}</td>
+				<td style="color: black;">{{invoice.emp_ownwer.role.name}}</td>
+				<td style="color: black;">{{invoice.emp_ownwer.phone_no}}</td>
+				<td style="color: black;">{{invoice.total_deduction}}</td>
+				<td style="color: black;">{{invoice.total_payable}}</td>
+				<td style="color: black;">{{invoice.invoice_date}}</td>
+				<td style="color: black;">{{invoice.monthdate|date:"M, Y"}}</td>
+				<td style="color: black;"><a href="{% if invoice.emp_ownwer.role.name|lower == 'ir' %}{% url 'edit_ir' invoice.pk %}{% elif invoice.emp_ownwer.role.name|lower == 'br' %}{% url 'edit_br' invoice.pk %}{% else %}{% url 'edit_fixed' invoice.pk %}{% endif %}"><button class="btn btn-primary" style="background-color:teal;border: none;">view</button></a></td>
+			</tr>
+			<style>
+				.btn-primary:hover {
+		 background-color: green !important;
+	 }
+	</style>
+			{% endfor %}
+			
+		</table>
+
+		</div>
 {% endblock content %}

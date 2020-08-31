@@ -2,9 +2,11 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<form>
+<form method='POST'>
+	{% csrf_token %}
 	<article>
 		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Bids Reporter Invoice </b></legend>
+
 		<aside>
 
 			<div >
@@ -23,31 +25,30 @@
 	}
 	</style>
 			<label for="formGropuNameInput">Name*</label>
-			<input name="name" class="form-control" id="formGroupNameInput" placeholder="Enter your name" required readonly>
+			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required readonly="">
 			</div>
 			<div class="form-group">	
 			<label for="formGropuNameInput">Address*</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" required readonly>
+			<input name="address" class="form-control" id="formGroupNameInput" value="{{employee.address}}" placeholder="Enter your address" required readonly="">
 			</div>	
 			<div class="form-group">
 			<label for="mobile_no">Mobile No*</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No" readonly>
+			<input type="text" class="form-control" id="mobile_no" value="{{employee.phone_no}}" name="mobile_no" maxlength="10" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter Mobile No" readonly="">
 			</div>	
 			<div class="form-group">
 			<label for="formGroupExampleInput2">Invoice Date*</label>
-			<input type="date" id="invoice_date" name="invoice_date">
+			<input type="date" id="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}" name="invoice_date">
 			</div>
 		
 		<div class="form-group">
 		<label for="formGroupExampleInput2">Month and Year Billed For*</label>
-		<input type="month" id="monthdate" name="monthdate">
+		<input type="month" id="monthdate" value="{{invoice.monthdate|date:'Y-m'}}" name="monthdate">
 		</div>	
 			<div class="form-group">
 			  <label for="formGroupDistrict">Work Days:</label>
 			  <select name="district" id="formGroupDistrict" required>
-				<option>With 2 Saturdays</option>
-				<option>Without Saturdays</option>
-				
+				<option {% if invoice.emp_type == 'with 2 saturdays' %}selected{% endif %} value="with 2 saturdays" >With 2 Saturdays</option>
+				<option {% if invoice.emp_type == 'without saturdays' %}selected{% endif %} value='without saturdays'>Without Saturdays</option>
 			  </select>
 			  
 			</div>
@@ -74,9 +75,8 @@
 			
 			<tr>
 				<td></a><span style="font-weight:bold">New Entities Added</span></td>
-				
-					<td><input id="z1" type="text" value="0" style="background-color: rgb(96, 221, 96);" oninput="calci()" /></td>
-					<td><span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);" id="z2" type="text" oninput="calci()" /></td>
+					<td><input id="z1" type="text" value="{{invoice.new_entities_added}}" name="new_entities_added" oninput="calci()" style="background-color: rgb(96, 221, 96);" /></td>
+					<td><span data-prefix>$</span><input value="{{rates.new_entities_added}}" id="z2" type="text" oninput="calci()" style="background-color: rgb(96, 221, 96);" /></td>
 					<td><span data-prefix>$</span><input value="0" id="authres" /></td>
 				 
 			
@@ -101,17 +101,18 @@
             <tr>
 		
 				<td></a><span style="font-weight:bold">PH Added to Bid List</span></td>
-				<td><input class="txt" value="0" style="background-color: rgb(96, 221, 96);" type="text" name="txt"/></td>
+				<td><input class="txt" type="text" value="{{invoice.ph_added_to_bid_list}}" name="ph_added_to_bid_list" style="background-color: rgb(96, 221, 96);"/></td>
 			</tr>
 			<tr>
 			
-				<td></a><span style="font-weight:bold">PH Edited im Bid List</span></td>
-				<td><input class="txt" value="0" style="background-color: rgb(96, 221, 96);" type="text" name="txt"/></td>
+				<td></a><span style="font-weight:bold">PH Edited in Bid List</span></td>
+				<td><input class="txt" type="text" value="{{invoice.ph_edited_in_bid_list}}" name="ph_edited_in_bid_list" style="background-color: rgb(96, 221, 96);"/></td>
+
 			</tr>
 			<tr>
 		
 				<td></a><span style="font-weight:bold">PH Deleted in Bid List</span></td>
-				<td><input class="txt" value="0" style="background-color: rgb(96, 221, 96);" type="text" name="txt"/></td>
+				<td><input class="txt" type="text" style="background-color: rgb(96, 221, 96);" value="{{invoice.ph_deleted_in_bid_list}}" name="ph_deleted_in_bid_list"/></td>
 			</tr>
 			
 			
@@ -125,7 +126,7 @@
 			<tr>
 				<td align="right" style="font-weight:bold">Total :</td>
 				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" readonly/></td>
+				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "{{rates.base_br}}" onClick="calculate()" readonly="" /></td>
 				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
 			  </tr>
 			  <tr>
@@ -159,9 +160,8 @@
 			
 				<tr>
 					<td></a><span style="font-weight:bold">Extra Day Worked</span></td>
-					
-						<td><input id="g1" type="text" value="0" style="background-color: rgb(96, 221, 96);" oninput="godcal()" /></td>
-						<td><span data-prefix>$</span><input value="0" style="background-color: rgb(96, 221, 96);" id="g2" type="text" oninput="godcal()" /></td>
+						<td><input id="g1" style="background-color: rgb(96, 221, 96);" type="text" name='extra_days_worked' value="{{invoice.extra_days_worked}}" oninput="godcal()" /></td>
+						<td><span data-prefix>$</span><input value="{{rates.extra_days}}" id="g2" type="text" oninput="godcal()" readonly="" /></td>
 						<td><span data-prefix>$</span><input value="0" id="godres" /></td>
 					 
 				
@@ -211,7 +211,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
 					<td>
-						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
+						<input value="{{invoice.authorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="authorised_day_off"/>
 					</td>
 					
 				
@@ -219,7 +219,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
 					<td>
-						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
+						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="unauthorised_day_off"/>
 					</td>
 					
 				
@@ -228,7 +228,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
+						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="total_working_days"/>
 					</td>
 					
 					
@@ -236,7 +236,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
 					<td>
-						<input value="0"  class ="txtMult" style="background-color: rgb(96, 221, 96);" name="txtEmmail"/>
+						<input value="{{invoice.total_days_worked}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="total_days_worked"/>
 					</td>					
 				</tr>
 				<thead>
@@ -260,10 +260,10 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Duplicate Entities </span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="0.00"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<span data-prefix>$</span>	<input value="{{rates.duplicate_entities}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<input value="{{invoice.duplicate_entities}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="duplicate_entities"/>
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -273,10 +273,10 @@
 					<td></a><span style="font-weight:bold">Errors
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<span data-prefix>$</span><input value="{{rates.errors}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<input value="{{invoice.errors}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="errors"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -286,10 +286,10 @@
 					<td></a><span style="font-weight:bold">Fines
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0.00"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<span data-prefix>$</span><input value="{{rates.fines}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<input value="{{invoice.fines}}"  style="background-color: rgb(96, 221, 96);" class ="txtMult" name="fines"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -300,10 +300,10 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<input value="{{invoice.authorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -315,10 +315,10 @@
 					<td></a><span style="font-weight:bold">Unauthorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="0"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);"/>
+						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -327,21 +327,47 @@
 				
 				<tr>
 					<td colspan="3" style="color:#c90000; font-weight:bold" align="right">
-						Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">0.00</span>
+						Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">{{invoice.total_deduction}}</span>
+						<input type="hidden" id = "total_deduction" name="total_deduction" value="{{invoice.total_deduction}}" onclick="minus()"/>
 					</td>
 					
 				</tr>
 				
 				<tr>
 					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
-						 Total Amount Payable: <span data-prefix>$</span><input id = "finaltotal" value="0" onclick="minus()"/>
+						 Total Amount Payable: <span data-prefix>$</span><input id = "finaltotal" name="total_payable" value="{{invoice.total_payable}}" onclick="minus()"/>
 					</td>
 					
 				</tr>
 
 
         </table>
-
+        <script type="text/javascript">
+        	$(document).ready(function(){
+        		calci()
+        		calculateSum()
+        		calculate()
+        		godcal()
+        		sum()
+        		$(function(){
+                $('.in input').each(function(){
+                    var p=$(this).parent().parent()
+                    var m=p.find('input.txtMult')
+                    var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
+                    var res=p.find('.multTotal')
+                    res.html(mul);
+                    
+                });
+            })
+				/*cal()
+				calci()
+				calculateSum()
+				calculate()
+				godcal()
+				fcal()
+				sum()*/
+			})
+        </script>
 		<script>
 					$(document).ready(function(){
 
@@ -771,6 +797,7 @@ $(function(){
                         total+=parseFloat($(this).html())
                     })
                     $('.in #grandTotal').html(parseFloat(total).toFixed(2))
+                    $('.in #total_deduction').val(parseFloat(total).toFixed(2))
                 });
             })
 
