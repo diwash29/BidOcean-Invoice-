@@ -121,32 +121,37 @@ tr:hover .cut { opacity: 1; }
     <div class='container'>	 
 		<table  width="100%">
 			<tr>
-				<td><h3>Invoice list</h3></td>
+				<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Invoice List </b></legend>
 				<td align="right"></td>
 			</tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
 			<tr>
-				<th>Emp Name </th>
-				<th>Invoice Type</th>
-				<th>Phone No</th>
-				<th>Total Deduction</th>
-				<th>Total Payable</th>
-				<th>Invoice Date</th>
-				<th>Invoice for</th>
-				<th>Action</th>
+				<th style="color: teal;"><b> Emp Name </b></th>
+				<th style="color: teal;"><b> Invoice Type</b></th>
+				<th style="color: teal;"><b> Phone No </b></th>
+				<th style="color: teal;"><b> Total Deduction </b></th>
+				<th style="color: teal;"><b> Total Payable </b></th>
+				<th style="color: teal;"><b> Invoice Date</b></th>
+				<th style="color: teal;"><b> Invoice for</b></th>
+				<th style="color: teal;"><b> Action</b></th>
 			</tr>
 			{% for invoice in invoices %}
 			<tr>
-				<td>{{invoice.emp_ownwer.name}}</td>
-				<td>{{invoice.emp_ownwer.role.name}}</td>
-				<td>{{invoice.emp_ownwer.phone_no}}</td>
-				<td>{{invoice.total_deduction}}</td>
-				<td>{{invoice.total_payable}}</td>
-				<td>{{invoice.invoice_date}}</td>
-				<td>{{invoice.monthdate|date:"M, Y"}}</td>
-				<td><a href="{% if invoice.emp_ownwer.role.name|lower == 'ir' %}{% url 'edit_ir' invoice.pk %}{% elif invoice.emp_ownwer.role.name|lower == 'br' %}{% url 'edit_br' invoice.pk %}{% else %}{% url 'edit_fixed' invoice.pk %}{% endif %}"><button class="btn btn-secondary">view</button></a></td>
+				<td style="color: black;">{{invoice.emp_ownwer.name}}</td>
+				<td style="color: black;">{{invoice.emp_ownwer.role.name}}</td>
+				<td style="color: black;">{{invoice.emp_ownwer.phone_no}}</td>
+				<td style="color: black;">{{invoice.total_deduction}}</td>
+				<td style="color: black;">{{invoice.total_payable}}</td>
+				<td style="color: black;">{{invoice.invoice_date}}</td>
+				<td style="color: black;">{{invoice.monthdate|date:"M, Y"}}</td>
+				<td style="color: black;"><a href="{% if invoice.emp_ownwer.role.name|lower == 'ir' %}{% url 'edit_ir' invoice.pk %}{% elif invoice.emp_ownwer.role.name|lower == 'br' %}{% url 'edit_br' invoice.pk %}{% else %}{% url 'edit_fixed' invoice.pk %}{% endif %}"><button class="btn btn-primary" style="background-color:teal;border: none;">view</button></a></td>
 			</tr>
+			<style>
+				.btn-primary:hover {
+		 background-color: green !important;
+	 }
+	</style>
 			{% endfor %}
 			
 		</table>
