@@ -6,7 +6,13 @@
 	{% csrf_token %}
 	<article>
 		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Internet Researcher Specialist Invoice </b></legend>
-		
+		<aside>
+			<h1><span style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
+			<div >
+				<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
+				<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
+			</div>
+		</aside>
 			  <div class="form-group">
 				<p><u class="spelling">Please fill in the details below.</u> </p>
 	<style>
@@ -17,15 +23,15 @@
 	}
 	</style>
 			<label for="formGropuNameInput">Name*</label>
-			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required>
+			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required readonly>
 			</div>
 			<div class="form-group">	
 			<label for="formGropuNameInput">Address*</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required>
+			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required readonly>
 			</div>	
 			<div class="form-group">
 			<label for="mobile_no">Mobile No*</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No">
+			<input type="text" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No" readonly>
 
 			</div>	
 			<div class="form-group">
@@ -110,7 +116,8 @@
 			<tr>
 				<td align="right" style="font-weight:bold">Total :</td>
 				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-				<td><span data-prefix>$</span><input readonly=""  id="box2" name = "quantity" type="text" value = "{{rates.base_ir}}" onClick="calculate()" /></td>
+
+				<td><span data-prefix>$</span><input readonly="" id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" /></td>
 				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
 			  </tr>
 			  <tr>
@@ -625,23 +632,67 @@
 				</tr>
 
 
-        </table>
 
 		</table>
-	</article>
-	<div class="col-auto my-1">
-		<button type="submit" class="btn btn-primary">Submit</button>
-	
-
 		
-	  </div>
-	<aside>
-		<h1><span style="color: rgb(15, 9, 105);"><b>Additional Notes</b></span></h1>
-		<div >
-			<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
-			<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
-		</div>
-	</aside>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+					$(document).ready(function(){
+
+			//iterate through each textboxes and add keyup
+			//handler to trigger sum event
+			$(".txt").each(function() {
+
+				$(this).keyup(function(){
+					calculateSum();
+				});
+			});
+
+			});
+
+			function calculateSum() {
+
+			var sum = 0;
+			//iterate through each textboxes and add the values
+			$(".txt").each(function() {
+
+				//add only if the value is number
+				if(!isNaN(this.value) && this.value.length!=0) {
+					sum += parseFloat(this.value);
+				}
+
+			});
+			//.toFixed() method will roundoff the final sum to 2 decimal places
+			$("#sum").html(sum.toFixed(2));
+			$("#box1").html(sum.toFixed(2));
+			// var sumtwo = $('#sumtwo').val();
+			// var rate = $('#rate').val();
+			// var totalTotalOne = (sumtwo * rate);
+			// $("#wtotal").html(totalTotalOne.toFixed(2));
+			}
+
+			function calculate(tot) {
+			var quan = document.getElementsByName('quantity')[0].value;
+			var pri = document.getElementById('box1').innerHTML;
+			var pr = parseInt(pri, 10);
+			var tot = quan * pr;
+			document.getElementById("result").value = tot.toFixed(2);;
+			}
+		</script>
+
+		</table>
+		<div class="col-auto my-1">
+			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b> Submit</b></button>
+		   <style>
+			   .btn-primary:hover {
+		background-color: green !important;
+	}
+	
+		   </style>
+		  </div>
+	
+	</article>
+
 	
 </form>	
 	<style>
@@ -1110,4 +1161,5 @@ function minus(tot) {
 			document.getElementById("finaltotal").value = tot.toFixed(2);9498
 			}
 </script>
+
 {% endblock content %}

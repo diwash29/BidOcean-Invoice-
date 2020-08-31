@@ -137,7 +137,7 @@ tr:hover .cut { opacity: 1; }
 				<th style="color: teal;"><b>Role</b></th>
 				<th style="color: teal;"><b> Address</b></th>
 				<th style="color: teal;"><b> Phone No</b></th>
-				<th style="color: teal;"><b> Leaves Rem</b></th>
+				<th style="color: teal;"><b> Leaves Remaining</b></th>
 				<th style="color: teal;"><b> Action</b></th>
 			</tr>
 			{% for employee in employees %}
@@ -147,7 +147,15 @@ tr:hover .cut { opacity: 1; }
 					<td style="color: rgb(0, 0, 0);;">{{employee.address}}</td>
 					<td style="color: rgb(0, 0, 0);;">{{employee.phone_no}}</td>
 					<td style="color: rgb(0, 128, 6);">{{employee.leaves}}</td>
-					<td style="color: rgb(0, 0, 0);;"><a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary">Edit</button></a></td>
+					<td style="color: rgb(0, 0, 0);;"><a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a></td>
+
+					<style>
+						.btn-primary:hover {
+				 background-color: green !important;
+			 }
+			 
+					</style>
+			
 				</tr>
 			{% endfor %}
 		</table>

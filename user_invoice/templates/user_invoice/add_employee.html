@@ -2,35 +2,42 @@
 {% load crispy_forms_tags %}
 {% block content %}
 	<article>
-		<legend class="border-bottom mb-4">{{submit}} Details </legend>
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;" ><b> {{submit}} Details</b> </legend>
 		
 		<form method='POST'>
 			{% csrf_token %}
 			<div class="form-group">
-				<h6><u>Please Fill in the details below:</u></h6>
-				<label for="formGropuNameInput">Name</label>
+				<p><u class="spelling">Please fill in the details below.</u> </p>
+	<style>
+		.spelling {
+	  text-decoration-line: underline;
+	 
+	  text-decoration-color: black;
+	}
+	</style>
+				<label for="formGropuNameInput">Name*</label>
 				<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required>
 			</div>
 			<div class="form-group">	
-				<label for="formGropuNameInput">Address</label>
+				<label for="formGropuNameInput">Address*</label>
 				<input name="address" class="form-control" id="formGroupNameInput" value="{{employee.address}}" placeholder="Enter your address" required>
 			</div>	
 			<div class="form-group">
-				<label for="mobile_no">Mobile No:</label>
+				<label for="mobile_no">Mobile No*</label>
 				<input type="number" class="form-control" id="mobile_no" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{{employee.phone_no}}" placeholder="Enter Mobile No" >
 			</div>	
 			<div class="form-group">
-				<label for="mobile_no">Salary:</label>
+				<label for="mobile_no">Salary*</label>
 				<input type="text" class="form-control" id="salary" name="salary" value="{{employee.salary}}" placeholder="Enter salary">
 			</div>	
 			<div class="form-group">
-				<label for="mobile_no">Leaves:</label>
+				<label for="mobile_no">Leaves*</label>
 				<input type="text" class="form-control" id="leaves" name="leaves" value="{{employee.leaves}}" placeholder="Enter no of leaves" required>
 			</div>	
 			<div class="form-group">
-				<label for="mobile_no">Role:</label>
+				<label for="mobile_no">Role*</label>
 				<select class="form-control" id="role" name='role' required="">
-					<option value=''>Select Role</option>	
+					<option value=''>Select Role*</option>	
 					{% for role in roles %}
 						<option value='{{role.id}}'{% if employee.role.id == role.id %}selected{% endif %}  >{{role.name}}</option>
 					{% endfor %}				
@@ -39,7 +46,15 @@
 			</div>	
 			<div class="form-group">
 				
-				<input type="submit" class="form-control" id="submit" value="{{submit}}">
+				
+				<a href="{{submit}}"><button  class="btn btn-primary" style="background-color:teal;border: none;">Edit</button></a>
+				<style>
+					.btn-primary:hover {
+			 background-color: green !important;
+		 }
+		 
+				</style>
+				
 			</div>	
 		</form>
 	</article>

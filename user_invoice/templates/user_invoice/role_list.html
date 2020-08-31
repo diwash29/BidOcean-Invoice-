@@ -141,10 +141,16 @@ tr:hover .cut { opacity: 1; }
 				<tr>
 					<td style="color: black;">{{role.name}}</td>
 					<td style="color: black;">{{role.created_at}}</td>
-					<td><a href="{% url 'role_edit' role.pk %}"><button class="btn btn-primary">Edit</button></a></td>
+					<td><a href="{% url 'role_edit' role.pk %}"><button class="btn btn-primary" style="background-color:teal;border: none;"  >Edit</button></a></td>
 				</tr>
 			{% endfor %}
-			<td align="left"><a href="{% url 'role_add' %}"><input class="btn btn-primary" type='button' value='Add Role'></a></td>
+			<td align="left"><a href="{% url 'role_add' %}"><input class="btn btn-primary" type='button' style="background-color:teal;border: none;" value='Add Role'></a></td>
+	
+			<style>
+				.btn-primary:hover {
+		 background-color: green !important;
+	 }
+	</style>
 		</table>
 
 		<!-- </div> -->
