@@ -144,9 +144,9 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
             role     = request.GET['role']
         except:
             role     = None   
-        if search is not None:
+        if search is not None and search is not "":
         	employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
-        if role is not None:
+        if role is not None and role is not "":
         	employee_list = employee_list.filter(role__pk__exact=role)
 
         # print(employee_list.query)	
