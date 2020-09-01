@@ -169,23 +169,23 @@ tr:hover .cut { opacity: 1; }
   <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     {% if employees.has_previous %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.previous_page_number }}">Previous</a></li>
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.previous_page_number }}">Previous</a></li>
     {% else %}
-      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="#">Previous</a></li>
     {% endif %}
     {% if employees.number|add:'-4' > 1 %}
       <li class="text-dark page-item"><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
-      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.number|add:'-5' }}">&hellip;</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.number|add:'-5' }}">&hellip;</a></li>
     {% endif %}
     
     {% for i in employees.paginator.page_range %}
       {% if employees.number == i %}
         <li class="page-item active">
-          <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
+          <a class="page-link font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ i }}">{{i}}</a>
         </li>
       {% elif i > employees.number|add:'-5' and i < employees.number|add:'5' %}
         <li class="page-item {% if i == employees.number %} active {% endif %}">
-          <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
+          <a class="page-link font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ i }}">{{i}}</a>
         </li>
       {% endif %}
     {% endfor %}
