@@ -74,10 +74,11 @@ class RoleEditView(AdminOrHRPanelMixin,TemplateView):
         role = Role.objects.get(id=pk)
         role_form = RoleAddForm(instance=role)
         context = {
-            'role_form' : role_form,
-            'submit'    : 'Edit Role',
-            'title'     : 'Edit role',
-            'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+        	'selected_role' : role,
+            'role_form'     : role_form,
+            'submit'        : 'Edit Role',
+            'title'         : 'Edit role',
+            'role'          : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
 
@@ -205,6 +206,22 @@ class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
         employee.save()
         return HttpResponseRedirect('/employee-list')
 
+class EmployeeDeleteView(AdminPanelMixin, View):
+	def get(self, request, pk):
+		employee = Employee.objects.get(pk=pk)
+		print(employee)
+		employee.delete()
+		messages.success(request, "Successfully deleted employee") 
+		return HttpResponseRedirect('/employee-list')
+
+class RoleDeleteView(AdminPanelMixin, TemplateView):
+	def get(self, request, pk):
+		role = Role.objects.get(pk=pk)
+		role.delete()
+		messages.success(request, "Successfully deleted role")
+		return HttpResponseRedirect('/role-list') 		  
+
+
 class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 	template_name = 'user_invoice/invoice_list.html'
 
@@ -214,9 +231,12 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 		if rolename == 'admin' or  rolename == 'hr':
 			invoice = Invoice.objects.all()
 		else:
-			invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
+			invoice = Invoice.objects.filter(emp_ownwer=employee).all()			
+		paginator        = Paginator(invoice,10)
+		page             = request.GET.get('page')
+		paginatedcontent = paginator.get_page(page)	
 		context = {
-			'invoices' : invoice,
+			'invoices' : paginatedcontent,
 			'title'    : 'Invoice list',
 			'role'     : rolename
 		}

@@ -48,6 +48,9 @@
 				
 				
 				<a href="{{submit}}"><button  class="btn btn-primary" style="background-color:teal;border: none;">Edit</button></a>
+				{% if 'Edit' in submit %}
+				<a href="{% url 'employee_delete' employee.pk %}"><input onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger" type="button" value="Delete"></a>
+				{% endif %}				
 				<style>
 					.btn-primary:hover {
 			 background-color: green !important;

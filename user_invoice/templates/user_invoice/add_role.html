@@ -13,6 +13,9 @@
 			<div class="form-group">
 				
 				<button class="btn btn-primary" type="submit" class="form-control" id="submit" value="{{submit}}" style="background-color:teal;border: none;">Add</button>
+				{% if 'Edit' in submit %}
+				<a href="{% url 'role_delete' selected_role.pk %}"><input onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger" type="button" value="Delete"></a>
+				{% endif %}		
 				<style>
 					.btn-primary:hover {
 			 background-color: green !important;

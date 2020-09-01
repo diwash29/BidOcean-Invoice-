@@ -14,9 +14,11 @@ urlpatterns = [
     path('role-add/',views.RoleAddView.as_view(),name='role_add'),
     path('role-list/',views.RoleDisplayView.as_view(),name='role_list'),
     path('role-edit/<int:pk>',views.RoleEditView.as_view(),name='role_edit'),
+    path('role-delete/<int:pk>',views.RoleDeleteView.as_view(),name='role_delete'),
 
     path('employee-list/',views.EmployeeDisplayView.as_view(),name='employee_list'),
     path('employee-edit/<int:pk>',views.EmployeeEditView.as_view(),name='employee_edit'),
+    path('employee-delete/<int:pk>',views.EmployeeDeleteView.as_view(),name='employee_delete'),
 
     path('invoice-list/', views.InvoiceDisplayView.as_view(), name='invoice_list' ),
     
