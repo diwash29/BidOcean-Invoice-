@@ -135,7 +135,7 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
         employee_list    = Employee.objects.all()
-        paginator        = Paginator(employee_list,10)
+        paginator        = Paginator(employee_list,5)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
         context = {
