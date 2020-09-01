@@ -132,21 +132,25 @@ tr:hover .cut { opacity: 1; }
 			</tr>
 		</table>
 		<form>
-			<table>
+			<table >
 				<tr>
 					<td><input type="text" name="search" value="{{request.GET.search}}" placeholder="search"></td>
+					<td><input type="submit" name="submitbtn" value="Search"></td>
+	
 					<td>
-						<select name="role" onchange="this.form.submit()">
-							<option value="">Select Role</option>
+						<select  class="form-control"style="width:145px;height:30px;color:white;background-color:teal;" name="role"  onchange="this.form.submit()">
+							<option value="" style="color: white;"><b> Select Role </b></option>
 
 							{% for roledata in roles %}
-								<option value='{{roledata.id}}'  {% if roledata.id == request.GET.role  %} selected  {% endif %}> {{roledata.name}}</option>
+								<option value='{{roledata.id}}' style="color: white;"  {% if roledata.id == request.GET.role|add:"0"  %}  selected  {% endif %}><b>{{roledata.name}}</b> </option>
+
 							{% endfor %}
 						</select>
 					</td>
-					<td><input type="submit" name="submitbtn" value="Search"></td>
+					
 				</tr>
 			</table>
+			
 		</form>
 		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
 			<tr>
