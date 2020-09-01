@@ -247,7 +247,19 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 		if rolename == 'admin' or  rolename == 'hr':
 			invoice = Invoice.objects.all()
 		else:
-			invoice = Invoice.objects.filter(emp_ownwer=employee).all()			
+			invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
+
+		search        = request.GET.get('search', None)
+		from_date     = request.GET.get('from_date', None)
+		to_date       = request.GET.get('to_date', None)
+		  
+		if search is not None and search is not '':
+			invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))) 
+		if (from_date is not None or to_date is not None) and (from_date is not "" or to_date is not ""):
+			to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+			from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
+			invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+
 		paginator        = Paginator(invoice,10)
 		page             = request.GET.get('page')
 		paginatedcontent = paginator.get_page(page)	
