@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from .mixin import AdminOrHRPanelMixin, AdminPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.db.models import Q
 # Create your views here.
 
 # 3650-8243-248
@@ -135,12 +136,30 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
         employee_list    = Employee.objects.all()
+        try:
+            search     = request.GET['search']
+        except:
+            search     = None
+        try:
+            role     = request.GET['role']
+        except:
+            role     = None   
+        if search is not None:
+        	employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
+        if role is not None:
+        	employee_list = employee_list.filter(role__pk__exact=role)
+
+        # print(employee_list.query)	
+        		    
+        
+        roles            = Role.objects.all()
         paginator        = Paginator(employee_list,5)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
         context = {
             'employees' : paginatedcontent,
             'title'     : 'Employee list',
+            'roles'     : roles,    
             'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
