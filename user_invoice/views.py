@@ -136,6 +136,7 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
         employee_list    = Employee.objects.all()
+<<<<<<< HEAD
         try:
             search     = request.GET['search']
         except:
@@ -147,6 +148,16 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
         if search is not None and search is not "":
         	employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
         if role is not None and role is not "":
+=======
+        search   = request.GET.get('search', None)
+        role     = request.GET.get('role', None)
+        
+        print(type(role))
+        print(type(search))    
+        if search is not None and search is not '':
+        	employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
+        if role is not None and role is not '':
+>>>>>>> 091f5d378ae0d78573eeb8d50fc648d7c63b2bb0
         	employee_list = employee_list.filter(role__pk__exact=role)
 
         # print(employee_list.query)	
@@ -250,7 +261,19 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 		if rolename == 'admin' or  rolename == 'hr':
 			invoice = Invoice.objects.all()
 		else:
-			invoice = Invoice.objects.filter(emp_ownwer=employee).all()			
+			invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
+
+		search        = request.GET.get('search', None)
+		from_date     = request.GET.get('from_date', None)
+		to_date       = request.GET.get('to_date', None)
+		  
+		if search is not None and search is not '':
+			invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))) 
+		if (from_date is not None or to_date is not None) and (from_date is not "" or to_date is not ""):
+			to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+			from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
+			invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+
 		paginator        = Paginator(invoice,10)
 		page             = request.GET.get('page')
 		paginatedcontent = paginator.get_page(page)	

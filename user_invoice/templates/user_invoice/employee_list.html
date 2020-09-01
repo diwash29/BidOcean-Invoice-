@@ -143,6 +143,7 @@ tr:hover .cut { opacity: 1; }
 
 							{% for roledata in roles %}
 								<option value='{{roledata.id}}' style="color: white;"  {% if roledata.id == request.GET.role|add:"0"  %}  selected  {% endif %}><b>{{roledata.name}}</b> </option>
+
 							{% endfor %}
 						</select>
 					</td>
