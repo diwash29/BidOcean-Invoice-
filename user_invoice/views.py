@@ -136,17 +136,14 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
         employee_list    = Employee.objects.all()
-        try:
-            search     = request.GET['search']
-        except:
-            search     = None
-        try:
-            role     = request.GET['role']
-        except:
-            role     = None   
-        if search is not None:
+        search   = request.GET.get('search', None)
+        role     = request.GET.get('role', None)
+        
+        print(type(role))
+        print(type(search))    
+        if search is not None and search is not '':
         	employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
-        if role is not None:
+        if role is not None and role is not '':
         	employee_list = employee_list.filter(role__pk__exact=role)
 
         # print(employee_list.query)	
