@@ -8,6 +8,7 @@ urlpatterns = [
     path('ir/',views.IrAddView.as_view(),name='ir'),
     path('br/',views.BrAddView.as_view(),name='br'),
     path('fixed/',views.FixedAddView.as_view(),name='fixed'),
+ 
 
     path('rate-add/',views.RateAddView.as_view(),name='rate_add'),
 
