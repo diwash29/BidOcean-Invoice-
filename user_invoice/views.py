@@ -148,7 +148,10 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
         if search is not None and search is not "":
             employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
         if role is not None and role is not "":
-            employee_list = employee_list.filter(role__pk__exact=role)
+
+
+        	employee_list = employee_list.filter(role__pk__exact=role)
+
 
         # print(employee_list.query)	
         		    
