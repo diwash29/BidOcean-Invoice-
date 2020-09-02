@@ -35,12 +35,12 @@
 			</div>	
 			<div class="form-group">
 			<label for="formGroupExampleInput2">Invoice Date*</label>
-			<input type="date" id="invoice_date" name="invoice_date">
+			<input type="date" id="invoice_date" name="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}">
 			</div>
 		
 		<div class="form-group">
 		<label for="formGroupExampleInput2">Month and Year Billed For*</label>
-		<input type="month" id="monthdate" name="monthdate">
+		<input type="month" id="monthdate" value="{{invoice.monthdate|date:'Y-m'}}" name="monthdate">
 	
 			
 
@@ -574,7 +574,9 @@
 
 		</table>
 		<div class="col-auto my-1">
+			{% if 'Add' in submit %}
 			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;"><b> Submit</b></button>
+			{% endif %}
 		   <style>
 			   .btn-primary:hover {
 		background-color: green !important;

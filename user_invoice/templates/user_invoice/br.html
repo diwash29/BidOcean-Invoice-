@@ -46,7 +46,7 @@
 		</div>	
 			<div class="form-group">
 			  <label for="formGroupDistrict">Work Days:</label>
-			  <select name="district" id="formGroupDistrict" required>
+			  <select name="emp_type" id="formGroupDistrict"  required>
 				<option {% if invoice.emp_type == 'with 2 saturdays' %}selected{% endif %} value="with 2 saturdays" >With 2 Saturdays</option>
 				<option {% if invoice.emp_type == 'without saturdays' %}selected{% endif %} value='without saturdays'>Without Saturdays</option>
 			  </select>
@@ -414,7 +414,9 @@
 
 		</table>
 		<div class="col-auto my-1">
+			{% if 'Add' in submit %}
 			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b> Submit</b></button>
+			{% endif %}
 		   <style>
 			   .btn-primary:hover {
 		background-color: green !important;
