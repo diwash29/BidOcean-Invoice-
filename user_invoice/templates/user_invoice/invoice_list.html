@@ -159,6 +159,7 @@ tr:hover .cut { opacity: 1; }
 		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
 			<tr>
 				<th style="color: teal;"><b> Emp Name </b></th>
+				<th style="color: teal;"><b> Emp Id </b></th>
 				<th style="color: teal;"><b> Invoice Type</b></th>
 				<th style="color: teal;"><b> Phone No </b></th>
 				<th style="color: teal;"><b> Total Deduction </b></th>
@@ -170,6 +171,7 @@ tr:hover .cut { opacity: 1; }
 			{% for invoice in invoices %}
 			<tr>
 				<td style="color: black;">{{invoice.emp_ownwer.name}}</td>
+				<td style="color: black;">{{invoice.emp_ownwer.emp_id}}</td>
 				<td style="color: black;">{{invoice.emp_ownwer.role.name}}</td>
 				<td style="color: black;">{{invoice.emp_ownwer.phone_no}}</td>
 				<td style="color: black;">{{invoice.total_deduction}}</td>

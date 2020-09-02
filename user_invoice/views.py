@@ -146,7 +146,8 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
         except:
             role     = None   
         if search is not None and search is not "":
-            employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))) 
+            search = search.strip()
+            employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))|Q(emp_id__icontains=search)) 
         if role is not None and role is not "":
 
 
@@ -196,9 +197,10 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         salary   = request.POST['salary']
         address  = request.POST['address']
         phone_no = request.POST['phone_no']
+        emp_id   = request.POST['emp_id']
         leaves   = request.POST['leaves']
         auth_tbl = user
-        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, leaves=leaves, auth_tbl=auth_tbl)
+        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, leaves=leaves, auth_tbl=auth_tbl)
         return HttpResponseRedirect('/')
 
 class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
@@ -226,6 +228,7 @@ class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
         employee.address  = request.POST['address']
         employee.phone_no = request.POST['phone_no']
         employee.leaves   = request.POST['leaves']
+        employee.emp_id   = request.POST['emp_id']
         employee.save()
         return HttpResponseRedirect('/employee-list')
 
@@ -246,36 +249,37 @@ class RoleDeleteView(AdminPanelMixin, TemplateView):
 
 
 class InvoiceDisplayView(AdminPanelMixin, TemplateView):
-	template_name = 'user_invoice/invoice_list.html'
+    template_name = 'user_invoice/invoice_list.html'
 
-	def get(self, request):
-		employee  =  Employee.objects.get(auth_tbl=self.request.user)
-		rolename  =  employee.role.name.lower()
-		if rolename == 'admin' or  rolename == 'hr':
-			invoice = Invoice.objects.all()
-		else:
-			invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
+    def get(self, request):
+        employee  =  Employee.objects.get(auth_tbl=self.request.user)
+        rolename  =  employee.role.name.lower()
+        if rolename == 'admin' or  rolename == 'hr':
+            invoice = Invoice.objects.all()
+        else:
+            invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
 
-		search        = request.GET.get('search', None)
-		from_date     = request.GET.get('from_date', None)
-		to_date       = request.GET.get('to_date', None)
-		  
-		if search is not None and search is not '':
-			invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))) 
-		if (from_date is not None or to_date is not None) and (from_date is not "" or to_date is not ""):
-			to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
-			from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
-			invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+        search        = request.GET.get('search', None)
+        from_date     = request.GET.get('from_date', None)
+        to_date       = request.GET.get('to_date', None)
+          
+        if search is not None and search is not '':
+            search = search.strip()
+            invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))|Q(emp_ownwer__emp_id__icontains=search)) 
+        if (from_date is not None or to_date is not None) and (from_date != "" or to_date != ""):
+            to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+            from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
+            invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
 
-		paginator        = Paginator(invoice,10)
-		page             = request.GET.get('page')
-		paginatedcontent = paginator.get_page(page)	
-		context = {
-			'invoices' : paginatedcontent,
-			'title'    : 'Invoice list',
-			'role'     : rolename
-		}
-		return render(request, self.template_name, context)
+        paginator        = Paginator(invoice,10)
+        page             = request.GET.get('page')
+        paginatedcontent = paginator.get_page(page)	
+        context = {
+            'invoices' : paginatedcontent,
+            'title'    : 'Invoice list',
+            'role'     : rolename
+        }
+        return render(request, self.template_name, context)
 
 class IrEditView(IRPanelMixin,TemplateView):
     template_name='user_invoice/ir.html'
