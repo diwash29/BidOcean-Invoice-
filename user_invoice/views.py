@@ -1,19 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, View
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import EmployeeForm, RoleAddForm, RateAddForm
 from django.contrib.auth.models import User
-from .mixin import AdminOrHRPanelMixin, AdminPanelMixin
+from .mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 # Create your views here.
 
 # 3650-8243-248
-
+@login_required(login_url='/login/')
 def index(request):
 	user = request.user
 	try:
@@ -276,30 +277,87 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 		}
 		return render(request, self.template_name, context)
 
-class IrEditView(AdminPanelMixin,TemplateView):
-	template_name='user_invoice/ir.html'
+class IrEditView(IRPanelMixin,TemplateView):
+    template_name='user_invoice/ir.html'
 
-	def get(self, request, pk):
-		invoice  = Invoice.objects.get(pk=pk)
-		employee = invoice.emp_ownwer
-		rates    = Rate.objects.get(pk=1)
-		rolename = employee.role.name.lower()
-		context ={
-			'employee' : employee,
-			'submit'   : 'Edit IR Invoice',
-			'title'    : 'Edit ir',
-			'role'     : rolename,
-			'rates'    : rates,
-			'invoice'  : invoice 
-		} 
-		return render(request, self.template_name, context)
+    def get(self, request, pk):
+        invoice  = Invoice.objects.get(pk=pk)
+        employee = invoice.emp_ownwer
+        rates    = Rate.objects.get(pk=1)
+        rolename = employee.role.name.lower()
+        context ={
+            'employee' : employee,
+            'submit'   : 'Edit IR Invoice',
+            'title'    : 'Edit ir',
+            'role'     : rolename,
+            'rates'    : rates,
+            'invoice'  : invoice 
+        } 
+        return render(request, self.template_name, context)
+    def post(self, request, pk):
+        invoice = Invoice.objects.get(pk=pk)
+        try:
+            invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()   
+            monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
+            invoice.invoice_date                       = invoice_date
+            invoice.monthdate                          = monthdate
+            invoice.emp_type                           = request.POST['emp_type']
+            invoice.additional_auth_days               = request.POST['additional_auth_days']
+            invoice.wds_source_checked_completely      = request.POST['wds_source_checked_completely']
+            invoice.new_solicitation_entered_correctly = request.POST['new_solicitation_entered_correctly']
+            invoice.updated_solicitation_by_addenda    = request.POST['updated_solicitation_by_addenda']
+            invoice.extra_hours_worked                 = request.POST['extra_hours_worked']
+            invoice.file_attached                      = request.POST['file_attached']
+            invoice.difficult_and_nonproductive_source = request.POST['difficult_and_nonproductive_source'] 
+            invoice.authorised_day_off                 = request.POST['authorised_day_off']
+            invoice.unauthorised_day_off               = request.POST['unauthorised_day_off']
+            invoice.total_working_days                 = request.POST['total_working_days']
+            invoice.total_days_worked                  = request.POST['total_days_worked']
+            invoice.duplicate_solic                    = request.POST['duplicate_solic']
+            invoice.entity_cont_wrong                  = request.POST['entity_cont_wrong']
+            invoice.false_referal                      = request.POST['false_referal']
+            invoice.fraudulent_solicitation_update     = request.POST['fraudulent_solicitation_update']
+            invoice.source_returned_without_good_res   = request.POST['source_returned_without_good_res']
+            invoice.missed_bidbond_and_specs           = request.POST['missed_bidbond_and_specs']
+            invoice.missed_categories                  = request.POST['missed_categories']
+            invoice.missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source']
+            invoice.missed_incorrect_filetype          = request.POST['missed_incorrect_filetype']
+            invoice.missing_or_wrong_outside_link      = request.POST['missing_or_wrong_outside_link']
+            invoice.missing_or_wrong_term_contract     = request.POST['missing_or_wrong_term_contract']
+            invoice.not_posted_as_lead                 = request.POST['not_posted_as_lead']
+            invoice.other_error                        = request.POST['other_error']
+            invoice.other_serious_error                = request.POST['other_serious_error']
+            invoice.refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source']
+            invoice.prevailing_wage_not_selected       = request.POST['prevailing_wage_not_selected']
+            invoice.skipped_solicitation               = request.POST['skipped_solicitation']
+            invoice.source_returned_without_a_note     = request.POST['source_returned_without_a_note']
+            invoice.unexcused_unjustified_absence      = request.POST['unexcused_unjustified_absence']
+            invoice.wrongbid_prebid_mandatory          = request.POST['wrongbid_prebid_mandatory']
+            invoice.wrong_categories                   = request.POST['wrong_categories']
+            invoice.wrong_geographic_location          = request.POST['wrong_geographic_location']
+            invoice.incomplete_and_incorrect_scope     = request.POST['incomplete_and_incorrect_scope']
+            invoice.wrong_text_format                  = request.POST['wrong_text_format']
+            invoice.total_deduction                    = request.POST['total_deduction']
+            invoice.total_payable                      = request.POST['total_payable']
+            invoice.save()
+            messages.success(request, "Successfully edited invoice")   
+            return HttpResponseRedirect('/invoice-list/')
+        except:
+            print("error")
+            messages.error(request, "There was a problem adding invoice")
+            return HttpResponseRedirect('/ir/') 
+
+
+
+            
+
 	# def post(self, request,pk):
 	# 	invoice =  Invoice.objects.get(pk=pk)
 	# 	invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
 	# 	monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
 	# 	invoice.invoice
 
-class IrAddView(AdminPanelMixin,TemplateView):
+class IrAddView(IRPanelMixin,TemplateView):
     template_name='user_invoice/ir.html'
 
     def get(self, request):
@@ -331,26 +389,58 @@ class IrAddView(AdminPanelMixin,TemplateView):
             messages.error(request, "There was a problem adding invoice")
             return HttpResponseRedirect('/ir/')	
 
-class BrEditView(AdminPanelMixin,TemplateView):
-	template_name='user_invoice/br.html'
+class BrEditView(BRPanelMixin,TemplateView):
+    template_name='user_invoice/br.html'
 
-	def get(self, request, pk):
-		invoice  = Invoice.objects.get(pk=pk)
-		employee = invoice.emp_ownwer
-		rates    = Rate.objects.get(pk=1)
-		rolename = employee.role.name.lower()
-		context ={
-			'employee' : employee,
-			'submit'   : 'Edit BR Invoice',
-			'title'    : 'Edit br',
-			'role'     : rolename,
-			'rates'    : rates,
-			'invoice'  : invoice 
-		} 
-		return render(request, self.template_name, context) 
+    def get(self, request, pk):
+        invoice  = Invoice.objects.get(pk=pk)
+        employee = invoice.emp_ownwer
+        rates    = Rate.objects.get(pk=1)
+        rolename = employee.role.name.lower()
+        context ={
+            'employee' : employee,
+            'submit'   : 'Edit BR Invoice',
+            'title'    : 'Edit br',
+            'role'     : rolename,
+            'rates'    : rates,
+            'invoice'  : invoice 
+        } 
+        return render(request, self.template_name, context) 
+    def post(self, request, pk):
+        invoice = Invoice.objects.get(pk=pk)
+        try:
+            invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()   
+            monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
+            invoice.invoice_date           = invoice_date
+            invoice.monthdate              = monthdate
+            invoice.emp_type               = request.POST['emp_type']
+            invoice.new_entities_added     = request.POST['new_entities_added']
+            invoice.ph_added_to_bid_list   = request.POST['ph_added_to_bid_list']
+            invoice.ph_edited_in_bid_list  = request.POST['ph_edited_in_bid_list']
+            invoice.ph_deleted_in_bid_list = request.POST['ph_deleted_in_bid_list']
+            invoice.extra_days_worked      = request.POST['extra_days_worked']
+            invoice.total_working_days     = request.POST['total_working_days']
+            invoice.total_days_worked      = request.POST['total_days_worked']
+            invoice.authorised_day_off     = request.POST['authorised_day_off']
+            invoice.unauthorised_day_off   = request.POST['unauthorised_day_off']
+            invoice.duplicate_entities     = request.POST['duplicate_entities']
+            invoice.errors                 = request.POST['errors']
+            invoice.fines                  = request.POST['fines']
+            invoice.total_deduction        = request.POST['total_deduction']
+            invoice.total_payable          = request.POST['total_payable']
+            invoice.save()
+            messages.success(request, "Successfully added invoice")   
+            return HttpResponseRedirect('/invoice-list/')
+        except:
+            print("error")
+            messages.error(request, "There was a problem adding invoice")
+            return HttpResponseRedirect('/br/')   
 
 
-class BrAddView(AdminPanelMixin,TemplateView):
+            
+
+
+class BrAddView(BRPanelMixin,TemplateView):
     template_name='user_invoice/br.html'
 
     def get(self, request):
@@ -382,7 +472,7 @@ class BrAddView(AdminPanelMixin,TemplateView):
             messages.error(request, "There was a problem adding invoice")
             return HttpResponseRedirect('/br/')	  
 
-class FixedAddView(AdminPanelMixin,TemplateView):
+class FixedAddView(FixedPanelMixin,TemplateView):
     template_name='user_invoice/fixed.html'
 
     def get(self, request):
@@ -414,21 +504,69 @@ class FixedAddView(AdminPanelMixin,TemplateView):
             messages.error(request, "There was a problem adding invoice")
             return HttpResponseRedirect('/fixed/')
 
-class FixedEditView(AdminPanelMixin, TemplateView):
-	template_name='user_invoice/fixed.html'
+class FixedEditView(FixedPanelMixin, TemplateView):
+    template_name='user_invoice/fixed.html'
 
-	def get(self, request, pk):
-		invoice  = Invoice.objects.get(pk=pk)
-		employee = invoice.emp_ownwer
-		rates    = Rate.objects.get(pk=1)
-		rolename = employee.role.name.lower()
-		context ={
-			'employee' : employee,
-			'submit'   : 'Edit Fixed Invoice',
-			'title'    : 'Edit fixed',
-			'role'     : rolename,
-			'rates'    : rates,
-			'invoice'  : invoice 
-		} 
-		return render(request, self.template_name, context) 
+    def get(self, request, pk):
+        invoice  = Invoice.objects.get(pk=pk)
+        employee = invoice.emp_ownwer
+        rates    = Rate.objects.get(pk=1)
+        rolename = employee.role.name.lower()
+        context ={
+            'employee' : employee,
+            'submit'   : 'Edit Fixed Invoice',
+            'title'    : 'Edit fixed',
+            'role'     : rolename,
+            'rates'    : rates,
+            'invoice'  : invoice 
+        } 
+        return render(request, self.template_name, context) 
+
+    def post(self,request,pk):
+        invoice = Invoice.objects.get(pk=pk)
+        try:
+            invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()   
+            monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
+            invoice.invoice_date                       = invoice_date
+            invoice.monthdate                          = monthdate
+            invoice.total_pay                          = request.POST['total_pay']
+            invoice.authorised_day_off                 = request.POST['authorised_day_off']
+            invoice.unauthorised_day_off               = request.POST['unauthorised_day_off']
+            invoice.total_working_days                 = request.POST['total_working_days']
+            invoice.total_days_worked                  = request.POST['total_days_worked']
+            invoice.duplicate_solic                    = request.POST['duplicate_solic']
+            invoice.entity_cont_wrong                  = request.POST['entity_cont_wrong']
+            invoice.false_referal                      = request.POST['false_referal']
+            invoice.fraudulent_solicitation_update     = request.POST['fraudulent_solicitation_update']
+            invoice.source_returned_without_good_res   = request.POST['source_returned_without_good_res']
+            invoice.missed_bidbond_and_specs           = request.POST['missed_bidbond_and_specs']
+            invoice.missed_categories                  = request.POST['missed_categories']
+            invoice.missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source']
+            invoice.missed_incorrect_filetype          = request.POST['missed_incorrect_filetype']
+            invoice.missing_or_wrong_outside_link      = request.POST['missing_or_wrong_outside_link']
+            invoice.missing_or_wrong_term_contract     = request.POST['missing_or_wrong_term_contract']
+            invoice.not_posted_as_lead                 = request.POST['not_posted_as_lead']
+            invoice.other_error                        = request.POST['other_error']
+            invoice.other_serious_error                = request.POST['other_serious_error']
+            invoice.refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source']
+            invoice.prevailing_wage_not_selected       = request.POST['prevailing_wage_not_selected']
+            invoice.skipped_solicitation               = request.POST['skipped_solicitation']
+            invoice.source_returned_without_a_note     = request.POST['source_returned_without_a_note']
+            invoice.unexcused_unjustified_absence      = request.POST['unexcused_unjustified_absence']
+            invoice.wrongbid_prebid_mandatory          = request.POST['wrongbid_prebid_mandatory']
+            invoice.wrong_categories                   = request.POST['wrong_categories']
+            invoice.wrong_geographic_location          =  request.POST['wrong_geographic_location']
+            invoice.incomplete_and_incorrect_scope     = request.POST['incomplete_and_incorrect_scope']
+            invoice.wrong_text_format                  = request.POST['wrong_text_format']
+            invoice.total_deduction                    = request.POST['total_deduction']
+            invoice.total_payable                      = request.POST['total_payable']
+            invoice.save()
+            messages.success(request, "Successfully added invoice")   
+            return HttpResponseRedirect('/invoice-list/')
+        except:
+            print("error")
+            messages.error(request, "There was a problem adding invoice")
+            return HttpResponseRedirect('/fixed/')
+
+
             
