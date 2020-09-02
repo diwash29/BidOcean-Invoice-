@@ -19,6 +19,7 @@ class Employee(models.Model):
 	role     = models.ForeignKey(Role,on_delete=models.CASCADE)
 	salary   = models.CharField(max_length=300, null=True, blank=True)
 	address  = models.CharField(max_length=300)
+	emp_id   = models.CharField(max_length=300, null=True, blank=True)
 	phone_no = models.CharField(max_length=300)
 	leaves   = models.IntegerField()
 	auth_tbl = models.OneToOneField(User, on_delete=models.CASCADE)
