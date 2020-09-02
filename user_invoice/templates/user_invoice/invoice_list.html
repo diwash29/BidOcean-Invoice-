@@ -128,10 +128,34 @@ tr:hover .cut { opacity: 1; }
 		<form>
 			<table>
 				<tr>
-					<td><input type="text" name="search" value="{{request.GET.search}}" placeholder="search"></td>
-					<td>From date : <input type="date" name="from_date" value="{{request.GET.from_date}}"></td>
-					<td>To Date :<input type="date" name="to_date" value="{{request.GET.to_date}}"></td>
-					<td><input type="submit" name="submitbtn" value="Search"></td>
+
+					
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+				
+				
+				
+					<div class="form-group w-40" >
+						<div class="input-group mb-3">
+							
+							<input type="text" name="search" style="width: 30px;height: 30px;" class="form-control border-secondary py-2" value="{{request.GET.search}}" placeholder="search">
+							<div class="input-group-append">
+								
+							 <button class="input-group-text" style="height: 30px;" type="submit" name="submitbtn" value="Search"><i class="fa fa-search"></i>
+								
+							</div>
+					
+							<p style="margin-left: 40px;"><b style="color: teal;"> From date :</b> <input type="date" name="from_date" value="{{request.GET.from_date}}"></p>
+								<p style="margin-left: 40px;"><b style="color: teal;"> To Date :</b><input type="date" name="to_date" value="{{request.GET.to_date}}"></p>
+						</div>	
+					
+						<div id="styled-select">
+							
+							</div>
+
+
+					<!-- <td><input type="text" name="search" value="{{request.GET.search}}" placeholder="search"></td> -->
+				
+					<!-- <td><input type="submit" name="submitbtn" value="Search"></td> -->
 				</tr>
 			</table>
 		</form>
