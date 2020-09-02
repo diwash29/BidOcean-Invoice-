@@ -193,22 +193,22 @@ tr:hover .cut { opacity: 1; }
 
 {% if invoices.paginator.num_pages > 1 %}
 
-  <nav aria-label="Page navigation example">
+  <nav aria-label="Page navigation example" style="margin-bottom: 30px;">
   <ul class="pagination justify-content-center">
     {% if invoices.has_previous %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.previous_page_number }}">Previous</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.previous_page_number }}">Previous</a></li>
     {% else %}
-      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
+      <li class="page-item disabled" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
     {% endif %}
     {% if invoices.number|add:'-4' > 1 %}
-      <li class="text-dark page-item"><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
       <li><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'-5' }}">&hellip;</a></li>
     {% endif %}
     
     {% for i in invoices.paginator.page_range %}
       {% if invoices.number == i %}
         <li class="page-item active">
-          <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
+          <a class="active" style="" href="?page={{ i }}">{{i}}</a>
         </li>
       {% elif i > invoices.number|add:'-5' and i < invoices.number|add:'5' %}
         <li class="page-item {% if i == invoices.number %} active {% endif %}">
@@ -234,5 +234,27 @@ tr:hover .cut { opacity: 1; }
   
   {% endif %}	
 
+
+<style type="text/css">
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color:#008080;}	
+			
+		  
+</style>
+		
 
 {% endblock content %}

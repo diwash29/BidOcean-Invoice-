@@ -271,7 +271,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
             from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
             invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
 
-        paginator        = Paginator(invoice,10)
+        paginator        = Paginator(invoice,5)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)	
         context = {
