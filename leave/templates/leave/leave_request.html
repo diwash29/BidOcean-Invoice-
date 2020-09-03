@@ -126,22 +126,23 @@ tr:hover .cut { opacity: 1; }
                 <div class="column" style="background-color:white;">
                     <div class="tasksInput">
                        
-                        <select class="custom-select custom-select-sm" style="font-weight: bold;margin-bottom: 20px;">
+                        <select class="custom-select custom-select-sm" id ="leave_type" style="font-weight: bold;margin-bottom: 20px;">
                             <option selected style="font-weight: bold;color: black;">Leave Type</option>
-                            <option value="1" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
-                            <option value="2" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
-                            <option value="3" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
+                            <option value="sl" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
+                            <option value="cl" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
+                            <option value="el" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
                           </select>
                          
                           <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" style="background-color: yellow;color: black;" name="from_date" ></p>
                           <p ><b style="color: teal;"> End Date :<br></b><input type="date" style="background-color: yellow;color: black; " name="to_date" ></p>
                           <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
-                          <input type="text" name="number"   class="form-control" maxlength="2">
+                          <input type="text" name="number" id="available_days"  class="form-control" maxlength="2">
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
                           <input type="text" name="number"   class="form-control"  maxlength="2">
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
                       
                           <textarea name="message"  class="form-control"></textarea>
+                          <input type="hidden" value="{{employee.id}}" id="hiddenemp">
                         </div>
                 </div>
                 <div class="column" style="background-color:#bbb;">
@@ -159,9 +160,7 @@ tr:hover .cut { opacity: 1; }
     </form>    
 
     <style>
-        form{position:relative;}
-.tasksInput{margin-right:150px;}
-.submit-and-options{position:absolute; right:0; top:0;}
+      
 
 
 
