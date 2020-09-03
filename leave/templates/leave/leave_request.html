@@ -117,54 +117,77 @@ tr:hover .cut { opacity: 1; }
 @page { margin: 0; }
 
     </style>
-
-    <div class='container'>	 
-		<table  width="100%">
-			<tr>
-				<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Leave Request </b></legend>
-				<td align="right"></td>
-			</tr>
-		</table>
-		<form>
-			<table>
-				<tr>
-
-					
-					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-				
-				   
-                    
-						
-
-					<!-- <td><input type="text" name="search" value="{{request.GET.search}}" placeholder="search"></td> -->
-				
-					<!-- <td><input type="submit" name="submitbtn" value="Search"></td> -->
-				</tr>
-			</table>
-		</form>
-		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
-            <select class="custom-select custom-select-sm" style="width: 250px;font-size: 15px;margin-bottom: 20px;height: 35px;font-weight: bold;color: green;background-color: yellow;margin-left: 40%;">
-                <option selected style="font-weight: bold;color: black;">Leave Type</option>
-                <option value="1" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
-                <option value="2" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
-                <option value="3" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
-              </select>
-
-              <p ><b style="color: teal;margin-left: 40%;"> Begin Date :</b> <input type="date" style="background-color: yellow;color: black;" name="from_date" ></p>
-              <p ><b style="color: teal;margin-left: 40%;"> End Date :</b><input type="date" style="background-color: yellow;color: black; margin-left: 16px;" name="to_date" ></p>
-              <label for="male" style="margin-left: 40%;color: teal;"><b> Availabe Days: </b></label>
-              <input type="text" name="number"   class="form-control" style="width :260px;color:green;background-color: yellow;margin-bottom: 20px;margin-left: 40%;" maxlength="2">
-              <label for="male" style="margin-left: 40%;color: teal;"><b> Requesting Days: </b></label>
-              <input type="text" name="number"   class="form-control" style="width :260px;color:green;background-color: yellow;margin-bottom: 20px;margin-left: 40%;" maxlength="2">
-              <label for="male" style="margin-left: 40%;color: teal;"><b> Reasons/Comments: </b></label>
-            
-              <textarea name="message"  class="form-control" style="width :260px;color:green;background-color: yellow;margin-bottom: 20px;margin-left: 40%;height: 100px;"></textarea>
-		</table>
-
-        </div>
+ <form>
      
-          <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"
+    <div class='container'>	
+        <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b>Employee list</b> </legend> 
+		<table  width="100%">
+            <div class="row" style="margin-bottom: 40px;">
+                <div class="column" style="background-color:white;">
+                    <div class="tasksInput">
+                       
+                        <select class="custom-select custom-select-sm" style="font-weight: bold;margin-bottom: 20px;">
+                            <option selected style="font-weight: bold;color: black;">Leave Type</option>
+                            <option value="1" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
+                            <option value="2" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
+                            <option value="3" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
+                          </select>
+                         
+                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" style="background-color: yellow;color: black;" name="from_date" ></p>
+                          <p ><b style="color: teal;"> End Date :<br></b><input type="date" style="background-color: yellow;color: black; " name="to_date" ></p>
+                          <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
+                          <input type="text" name="number"   class="form-control" maxlength="2">
+                          <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
+                          <input type="text" name="number"   class="form-control"  maxlength="2">
+                          <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
+                      
+                          <textarea name="message"  class="form-control"></textarea>
+                        </div>
+                </div>
+                <div class="column" style="background-color:#bbb;">
+                  <h2>Column 2</h2>
+                  <p>Some text..</p>
+                </div>
+              </div>
+		</table>
+          
+    </div>
+      
+        
+   
+      
+    </form>    
 
+    <style>
+        form{position:relative;}
+.tasksInput{margin-right:150px;}
+.submit-and-options{position:absolute; right:0; top:0;}
+
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 500px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+    </style>
 
 		
 
