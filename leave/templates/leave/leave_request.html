@@ -124,27 +124,30 @@ tr:hover .cut { opacity: 1; }
 		<table  width="100%">
             <div class="row" style="margin-bottom: 40px;">
                 <div class="column" style="background-color:white;">
+
                         <div class="tasksInput">
                                 <div class="pure-css-select-style theme-default-w-line" class="form-control">
                                     <select class="custom-select " style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;">
                                         <option selected style="font-weight: bold;color: black;">Leave Type</option>
-                                        <option value="1" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
-                                        <option value="2" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
-                                        <option value="3" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
+                                        <option value="sl" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
+                                        <option value="cl" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
+                                        <option value="el" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
                                     </select>
                                 </div>
                           
-                           
+
                          
                           <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" style="background-color: yellow;color: black;" name="from_date" ></p>
                           <p ><b style="color: teal;"> End Date :<br></b><input type="date" style="background-color: yellow;color: black; " name="to_date" ></p>
                           <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
-                          <input type="text" name="number"   class="form-control" maxlength="2">
+                          <input type="text" name="number" id="available_days"  class="form-control" maxlength="2">
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
                           <input type="text" name="number"   class="form-control"  maxlength="2">
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
                       
                           <textarea name="message" style="height: 125px;" class="form-control"></textarea>
+                          <input type="hidden" value="{{employee.id}}" id="hiddenemp">
+
                         </div>
                 </div>
                 <div class="column" style="background-color:rgb(236, 228, 228);">
@@ -193,8 +196,6 @@ tr:hover .cut { opacity: 1; }
     </form>    
 
     <style>
-
-
 
 
 * {
@@ -358,6 +359,31 @@ tr:hover .cut { opacity: 1; }
   }
     </style>
 
+<<<<<<< HEAD
 	
+=======
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$("#leave_type").change(function () {
+		var leave_type = $(this).val();
+		var emp        = $("#hiddenemp").val();
+		$.ajax({
+			url  : '{% url "leave_bal" %}',
+			data : {
+						leave_type  : leave_type,
+						emp         : emp,
+					},
+			type : 'GET',
+			dataType: 'json',
+			success: function (data) {
+			  $("#available_days").val(data.leave)
+			}
+		});
+
+    });
+</script>
+		
+>>>>>>> d1a0eace8abc2c8a0c8933c23d41e68a0849407d
 
 {% endblock content %}
+
