@@ -17,5 +17,6 @@ class LeaveRequest(models.Model):
 	leave_type = models.CharField(max_length=200)
 	reason     = models.TextField()
 	employee   = models.ForeignKey(Employee, on_delete=models.CASCADE)
-	monthyear  = models.DateField()	
+	from_date  = models.DateField()
+	to_date    = models.DateField()	
 	status     = models.SmallIntegerField(default=0)

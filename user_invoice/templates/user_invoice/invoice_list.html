@@ -196,35 +196,35 @@ tr:hover .cut { opacity: 1; }
   <nav aria-label="Page navigation example" style="margin-bottom: 30px;">
   <ul class="pagination justify-content-center">
     {% if invoices.has_previous %}
-      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.previous_page_number }}">Previous</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.previous_page_number }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">Previous</a></li>
     {% else %}
       <li class="page-item disabled" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
     {% endif %}
     {% if invoices.number|add:'-4' > 1 %}
-      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
-      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'-5' }}">&hellip;</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link font-weight-bolder" href="?page=1{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">1</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'-5' }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">&hellip;</a></li>
     {% endif %}
     
     {% for i in invoices.paginator.page_range %}
       {% if invoices.number == i %}
         <li class="page-item active">
-          <a class="active" style="" href="?page={{ i }}">{{i}}</a>
+          <a class="active" style="" href="?page={{ i }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{i}}</a>
         </li>
       {% elif i > invoices.number|add:'-5' and i < invoices.number|add:'5' %}
         <li class="page-item {% if i == invoices.number %} active {% endif %}">
-          <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
+          <a class="page-link font-weight-bolder" href="?page={{ i }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{i}}</a>
         </li>
       {% endif %}
     {% endfor %}
     
     {% if invoices.paginator.num_pages > invoices.number|add:'4' %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'5' }}">&hellip;</a></li>
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'5' }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">&hellip;</a></li>
       {% if book.number != invoices.paginator.num_pages %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.paginator.num_pages }}">{{ invoices.paginator.num_pages }}</a></li>
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.paginator.num_pages }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{ invoices.paginator.num_pages }}</a></li>
     {% endif %}
     {% endif %}
     {% if invoices.has_next %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.next_page_number }}">Next</a></li>
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.next_page_number }}{% if 'search' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">Next</a></li>
     {% else %}
       <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
     {% endif %}

@@ -144,16 +144,15 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
         try:
             role     = request.GET['role']
         except:
-            role     = None   
+            role     = None  
+        query_param = {}     
         if search is not None and search is not "":
             search = search.strip()
+            query_param['search'] = search
             employee_list = employee_list.filter(Q(name__icontains=search)|Q(address__icontains=search)|(Q(phone_no__icontains=search))|Q(emp_id__icontains=search)) 
         if role is not None and role is not "":
-
-
-        	employee_list = employee_list.filter(role__pk__exact=role)
-
-
+            query_param['role'] = role
+            employee_list = employee_list.filter(role__pk__exact=role)
         # print(employee_list.query)	
         		    
         
@@ -162,10 +161,11 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
         context = {
-            'employees' : paginatedcontent,
-            'title'     : 'Employee list',
-            'roles'     : roles,    
-            'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+            'query_param' : query_param, 
+            'employees'   : paginatedcontent,
+            'title'       : 'Employee list',
+            'roles'       : roles,    
+            'role'        : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
     	    
@@ -262,11 +262,15 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         search        = request.GET.get('search', None)
         from_date     = request.GET.get('from_date', None)
         to_date       = request.GET.get('to_date', None)
-          
+        
+        query_param = {}  
         if search is not None and search is not '':
             search = search.strip()
+            query_param['search'] = search 
             invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))|Q(emp_ownwer__emp_id__icontains=search)) 
-        if (from_date is not None or to_date is not None) and (from_date != "" or to_date != ""):
+        if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
+            query_param['from_date'] = from_date
+            query_param['to_date']   = to_date
             to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
             from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
             invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
@@ -275,9 +279,10 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)	
         context = {
-            'invoices' : paginatedcontent,
-            'title'    : 'Invoice list',
-            'role'     : rolename
+            'query_param' : query_param,
+            'invoices'    : paginatedcontent,
+            'title'       : 'Invoice list',
+            'role'        : rolename
         }
         return render(request, self.template_name, context)
 
