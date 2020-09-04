@@ -152,15 +152,16 @@ tr:hover .cut { opacity: 1; }
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
                           <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
+                          
                           <button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 100px;"><b>{{submit}}</b></button>
                       	</form>
                         </div>
                 </div>
                 <div class="column" style="background-color:rgb(236, 228, 228);">
                     
-                    <legend class="border-bottom mb-4" style="color:green;text-align: center;text-decoration: underline;"><b>Leave Balalnce</b> </legend> 
-                    <div class="table" id="results">
-                        <div class='theader'>
+                    <legend class="border-bottom mb-4" style="color:green;text-align: center;text-decoration: underline;font-size: 19px;"><b>Leave Balalnce</b> </legend> 
+                    <div class="table" id="results" style="padding-bottom: 0px;">
+                        <div class='theader' >
                           <div class='table_header'>Sick Leave</div>
                           <div class='table_header'>Causal Leave</div>
                           <div class='table_header'>Earned Leave</div>
@@ -182,8 +183,9 @@ tr:hover .cut { opacity: 1; }
                         </div>
                     </div>
                     {% if leave_requests %}
-                    <legend class="border-bottom mb-4" style="color:green;text-align: center;text-decoration: underline;"><b>Requested leaves for this month</b> </legend>
-                    <div class="table" id="results">
+                    <legend class="border-bottom mb-4" style="color:green;text-align: center;text-decoration: underline;margin-top: 20px;font-size: 19px;"><b style="text-align: center;">Requested leaves for current month</b> </legend>
+                    <div class="table" id="results" >
+                      
                         <div class='theader'>
                           <div class='table_header'>Leave Type</div>
                           <div class='table_header'>Available Days</div>
@@ -222,7 +224,7 @@ tr:hover .cut { opacity: 1; }
           
     </div>
       
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 
 
@@ -235,7 +237,7 @@ tr:hover .cut { opacity: 1; }
   float: left;
   width: 50%;
   padding: 10px;
-  height: 580px; /* Should be removed. Only for demonstration */
+  height: 800px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -249,7 +251,7 @@ tr:hover .cut { opacity: 1; }
     display: table;
     text-align: center;
     width: 100%;
-    margin: 10% auto 0;
+    margin: 0% auto 0;
     border-collapse: separate;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -292,8 +294,8 @@ tr:hover .cut { opacity: 1; }
     display: none;
     background: #f5f2f2;
     color: #131212;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
   
   .table_row > .table_small > .table_cell {
@@ -410,13 +412,13 @@ tr:hover .cut { opacity: 1; }
     });
 
     $("#requesting_days").click(function(){
-    	if($(this).val()==""){
+    
 	    	var begin_date = new Date($("#begin_date").val())
 	    	var end_date   = new Date($("#end_date").val())
 	    	var Difference_In_Time = end_date.getTime() - begin_date.getTime();
 	    	var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);  
 	    	$("#requesting_days").val(Difference_In_Days+1)
-	    }
+	   
     	//alert(Difference_In_Days+1)
     })
 </script>
