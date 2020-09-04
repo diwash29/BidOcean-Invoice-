@@ -42,11 +42,39 @@ class LeaveRequestDisplayView(AdminOrHRPanelMixin,TemplateView):
         employee       = Employee.objects.get(auth_tbl=user)
         rolename       = employee.role.name.lower()
         leave_requests = LeaveRequest.objects.all()
+
+
+        search        = request.GET.get('search', None)
+        leave_type    = request.GET.get('leave_type',None)
+        from_date     = request.GET.get('from_date', None)
+        to_date       = request.GET.get('to_date', None)
+        
+        query_param = {} 
+        if search is not None and search is not '':
+            search = search.strip()
+            query_param['search'] = search
+            leave_requests = leave_requests.filter(Q(employee__name__icontains=search)|Q(employee__address__icontains=search)|Q(employee__emp_id__icontains=search)|Q(reason_msg__icontains=search))
+        if leave_type is not None and leave_type is not '':
+            query_param['leave_type'] = leave_type
+            leave_requests = leave_requests.filter(Q(leave_type__iexact=leave_type))    
+        if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
+            query_param['from_date'] = from_date
+            query_param['to_date']   = to_date
+            to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+            from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
+            leave_requests = leave_requests.filter(Q(from_date__gte=from_date), Q(from_date__lte=to_date))	
+
+        paginator        = Paginator(leave_requests,5)
+        page             = request.GET.get('page')
+        paginatedcontent = paginator.get_page(page)    
+
+
         context = {
             'employee'       : employee,
             'role'           : rolename,
             'title'          : "approve request",
-            'leave_requests' : leave_requests
+            'leave_requests' : paginatedcontent,
+            'query_param'    : query_param
         }
         return render(request, self.template_name, context)
 
