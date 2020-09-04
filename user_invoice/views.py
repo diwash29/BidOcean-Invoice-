@@ -11,6 +11,7 @@ from .mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMi
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
+from leave.models import LeaveBalance
 # Create your views here.
 
 # 3650-8243-248
@@ -201,6 +202,8 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         leaves   = request.POST['leaves']
         auth_tbl = user
         employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, leaves=leaves, auth_tbl=auth_tbl)
+        leave_bal = LeaveBalance.objects.create(casual_leave=3, sick_leave=3, earned_leave=4, employee=employee)
+
         return HttpResponseRedirect('/')
 
 class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):

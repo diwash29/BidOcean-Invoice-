@@ -35,20 +35,18 @@ def leave_bal(request):
     data = {'leave' : leave_bal}
     return JsonResponse(data)	  
 
-class LeaveRequestDisplayView(AdminPanelMixin,TemplateView):
+class LeaveRequestDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = "leave/approve_leave.html"
     def get(self, request):
-        user          = self.request.user
-        employee      = Employee.objects.get(auth_tbl=user)
-        rolename      = employee.role.name.lower()
-        # if rolename == 'admin' or  rolename == 'hr':
-        #     request_list = LeaveRequest.objects.all()
-        # else:
-        #     request_list = LeaveRequest.objects.filter(employee=employee).all()
+        user           = self.request.user
+        employee       = Employee.objects.get(auth_tbl=user)
+        rolename       = employee.role.name.lower()
+        leave_requests = LeaveRequest.objects.all()
         context = {
-            'employee'     : employee,
-            'role'         : rolename,
-            'title'        : "leave request"
+            'employee'       : employee,
+            'role'           : rolename,
+            'title'          : "approve request",
+            'leave_requests' : leave_requests
         }
         return render(request, self.template_name, context)
 
