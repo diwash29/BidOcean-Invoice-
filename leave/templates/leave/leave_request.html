@@ -117,17 +117,22 @@ tr:hover .cut { opacity: 1; }
 @page { margin: 0; }
 
     </style>
- <form>
      
     <div class='container'>	
+
         <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;text-decoration: underline;"><b>Leave Request</b> </legend> 
+
+
 		<table  width="100%">
             <div class="row" style="margin-bottom: 40px;">
                 <div class="column" style="background-color:white;">
 
+
                         <div class="tasksInput">
+                        	<form method='post'>
+                      		 {% csrf_token %}
                                 <div class="pure-css-select-style theme-default-w-line" class="form-control">
-                                    <select class="custom-select " style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;">
+                                    <select class="custom-select" id ="leave_type" name="leave_type" style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;">
                                         <option selected style="font-weight: bold;color: black;">Leave Type</option>
                                         <option value="sl" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
                                         <option value="cl" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
@@ -137,17 +142,17 @@ tr:hover .cut { opacity: 1; }
                           
 
                          
-                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" style="background-color: yellow;color: black;" name="from_date" ></p>
+                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date"  style="background-color: yellow;color: black;" name="from_date" ></p>
                           <p ><b style="color: teal;"> End Date :<br></b><input type="date" style="background-color: yellow;color: black; " name="to_date" ></p>
                           <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
-                          <input type="text" name="number" id="available_days"  class="form-control" maxlength="2">
+                          <input type="text" name="available_days" id="available_days"  class="form-control" maxlength="2">
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
-                          <input type="text" name="number"   class="form-control"  maxlength="2">
+                          <input type="text" name="requesting_days"   class="form-control"  maxlength="2">
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
-                      
-                          <textarea name="message" style="height: 125px;" class="form-control"></textarea>
+                          <textarea name="reason_msg"  class="form-control"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
-
+                          <button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b>{{submit}}</b></button>
+                      	</form>
                         </div>
                 </div>
                 <div class="column" style="background-color:rgb(236, 228, 228);">
@@ -163,15 +168,15 @@ tr:hover .cut { opacity: 1; }
                         <div class='table_row'>
                           <div class='table_small'>
                             <div class='table_cell'>Sick Leave</div>
-                            <div class='table_cell'>0</div>
+                            <div class='table_cell'>{{rem_leaves.sick_leave}}</div>
                           </div>
                           <div class='table_small'>
                             <div class='table_cell'>Casual Leave</div>
-                            <div class='table_cell'>0</div>
+                            <div class='table_cell'>{{rem_leaves.casual_leave}}</div>
                           </div>
                           <div class='table_small'>
                             <div class='table_cell'>Earned Leave</div>
-                            <div class='table_cell'>-0</div>
+                            <div class='table_cell'>{{rem_leaves.earned_leave}}</div>
                           </div>
                          
                         </div>
@@ -190,10 +195,6 @@ tr:hover .cut { opacity: 1; }
           
     </div>
       
-        
-   
-      
-    </form>    
 
     <style>
 
@@ -358,7 +359,7 @@ tr:hover .cut { opacity: 1; }
     }
   }
     </style>
-    
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$("#leave_type").change(function () {
@@ -379,7 +380,5 @@ tr:hover .cut { opacity: 1; }
 
     });
 </script>
-
-
 {% endblock content %}
 
