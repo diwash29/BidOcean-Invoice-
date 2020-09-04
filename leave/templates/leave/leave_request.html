@@ -126,7 +126,8 @@ tr:hover .cut { opacity: 1; }
 		<table  width="100%">
             <div class="row" style="margin-bottom: 40px;">
                 <div class="column" style="background-color:white;">
-
+                  <label for="name" style="color: teal;"><b> Name: </b></label>
+                  <input type="text" id="fname" name="firstname" placeholder="Enter your name" class="form-control" style="margin-bottom: 20px;">
 
                         <div class="tasksInput">
                         	<form method='post'>
@@ -149,9 +150,9 @@ tr:hover .cut { opacity: 1; }
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
                           <input type="text" name="requesting_days"   class="form-control"  maxlength="2">
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
-                          <textarea name="reason_msg"  class="form-control"></textarea>
+                          <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
-                          <button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b>{{submit}}</b></button>
+                          <button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 100px;"><b>{{submit}}</b></button>
                       	</form>
                         </div>
                 </div>
@@ -208,7 +209,7 @@ tr:hover .cut { opacity: 1; }
   float: left;
   width: 50%;
   padding: 10px;
-  height: 500px; /* Should be removed. Only for demonstration */
+  height: 580px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -263,7 +264,7 @@ tr:hover .cut { opacity: 1; }
   
   .table_row > .table_small > .table_cell:nth-child(odd) {
     display: none;
-    background: #0f0f0f;
+    background: #f5f2f2;
     color: #131212;
     padding-top: 10px;
     padding-bottom: 10px;

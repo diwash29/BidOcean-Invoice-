@@ -58,7 +58,7 @@ class LeaveRequestAddView(AdminPanelMixin,TemplateView):
     def get(self, request):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
-        rem_leaves    = LeaveBalance.objects.get(employee=employee)
+        # rem_leaves    = LeaveBalance.objects.get(employee=employee)
 
         today         = datetime.today()
         month         = today.month 
@@ -75,7 +75,7 @@ class LeaveRequestAddView(AdminPanelMixin,TemplateView):
             'role'       : rolename,
             'title'      : 'request leave',
             'submit'     : 'Request leave',
-            'rem_leaves' : rem_leaves
+            # 'rem_leaves' : rem_leaves
         }
         return render(request, self.template_name, context)
 
