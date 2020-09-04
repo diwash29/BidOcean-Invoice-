@@ -119,7 +119,7 @@ tr:hover .cut { opacity: 1; }
     </style>
      
     <div class='container'>	
-        <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b>Employee list</b> </legend> 
+        <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b>Leave Request</b> </legend> 
 		<table  width="100%">
             <div class="row" style="margin-bottom: 40px;">
                 <div class="column" style="background-color:white;">
@@ -165,15 +165,15 @@ tr:hover .cut { opacity: 1; }
                         <div class='table_row'>
                           <div class='table_small'>
                             <div class='table_cell'>Sick Leave</div>
-                            <div class='table_cell'>0</div>
+                            <div class='table_cell'>{{rem_leaves.sick_leave}}</div>
                           </div>
                           <div class='table_small'>
                             <div class='table_cell'>Casual Leave</div>
-                            <div class='table_cell'>0</div>
+                            <div class='table_cell'>{{rem_leaves.casual_leave}}</div>
                           </div>
                           <div class='table_small'>
                             <div class='table_cell'>Earned Leave</div>
-                            <div class='table_cell'>-0</div>
+                            <div class='table_cell'>{{rem_leaves.earned_leave}}</div>
                           </div>
                          
                         </div>
