@@ -1,5 +1,6 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
+{% load user_invoice_extras %}
 {% block content %}
 	<style>
  *
@@ -142,19 +143,23 @@ tr:hover .cut { opacity: 1; }
 				<th style="color: teal;"><b> Requested Days</b></th>
 				<th style="color: teal;"><b> Reasons/Comments</b></th>
 				<th style="color: teal;"><b> Leaves Remaining</b></th>
-				<th style="color: teal;"><b> Approve</b></th>
-				<th style="color: teal;"><b> Decline</b></th>
+				<th style="color: teal;"><b> Action</b></th>
 				
 			</tr>
-			{% for employee in employees %}
+			{% for requests in leave_requests %}
 				<tr>
-					<td style="color: rgb(0, 0, 0);">{{employee.name}}</td>
-					<td style="color: rgb(0, 0, 0);">{{employee.emp_id}}</td>
-					<td style="color: rgb(0, 0, 0);">{{employee.role.name}}</td>
-					<td style="color: rgb(0, 0, 0);;">{{employee.address}}</td>
-					<td style="color: rgb(0, 0, 0);;">{{employee.phone_no}}</td>
-					<td style="color: rgb(0, 128, 6);">{{employee.leaves}}</td>
-					<td style="color: rgb(0, 0, 0);;"><a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a></td>
+					<td style="color: rgb(0, 0, 0);">{{requests.employee.name}}</td>
+					<td style="color: rgb(0, 0, 0);">{{requests.leave_type|upper}}</td>
+					<td style="color: rgb(0, 0, 0);">{{requests.from_date}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.to_date}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.available_days}}</td>
+					<td style="color: rgb(0, 128, 6);">{{requests.requesting_days}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.reason_msg}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.available_days|subtract:requests.requesting_days}}</td>
+
+					<td style="color: rgb(0, 0, 0);;"><!-- <a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a> -->
+						{% if requests.status == 0 %}<a href="#"><button  class="btn btn-success shadow-none"  >Approve</button></a><a href="#"><button  class="btn btn-danger shadow-none"  >Decline</button></a>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %}
+					</td>
 
 					<style>
 						.btn-primary:hover {
