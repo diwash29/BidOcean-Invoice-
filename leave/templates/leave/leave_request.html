@@ -158,68 +158,70 @@ tr:hover .cut { opacity: 1; }
                         </div>
                 </div>
                 <div class="column" style="background-color:rgb(236, 228, 228);">
-                    
-                    <legend class="border-bottom mb-4" style="color:green;text-align: center;text-decoration: underline;font-size: 19px;"><b>Leave Balalnce</b> </legend> 
-                    <div class="table" id="results" style="padding-bottom: 0px;">
-                        <div class='theader' >
-                          <div class='table_header'>Sick Leave</div>
-                          <div class='table_header'>Causal Leave</div>
-                          <div class='table_header'>Earned Leave</div>
-                          
-                        </div>
-                        <div class='table_row'>
-                          <div class='table_small'>
-                            <div class='table_cell'>Sick Leave</div>
-                            <div class='table_cell'>{{rem_leaves.sick_leave}}</div>
-                          </div>
-                          <div class='table_small'>
-                            <div class='table_cell'>Casual Leave</div>
-                            <div class='table_cell'>{{rem_leaves.casual_leave}}</div>
-                          </div>
-                          <div class='table_small'>
-                            <div class='table_cell'>Earned Leave</div>
-                            <div class='table_cell'>{{rem_leaves.earned_leave}}</div>
-                          </div>                         
-                        </div>
+                  <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;text-decoration: underline;font-size: 19px;"><b>Leave Balance</b> </legend>
+                  <div class="divTable" style="margin-bottom:20px">
+                    <div class="divTableBody">
+                    <div class="divTableRow">
+                    <div class="divTableCell">Sick Leave</div>
+                    <div class="divTableCell">Paid Leave</div>
+                    <div class="divTableCell">Casual Leave</div>
                     </div>
-                    {% if leave_requests %}
-                    <legend class="border-bottom mb-4" style="color:green;text-align: center;text-decoration: underline;margin-top: 20px;font-size: 19px;"><b style="text-align: center;">Requested leaves for current month</b> </legend>
-                    <div class="table" id="results" >
-                      
-                        <div class='theader'>
-                          <div class='table_header'>Leave Type</div>
-                          <div class='table_header'>Available Days</div>
-                          <div class='table_header'>Requesting Days</div>
-                          <div class='table_header'>Status</div>
-                          
-                        </div>
-                        {% for requests in leave_requests %}
-                        <div class='table_row'>
-                          <div class='table_small'>
-                            <div class='table_cell'>Leave Type</div>
-                            <div class='table_cell'>{{requests.leave_type|upper}}</div>
-                          </div>
-                          <div class='table_small'>
-                            <div class='table_cell'>Available Days</div>
-                            <div class='table_cell'>{{requests.available_days}}</div>
-                          </div>
-                          <div class='table_small'>
-                            <div class='table_cell'>Requesting Days</div>
-                            <div class='table_cell'>{{requests.requesting_days}}</div>
-                          </div>  
-                          <div class='table_small'>
-                            <div class='table_cell'>Status</div>
-                            <div class='table_cell'>{% if requests.status == 0 %}<span style='color:orange'>Pending</span>{% elif requests.status == 1 %}<span style='color:green'>Approved</span>{% else %}<span style='color:red'>Declined</span>{% endif %}</div>
-                          </div>                        
-                        </div>
-                        {% endfor %}
+                    <div class="divTableRow">
+                    <div class="divTableCell">&nbsp;</div>
+                    <div class="divTableCell">&nbsp;</div>
+                    <div class="divTableCell">&nbsp;</div>
                     </div>
-                    {% endif %}
-                </div>
-                  
-                </div>
+                    </div>
+                    </div>
+                    <!-- DivTable.com -->
+                    <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;text-decoration: underline;font-size: 19px;"><b>Leave request for current month</b> </legend>
+                    <div class="divTable">
+                    <div class="divTableBody">
+                    <div class="divTableRow">
+                    <div class="divTableCell">&nbsp;</div>
+                    <div class="divTableCell">&nbsp;</div>
+                    <div class="divTableCell">&nbsp;</div>
+                    </div>
+                    <div class="divTableRow">
+                    <div class="divTableCell">&nbsp;</div>
+                    <div class="divTableCell">&nbsp;</div>
+                    <div class="divTableCell">&nbsp;</div>
+                    </div>
+                    </div>
+                    </div>
             </div>  
-            
+            <style>
+              /* DivTable.com */
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	border: 1px solid #999999;
+	display: table-cell;
+	padding: 3px 10px;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+            </style>
 		</table>
           
     </div>
@@ -237,7 +239,7 @@ tr:hover .cut { opacity: 1; }
   float: left;
   width: 50%;
   padding: 10px;
-  height: 800px; /* Should be removed. Only for demonstration */
+  height: 5000px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -271,8 +273,8 @@ tr:hover .cut { opacity: 1; }
     border-top: rgb(17, 17, 17) 1px solid;
     background: #bdbdbd;
     color: #161515;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     font-weight: 700;
   }
   
@@ -299,8 +301,8 @@ tr:hover .cut { opacity: 1; }
   }
   
   .table_row > .table_small > .table_cell {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
     color: #0f0f0f;
     border-bottom: rgb(12, 12, 12) 1px solid;
   }
