@@ -17,13 +17,6 @@
   text-decoration: none;
   vertical-align: top;
 }
-*[contenteditable] { border-radius: 0.25em; min-width: 1em; outline: 0; }
-
-*[contenteditable] { cursor: pointer; }
-
-*[contenteditable]:hover, *[contenteditable]:focus, td:hover *[contenteditable], td:focus *[contenteditable], img.hover { background: #DEF; box-shadow: 0 0 1em 0.5em #DEF; }
-
-span[contenteditable] { display: inline-block; }
 
 /* heading */
 
@@ -34,12 +27,12 @@ th, td { border-width: 0px; padding: 0.5em; position: relative;  }
 th, td { border-radius: 0.25em; border-style: solid; }
 th { background: #EEE; border-color: #BBB; }
 td { border-color: #DDD; }
-
+/* 
 html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; padding: 0.5in; }
-html { background: #999; cursor: default; }
-
+html { background: #fff; cursor: default; } */
+/* 
 body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
-
+ */
 
 header { margin: 0 0 3em; }
 header:after { clear: both; content: ""; display: table; }
@@ -120,20 +113,20 @@ tr:hover .cut { opacity: 1; }
      
     <div class='container'> 
 
-        <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;text-decoration: underline;"><b>Leave Request</b> </legend> 
+        <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: left;text-decoration: underline;"><b>Leave Request</b> </legend> 
 
 
     <table  width="100%">
             <div class="row" style="margin-bottom: 40px;">
-                <div class="column" style="background-color:white;">
+                <div class="column" style="background-color:white;" id="wrapper_1">
                   <label for="name" style="color: teal;"><b> Name: </b></label>
-                  <input type="text" id="fname" name="firstname" placeholder="Enter your name" class="form-control" value="{{employee.name}}" style="margin-bottom: 20px;">
+                  <input type="text" id="fname" name="firstname" placeholder="Enter your name" class="form-control" value="{{employee.name}}" style="margin-bottom: 20px;background-color: rgb(230, 216, 216);">
 
                         <div class="tasksInput">
                           <form method='post'>
                            {% csrf_token %}
                                 <div class="pure-css-select-style theme-default-w-line" class="form-control">
-                                    <select class="custom-select" id ="leave_type" name="leave_type" style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;">
+                                    <select class="custom-select" id ="leave_type" name="leave_type" style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;background-color: rgb(230, 216, 216);">
                                         <option selected style="font-weight: bold;color: black;">Leave Type</option>
                                         <option value="sl" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
                                         <option value="cl" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
@@ -141,35 +134,47 @@ tr:hover .cut { opacity: 1; }
                                     </select>
                                 </div>
                           
-
+<style>
+  #wrapper_1:after {
+  content: "";
+  background-color: #000;
+  position: absolute;
+  width: 2px;
+  height: 1000000px;
+  top: 10px;
+  left: 50%;
+  display: block;
+}
+</style>
                          
-                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" id="begin_date"  style="background-color: yellow;color: black;" name="from_date" ></p>
-                          <p ><b style="color: teal;"> End Date :<br></b><input type="date" id="end_date" style="background-color: yellow;color: black; " name="to_date" ></p>
+                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" id="begin_date"   style="background-color: rgb(230, 216, 216);;color: black;" name="from_date" ></p>
+                          <p ><b style="color: teal;"> End Date :<br></b><input type="date" id="end_date" style="background-color: rgb(230, 216, 216);;color: black; " name="to_date" ></p>
                           <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
-                          <input type="text" name="available_days" id="available_days"  class="form-control" maxlength="2">
+                          <input type="text" name="available_days" style="background-color: rgb(230, 216, 216);" id="available_days"  class="form-control" maxlength="2">
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
-                          <input type="text" id="requesting_days" name="requesting_days"   class="form-control"  maxlength="2">
+                          <input type="text" id="requesting_days" name="requesting_days" style="background-color: rgb(230, 216, 216);"  class="form-control"  maxlength="2">
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
-                          <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;"></textarea>
+                          <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;background-color: rgb(230, 216, 216);"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
                           
                           <button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 100px;"><b>{{submit}}</b></button>
                         </form>
                         </div>
                 </div>
-                <div class="column" style="background-color:rgb(236, 228, 228);">
+                <div class="column" style="background-color:white;">
                   <legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;text-decoration: underline;font-size: 19px;"><b>Leave Balance</b> </legend>
                   <div class="divTable" style="margin-bottom:20px">
                     <div class="divTableBody">
                     <div class="divTableRow">
-                    <div class="divTableCell">Sick Leave</div>
-                    <div class="divTableCell">Casual Leave</div>
-                    <div class="divTableCell">Earned Leave</div>
+                    <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Sick Leave </b></div>
+
+                    <div class="divTableCell"style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Casual Leave</b></div>
+                    <div class="divTableCell"style="background-color:rgb(230, 216, 216);"><b style="color: teal;"> Earned Leave</b></div>
                     </div>
                     <div class="divTableRow">
-                    <div class="divTableCell">{{rem_leaves.sick_leave}}</div>
-                    <div class="divTableCell">{{rem_leaves.casual_leave}}</div>
-                    <div class="divTableCell">{{rem_leaves.earned_leave}}</div>
+                    <div class="divTableCell"><b>{{rem_leaves.sick_leave}}</b> </div>
+                    <div class="divTableCell"><b>{{rem_leaves.casual_leave}}</b></div>
+                    <div class="divTableCell"><b>{{rem_leaves.earned_leave}}</b> </div>
                     </div>
                     </div>
                     </div>
@@ -179,56 +184,59 @@ tr:hover .cut { opacity: 1; }
                     <div class="divTable">
                     <div class="divTableBody">
                       <div class="divTableRow">
-                        <div class="divTableCell">Leave Type</div>
-                        <div class="divTableCell">Available Days</div>
-                        <div class="divTableCell">Requesting Days</div>
-                        <div class="divTableCell">Status</div>
+                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Leave Type</b></div>
+                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Available Days</b></div>
+                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;">Requesting Days</b> </div>
+                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;">Status</b> </div>
                       </div>
                       {% for requests in leave_requests %}
                       <div class="divTableRow">
-                        <div class="divTableCell">{{requests.leave_type|upper}}</div>
-                        <div class="divTableCell">{{requests.available_days}}</div>
-                        <div class="divTableCell">{{requests.requesting_days}}</div>
-                        <div class="divTableCell">{% if requests.status == 0 %}<span style="color:orange">Pending</span>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %}</div>
+                        <div class="divTableCell"><b> {{requests.leave_type|upper}}</b></div>
+                        <div class="divTableCell"><b> {{requests.available_days}}</b></div>
+                        <div class="divTableCell"><b> {{requests.requesting_days}}</b></div>
+                        <div class="divTableCell"> {% if requests.status == 0 %}<span style="color:orange">Pending</span>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %}</div>
                       </div>
                       {% endfor %}
                       </div>
                     </div>
                     {% endif %}
+
             </div>  
             <style>
               /* DivTable.com */
 .divTable{
-  display: table;
-  width: 100%;
+
+	display: table;
+	width: 100%;
 }
 .divTableRow {
-  display: table-row;
+	display: table-row;
 }
 .divTableHeading {
-  background-color: #EEE;
-  display: table-header-group;
+	background-color: #EEE;
+	display: table-header-group;
 }
 .divTableCell, .divTableHead {
-  border: 1px solid #999999;
-  display: table-cell;
-  padding: 3px 10px;
+	border: 1px solid #999999;
+	display: table-cell;
+	padding: 0px 10px;
 }
 .divTableHeading {
-  background-color: #EEE;
-  display: table-header-group;
-  font-weight: bold;
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
 }
 .divTableFoot {
-  background-color: #EEE;
-  display: table-footer-group;
-  font-weight: bold;
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
 }
 .divTableBody {
-  display: table-row-group;
+	display: table-row-group;
 }
             </style>
-    </table>
+		</table>
+
           
     </div>
       
