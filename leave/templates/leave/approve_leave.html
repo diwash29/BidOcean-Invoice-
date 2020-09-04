@@ -197,8 +197,12 @@ tr:hover .cut { opacity: 1; }
 						<!-- {% if requests.status == 0 %}<a href="#"><button  class="btn btn-success shadow-none"  >Approve</button></a><a href="#"><button  class="btn btn-danger shadow-none"  >Decline</button></a>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %} -->
 						<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 						<div class="btn-group">
+							{% if requests.status == 0 %}
 							<button type="button" class="btn btn-primary">Approve</button>
 							<button type="button" class="btn btn-danger">Decline</button>
+							{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %}
+							<!-- <button type="button" class="btn btn-primary">Approve</button>
+							<button type="button" class="btn btn-danger">Decline</button> -->
 						
 						  </div>
 					</td>
