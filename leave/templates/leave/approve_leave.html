@@ -203,8 +203,8 @@ tr:hover .cut { opacity: 1; }
 						<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 						<div class="btn-group">
 							{% if requests.status == 0 %}
-							<button type="button" class="btn btn-primary">Approve</button>
-							<button type="button" class="btn btn-danger">Decline</button>
+							<a href="{% url 'to_approve' requests.pk %}"><button onclick="return confirm('Are you sure want to approve?')" type="button" class="btn btn-primary">Approve</button></a>
+							<a href="{% url 'to_pending' requests.pk %}"><button onclick="return confirm('Are you sure want to decline?')" type="button" class="btn btn-danger">Decline</button></a>
 							{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %}
 							<!-- <button type="button" class="btn btn-primary">Approve</button>
 							<button type="button" class="btn btn-danger">Decline</button> -->
