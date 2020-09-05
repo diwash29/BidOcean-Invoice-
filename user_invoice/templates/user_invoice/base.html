@@ -26,6 +26,7 @@
     {% endif %}
 </head>
 <body>
+  <div class="nav-button">
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <a class="navbar-brand mr-8" ><img src="{% static 'images/beez.png' %}"  class='d-inline-block' alt=""/>
@@ -68,9 +69,541 @@
         </div>
       </nav>
     </header>
+
+  </div>
+  <div class="hamburger">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <header class="px-2 py-3 py-lg-0 px-sm-0">
+    <div class="container">
+      <div class="row align-items-center justify-content-between">
+        <img src="{% static 'images/beez.png' %}"  title="Bid Ocean Invoice" class="header-logo d-block">
+          
+        <!-- </a> -->
+        <nav class="d-none d-lg-block">
+          <ul class="main-menu d-flex flex-column flex-lg-row align-items-lg-center list-unstyled p-0 m-0">
+            <li class="active">
+              <a href="javascript:void(0)" class="d-block" title="Home">
+                <span>HOME</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-block" title="Services">
+                <span>SERVICES</span>
+              </a>
+              <ul class="sub-menu list-unstyled p-0 m-0">
+                <li>
+                  <a href="#" class="d-block" title="SERVICE 1">
+                    <span>SERVICE 1</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="d-block" title="About">
+                <span>ABOUT</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-block" title="Blog">
+                <span>BLOG</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-block" title="Contact">
+                <span>CONTACT</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div id="call-action" class="d-none d-lg-flex align-items-center">
+          <a href="#" title="Call Now" class="d-none d-lg-inline-block call-action">Call Now</a>
+        </div>
+        <div
+          class="side-menu-close d-flex d-lg-none flex-wrap flex-column align-items-center justify-content-center ml-auto">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
+<!-- side menu start -->
+  <div class="side-menu-wrap">
+    <img src="{% static 'images/beez.png' %}"  title="Site Logo" class="side-menu-logo d-block py-3">
+   
+    
+    <nav class="side-menu-nav">
+      <!-- auto generated side menu from top header menu -->
+    </nav>
+    <div class="side-menu-close d-flex flex-wrap flex-column align-items-center justify-content-center">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <style>
+    a:hover {
+  text-decoration: none;
+}
+
+header .header-logo {
+  color: #001b4f;
+    font-weight: 700;
+    font-size: 23px;
+    transition: .4s;
+    -webkit-transition: .4s;
+    -moz-transition: .4s;
+    -ms-transition: .4s;
+    -o-transition: .4s;
+}
+
+header {
+  background: #fff;
+  -webkit-box-shadow: 0 1px 5px 0 rgba(83, 83, 83, 0.4);
+  box-shadow: 0 1px 5px 0 rgba(83, 83, 83, 0.4);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .main-menu>li {
+  position: relative;
+}
+
+header .main-menu>li>a {
+  color: #173966;
+  font-size: 15px;
+  padding: 25px 1.5vw;
+  font-weight: 700;
+  display: block;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+header .main-menu>li.active>a {
+  color: #10bd3b;
+}
+
+header .main-menu>li:hover>a {
+  color: #10bd3b;
+}
+
+header .main-menu>li>a>i {
+  color: #03328E;
+}
+
+header .main-menu>li>a:hover>i {
+  color: #fff;
+}
+
+header .main-menu>li:hover>a i {
+  color: #fff;
+}
+
+header .main-menu .sub-menu {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 180px;
+  overflow: hidden;
+  border-top: 2px solid #f49306;
+  background: #fff;
+  -webkit-box-shadow: 0 1px 5px 0 rgba(83, 83, 83, 0.2);
+  box-shadow: 0 1px 5px 0 rgba(83, 83, 83, 0.2);
+  z-index: 5;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+}
+
+header .main-menu .sub-menu a {
+  padding: 11px 10px;
+  display: block;
+  color: #173966;
+  font-weight: 600;
+  font-size: 15px;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+header .main-menu .sub-menu a i {
+  color: #03328E;
+}
+
+header .main-menu .sub-menu a:hover {
+  background: #10bd3b;
+  color: #fff;
+}
+
+header .main-menu>li:hover .sub-menu {
+  display: block;
+}
+
+header .header-logo figure img {
+  max-width: 200px;
+}
+
+header .demo-link {
+  margin-left: 1vw;
+}
+
+header .side-menu-close {
+  background: transparent;
+}
+
+header .side-menu-close span {
+  background: #21395F;
+  width: 28px;
+}
+
+#call-action .call-action {
+  color: #001b4f;
+  font-weight: 700;
+  font-size: 23px;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+#call-action .call-action:hover {
+  color: #10bd3b;
+}
+
+/* side menu */
+.side-menu-wrap {
+  width: 300px;
+  position: fixed;
+  left: -100%;
+  top: 0;
+  background: #fff;
+  height: 100%;
+  -webkit-box-shadow: 0 1px 5px 0 rgba(83, 83, 83, 0.2);
+  box-shadow: 0 1px 5px 0 rgba(83, 83, 83, 0.2);
+  overflow-y: auto;
+  z-index: 15000;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+.side-menu-wrap.opened {
+  left: 0;
+  transition: .8s;
+  -webkit-transition: .8s;
+  -moz-transition: .8s;
+  -ms-transition: .8s;
+  -o-transition: .8s;
+}
+
+.side-menu-logo {
+  border-bottom: 2px solid #FE8204;
+}
+
+.side-menu-nav .main-menu>li {
+  position: relative;
+  border-bottom: 1px solid #ccc;
+}
+
+.side-menu-nav .main-menu>li>a>i {
+  color: #03328E;
+}
+
+.side-menu-nav .main-menu .sub-menu {
+  border-top: 1px solid #FE8204;
+  background: #fff;
+  display: none;
+}
+
+.side-menu-nav .main-menu .sub-menu li {
+  border-bottom: 1px solid #eee;
+}
+
+.side-menu-nav .main-menu .sub-menu a {
+  padding: 10px 22px;
+  display: block;
+  color: #212529;
+  font-weight: 600;
+  font-size: .9em;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+.side-menu-nav .main-menu .sub-menu a i {
+  color: #03328E;
+}
+
+.side-menu-nav .main-menu .sub-menu~i {
+  font-size: .8em;
+  position: absolute;
+  padding: 21px 11px;
+  right: 0;
+  top: 0;
+  border-left: 1px solid #ccc;
+}
+
+.side-menu-nav .main-menu .sub-menu a:hover {
+  background: #F5F5F5;
+}
+
+.side-menu-nav .main-menu>li>a {
+  color: #212529;
+  padding: 15px 30px 15px 10px;
+  font-weight: 600;
+  display: block;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+.side-menu-wrap .side-menu-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 30px;
+  width: 30px;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+}
+
+.side-menu-close {
+  height: 40px;
+  width: 40px;
+  background: #21395F;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.side-menu-close span {
+  height: 2px;
+  width: 20px;
+  background: #fff;
+  position: relative;
+  opacity: 1;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+.side-menu-close span:nth-child(1) {
+  top: -5px;
+}
+
+.side-menu-close span:nth-child(3) {
+  bottom: -5px;
+}
+
+.side-menu-close.closed span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  -webkit-transform: translateY(7px) rotate(45deg);
+  -moz-transform: translateY(7px) rotate(45deg);
+  -ms-transform: translateY(7px) rotate(45deg);
+  -o-transform: translateY(7px) rotate(45deg);
+}
+
+.side-menu-close.closed span:nth-child(2) {
+  opacity: 0;
+}
+
+.side-menu-close.closed span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  -webkit-transform: translateY(-7px) rotate(-45deg);
+  -moz-transform: translateY(-7px) rotate(-45deg);
+  -ms-transform: translateY(-7px) rotate(-45deg);
+  -o-transform: translateY(-7px) rotate(-45deg);
+}
+
+/*  custom overlay */
+.custom-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, .4);
+  z-index: 12500;
+  visibility: hidden;
+  opacity: 0;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+
+.custom-overlay.show {
+  visibility: visible;
+  opacity: 1;
+  transition: .4s;
+  -webkit-transition: .4s;
+  -moz-transition: .4s;
+  -ms-transition: .4s;
+  -o-transition: .4s;
+}
+  </style>
+  <script>
+    // auto generated side menu from top header menu start
+  var topHeaderMenu = $('header nav > ul').clone();
+  var sideMenu = $('.side-menu-wrap nav');
+  sideMenu.append(topHeaderMenu);
+  if ($(sideMenu).find('.sub-menu').length != 0) {
+    $(sideMenu).find('.sub-menu').parent().append('<i class="fas fa-chevron-right d-flex align-items-center"></i>');
+  }
+  // auto generated side menu from top header menu end
+
+  // close menu when clicked on menu link start
+  // $('.side-menu-wrap nav > ul > li > a').on('click', function () {
+  //   sideMenuCloseAction();
+  // });
+  // close menu when clicked on menu link end
+
+  // open close sub menu of side menu start
+  var sideMenuList = $('.side-menu-wrap nav > ul > li > i');
+  $(sideMenuList).on('click', function () {
+    if (!($(this).siblings('.sub-menu').hasClass('d-block'))) {
+      $(this).siblings('.sub-menu').addClass('d-block');
+    } else {
+      $(this).siblings('.sub-menu').removeClass('d-block');
+    }
+  });
+  // open close sub menu of side menu end
+
+  // side menu close start
+  $('.side-menu-close').on('click', function () {
+    if (!($('.side-menu-close').hasClass('closed'))) {
+      $('.side-menu-close').addClass('closed');
+    } else {
+      $('.side-menu-close').removeClass('closed');
+    }
+  });
+  // side menu close end
+
+  // auto append overlay to body start
+  $('.wrapper').append('<div class="custom-overlay h-100 w-100"></div>');
+  // auto append overlay to body end
+
+  // open side menu when clicked on menu button start
+  $('.side-menu-close').on('click', function () {
+    if (!($('.side-menu-wrap').hasClass('opened')) && !($('.custom-overlay').hasClass('show'))) {
+      $('.side-menu-wrap').addClass('opened');
+      $('.custom-overlay').addClass('show');
+    } else {
+      $('.side-menu-wrap').removeClass('opened');
+      $('.custom-overlay').removeClass('show');
+    }
+  })
+  // open side menu when clicked on menu button end
+
+  // close side menu when clicked on overlay start
+  $('.custom-overlay').on('click', function () {
+    sideMenuCloseAction();
+  });
+// close side menu when clicked on overlay end
+
+// close side menu when swiped start
+var isDragging = false, initialOffset = 0, finalOffset = 0;
+$(".side-menu-wrap")
+.mousedown(function(e) {
+    isDragging = false;
+  initialOffset = e.offsetX;
+})
+.mousemove(function() {
+    isDragging = true;
+ })
+.mouseup(function(e) {
+    var wasDragging = isDragging;
+    isDragging = false;
+  finalOffset = e.offsetX;
+    if (wasDragging) {
+        if(initialOffset>finalOffset) {
+           sideMenuCloseAction();
+           }
+    }
+});
+// close side menu when swiped end
+
+
+  function sideMenuCloseAction() {
+    $('.side-menu-wrap').addClass('open');
+    $('.wrapper').addClass('freeze');
+    $('.custom-overlay').removeClass('show');
+    $('.side-menu-wrap').removeClass('opened');
+    $('.side-menu-close').removeClass('closed');
+    $(sideMenuList).siblings('.sub-menu').removeClass('d-block');
+  }
+  // close side menu when clicked on overlay end
+
+  // close side menu over 992px start
+    $(window).on('resize', function() {
+        if($(window).width() >= 992) {
+            sideMenuCloseAction();
+        }
+    })
+    // close side menu over 992px end
+  </script>
+
+  </div>
+
+
+  
+
+  <style>
+     @media only screen and (min-width: 701px) {
+      /* hide the hamburger */
+      .hamburger {
+        display: none;
+      }
+      /* show all the nav-buttons */
+      .nav-button {
+        display: block;
+      }
+    }
+    /* if browser window is small (max-width) */
+    
+    @media only screen and (max-width: 700px) {
+      /* show everything with the hamburger class */
+      .hamburger {
+        display: block;
+      }
+      /* hide all the nav-buttons */
+      .nav-button {
+        display: none;
+      }
+    }
+  </style>
+
+    
     <main role="main" class="container">
       
-        <div class="col-md-8">
+        <div class="col-md-6">
           {% if messages %}
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }}">
