@@ -117,6 +117,10 @@ tr:hover .cut { opacity: 1; }
 
 @page { margin: 0; }
 
+.nav-link {
+   
+    color: white;
+}
     </style>
 	<!-- <article>
 		<legend class="border-bottom mb-4">Role List</legend>
@@ -150,8 +154,8 @@ tr:hover .cut { opacity: 1; }
 							 <button class="input-group-text" style="height: 30px;" type="submit" name="submitbtn" value="Search"><i class="fa fa-search"></i>
 								
 							</div>
-							<select class="form-control"style=" height:30px;color:white;background-color:teal;margin-left:20px"  onchange="this.form.submit()" name="leave_type">
-								<option value="">Select leave type</option>
+							<select class="form-control"style=" height:32px;color:white;background-color:teal;margin-left:20px;"  onchange="this.form.submit()" name="leave_type">
+								<option value=""><b> Select leave type</b></option>
 								<option {% if request.GET.leave_type == 'sl' %}selected{% endif %} value="sl">Sick Leave</option>
 								<option {% if request.GET.leave_type == 'cl' %}selected{% endif %} value="cl">Casual Leave</option>
 								<option {% if request.GET.leave_type == 'el' %}selected{% endif %} value="el">Earned Leave</option>
