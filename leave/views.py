@@ -119,6 +119,43 @@ class LeaveRequestAddView(AdminPanelMixin,TemplateView):
             messages.error(request, "There was a problem adding leave request")
             return HttpResponseRedirect('/leave') 
 
+class ToApprove(AdminPanelMixin,TemplateView):
+    def get(self, request, pk):
+        leave_request = LeaveRequest.objects.get(pk=pk)
+        leave_type    = leave_request.leave_type
+        rem_leaves    = int(leave_request.available_days) - int(leave_request.requesting_days)
+        leave_request.status = 1
+        leave_request.save()
+
+        leave_balance = LeaveBalance.objects.get(employee=leave_request.employee)
+        if leave_type == "sl":
+        	leave_balance.sick_leave = rem_leaves
+        elif leave_type == "cl":
+        	leave_balance.casual_leave = rem_leaves
+        else:
+        	leave_balance.earned_leave = rem_leaves
+        leave_balance.save()
+        return HttpResponseRedirect('/leave/approve-leave/')	
+
+class ToPending(AdminPanelMixin,TemplateView):
+    def get(self, request, pk):
+        leave_request = LeaveRequest.objects.get(pk=pk)
+        leave_type    = leave_request.leave_type
+        rem_leaves    = int(leave_request.available_days) - int(leave_request.requesting_days)
+        leave_request.status = 2
+        leave_request.save()
+
+        # leave_balance = LeaveBalance.objects.get(employee=leave_request.employee)
+        # if leave_type == "sl":
+        # 	leave_balance.sick_leave = rem_leaves
+        # elif leave_type == "cl":
+        # 	leave_balance.casual_leave = rem_leaves
+        # else:
+        # 	leave_balance.earned_leave = rem_leaves
+        # leave_balance.save()
+        return HttpResponseRedirect('/leave/approve-leave/')	
+
+
 
     # def post(self, request, user_id):
     #     user     = User.objects.get(pk=user_id)
