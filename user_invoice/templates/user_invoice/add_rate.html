@@ -2,5 +2,209 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<h1>Add rate</h1>
+<p class='heading' style="color: teal;text-decoration: underline;"> Rates</p>
+<div class='container'>
+  <div class='table'>
+    <div class='fix-div'>
+      <div>Description</div>
+      <div style="margin-left: 100px;">Rate</div>
+   
+    </div>
+    <div class='tbody'>
+      <div class='first'>
+        <div>Base ir</div>
+        <div>Base br</div>
+        <div>Total pay</div> 
+        <div>Difficultnp</div>  
+        <div>Extra hours</div>
+        <div>File attach</div>
+        <div>Add auth days</div>
+        <div>New entities added</div>
+        <div>Extra days</div>
+        <div>Duplicate entities</div>
+        <div>Errors</div>
+        <div>Fines</div>
+        <div>Duplicate solic</div>
+
+        <div>Entity cont wrong</div>
+        <div>False referal</div>
+        <div>Fraudsolic update</div> 
+        <div>Source ret wo res</div>  
+        <div>Missed bond</div>
+        <div>Missed categories</div>
+        <div>Missed solic src</div>
+        <div>Missed file</div>
+        <div>Missed link</div>
+        <div>Missed term</div>
+        <div>Not posted lead</div>
+        <div>Other error</div>
+        <div>Other serious err</div>
+
+        <div>Refreshing wds</div>
+        <div>Wage not selected</div>
+        <div>Skipped solic</div> 
+        <div>Source ret wo note</div>  
+        <div>Unjustified absence</div>
+        <div>Wrong pre bid</div>
+        <div>Wrong categories</div>
+        <div>Wrong geo location</div>
+        <div>Incorrect scope</div>
+        <div>Wrong text format</div>
+        <div>Auth day off</div>
+        <div>Unauth day off</div>
+       
+      </div>
+    <div class='second' style="margin-left: 100px;">
+      <input name="Base ir" style="margin-bottom: 15px;margin-top: 10px;" required>
+      <input name="Base br" style="margin-bottom: 15px;" required>
+      <input name="Total pay" style="margin-bottom: 15px;" required> 
+      <input name="Difficultnp" style="margin-bottom: 15px;" required>    
+      <input name="Extra hours" style="margin-bottom: 15px;"required> 
+      <input name="File attach" style="margin-bottom: 15px;"required> 
+      <input name="Add auth days" style="margin-bottom: 15px;"required> 
+      <input name="New entities added" style="margin-bottom: 15px;"required> 
+      <input name="Extra days" style="margin-bottom: 15px;"required> 
+      <input name="Duplicate entities" style="margin-bottom: 15px;"required> 
+      <input name="Errors" style="margin-bottom: 15px;"required> 
+      <input name="Fines" style="margin-bottom: 15px;"required> 
+      <input name="Duplicate solic" style="margin-bottom: 15px;"required> 
+      <input name="Entity cont wrong" style="margin-bottom: 15px;"required> 
+      <input name="False referal" style="margin-bottom: 15px;"required> 
+      <input name="Fraudsolic update" style="margin-bottom: 15px;"required> 
+      <input name="Source ret wo res" style="margin-bottom: 15px;"required> 
+      <input name="Missed bond" style="margin-bottom: 15px;"required> 
+      <input name="Missed categories" style="margin-bottom: 15px;"required> 
+      <input name="Missed solic src" style="margin-bottom: 15px;"required> 
+      <input name="Missed file" style="margin-bottom: 15px;"required> 
+      <input name="Missed link" style="margin-bottom: 15px;"required> 
+      <input name="Missed term" style="margin-bottom: 15px;"required> 
+      <input name="Not posted lead" style="margin-bottom: 15px;"required> 
+      <input name="Other error" style="margin-bottom: 15px;"required> 
+      <input name="Other serious err" style="margin-bottom: 15px;"required> 
+      <input name="Refreshing wds" style="margin-bottom: 15px;"required> 
+      <input name="Wage not selected" style="margin-bottom: 15px;"required> 
+      <input name="Skipped solic" style="margin-bottom: 15px;"required> 
+      <input name="Source ret wo note" style="margin-bottom: 15px;"required> 
+      <input name="Unjustified absence" style="margin-bottom: 15px;"required> 
+      <input name="Wrong pre bid" style="margin-bottom: 15px;"required> 
+      <input name="Wrong categories" style="margin-bottom: 15px;"required> 
+      <input name="Wrong geo location" style="margin-bottom: 15px;"required> 
+      <input name="Incorrect scope" style="margin-bottom: 15px;"required> 
+      <input name="Wrong text format" style="margin-bottom: 15px;"required> 
+      <input name="Auth day off" style="margin-bottom: 15px;"required> 
+      <input name="Unauth day off" style="margin-bottom: 15px;"required> 
+    </div>
+    <!-- <div class='third'>
+      <div>117.5697</div> 
+      <div>72.1242</div> 
+      <div>75.5735</div> 
+      <div>14.4992</div> 
+      <div>1.3147</div> 
+      <div>11.3659</div> 
+      <div>32.7273</div> 
+      <div>131.7308</div>
+      <div>60.1124</div>
+      <div>24.2262</div>
+      <div>26.4826</div>
+      <div>34.5032</div>
+      <div>17.9234</div>
+    </div>  -->
+  </div>
+  </div>
+  </div>
+</div>
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+
+html{
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', 'sans-serif';
+  height: 100%;
+  width: 100%;
+  background: linear-gradient( to right, #eff0f1, #f4f3f5);
+  color: #fff;
+}
+
+.heading{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.table{
+ margin-left: 35px;
+ margin-right: 35px;
+ border: 2px solid #72ddf7;
+ font-size: 1rem;
+ text-align: left;
+}
+
+.fix-div{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: linear-gradient(to right, #72ddf7, #a8dadc);
+}
+.tbody{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height:450px;
+  overflow-y: scroll;
+  grid-gap: 0px;
+   
+}
+
+::-webkit-scrollbar{
+  width: 6px;
+}
+::-webkit-scrollbar-track{
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+
+.fix-div > div {
+    padding: 15px;
+  
+}
+.first > div{
+    padding: 10px;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+.second > div{
+    padding: 10px;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+.third > div{
+  padding: 10px;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+@media screen and (max-width: 700px){
+  .fix-div{
+    font-size: 14px;
+  }
+  .tbody{
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .fix-div{
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 400px){
+  .fix-div{
+    font-size: 10px;
+  }
+}
+</style>
 {% endblock content %}
