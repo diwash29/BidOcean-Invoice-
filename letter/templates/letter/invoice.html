@@ -1,0 +1,360 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>	
+<title>{{ name }}'s Invoice</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/letter.css' %}">
+</head>
+<body >
+	<div class="container">
+			
+		<div style="margin-left:100px;">
+			
+			<div class="address">
+				<p class="text-right">1st & 2nd Floor,Hotel Sonamla Retreat,</p>
+				<p class="text-right">NH-10 Amdo Golai,</p>
+				<p class="text-right">Gangtok- Sikkim.</p>
+				<hr>
+				<h6 class="text-right" style="color:rgb(71, 48, 80);">Date:<strong>{{ date }}</strong></h6>
+			</div>
+		<h3 class="text-center heading mb-5"><u>Letter Of Appointment</u></h3>
+		<p>Dear <strong>{{ name }}</strong>,</p> <!-- Name-->
+		<br>
+		<div class="para">
+			<p>We are pleased to offer you,the position of <strong>{{ designation }}</strong> with Bid Ocean Consultancy.</p><!-- Designation-->
+			<p>The initial six(6) months of your employment with the company shall be treated as probation period</p><!-- Number in months-->
+			<p>where your performance, interest, regularity, punctuality, responsibility and conduct shall be</p>
+			<p>observed.</p>
+		</div>
+		<br>
+		<br>
+		
+		<h6>1. Commencement of Employment</h6><br>
+		<div class="para">
+			<p>Your employment will be effective,as of <strong>{{ joining_date  }}</strong>.</p><!-- Date-->
+		</div>
+		<br>
+		
+		<h6>2. Job Title</h6><br>
+		<div class="para">
+			<p>Your job title will be <strong>{{ designation }}</strong></p><!-- Designation-->
+		</div>
+		<br>
+
+		<h6>3. Salary</h6><br>
+		<div class="para">
+			<p>Your annual CTC to the company would be INR <strong>{{ ctc }}</strong>. Please refer to the </p><!-- CTC-->
+			<p>spreadsheet for detailed breakup of your CTC.</p>
+		</div>
+		<br>
+
+		<h6>4. Place of posting</h6><br>
+		<div class="para">
+			<p>You will be posted at Gangtok, Sikkim in India. You may however be required to work at</p>
+			<p>any place of business which the Company has, or may later acquire.</p>
+		</div>
+		<br>
+
+		<h6>5. Hours of Work</h6><br>
+		<div class="para">
+			<p>The normal working days are Monday thorugh Saturday. You will be required to work </p>
+			<p>for those days as necessary for the proper discharge of your duties to the company.</p>
+			<p>You are expected to work not less than 8 hours a day, and only if necessary for</p>
+			<p>additional hours depending on your responsibilities.</p>
+		</div>	
+		<br>
+
+		<h6>6. Leave/Holidays</h6><br>
+		<div class="para">
+			<p>6.1 You are entitled to Casual leave of 10 days in one year. Emergency leaves should</p>
+			<p>be applied and pre-approved by your Line Manager</p>
+		</div>
+		<br>
+
+		<h6>7. Accomodation and Fooding</h6><br>
+		<div class="para">
+			<p>The company will provide the accomodation and food.</p>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		
+		<h6>8. Nature of Duties:</h6><br>
+		<div class="para">
+			<p>You will perform to the best of your ability all the duties as are inherent in your post </p>
+			<p>and such additional duties as the company may call upon you to perform, from time to </p>
+			<p>time. Your Specific duties will be given to you through your bedrock account (A</p>
+			<p> company's working system).</p>
+		</div><br>
+
+		
+		<h6>9. Company Property</h6><br>
+		<div class="para">
+			<p>You will always maintain in good condition Company property, which maybe entrusted </p>
+			<p>to you for official use during the course of your employment and shall return all such</p>
+			<p>property to the Company prior to relinquishment of your charge, failing which the cost </p>
+			<p>of the same will be recovered from you by the Company.</p>
+		</div>
+		<br>
+		
+		<h6>10. Borrowing/accepting gifts</h6><br>
+		<div class="para">
+			<p>You will not borrow or accept any money, gifts, reward or compensation for your</p>
+			<p>personal gains from or otherwise place yourself under financial obligation to any</p>
+			<p>person/client with whom you may be having official dealings.</p>
+		</div>
+		<br>
+
+		<h6>11. Termination</h6><br>
+		<div class="para">
+			<p>11.1 Your appointment can be terminated by the Company, without any reason, by</p>
+			<p>giving you not less than one(1) months' prior notice in writing or salary in lieu thereof.</p>
+			<p>For the purpose of this clause, salary shall mean basic salary.</p><br>
+			<p>11.2 You may terminate your employment by the Company, without any cuase, by</p>
+			<p>giving no less than one(1) months' prior notice or salary for unsaved period, left after</p>
+			<p>adjustment of pending leaves,as on date.</p><br>
+			<p>11.3 The Company reserves the right to terminate your employment summarily</p>
+			<p>without any notice period or termination payment,if it has reasonable ground to</p>
+			<p>believe you are guilty of misconduct or negligence, or have commited any</p>
+			<p>fundamental breach of contract or caused any loss to the Company.</p><br>
+			<p>11.4 On the termination of your employment for whatever reason, you will return to</p>
+			<p>the Company all property; documents and paper, both original and copies thereof,</p>
+			<p>including any samples, literature, contracts, records, lists, drawings, blueprints, letters,</p>
+			<p>notes, data and the like; and Confidential information, in your possession or under</p>
+			<p>your control relating to your employment or to clients' business affairs.</p>
+		</div>
+		<br>
+
+		<h6>12. Confidential Information</h6><br>
+		<div class="para">
+			<p>12.1 During your employment with the Company you will devote your whole time,</p>
+			<p>attention and skill to the best of your abilityfor its business.You shall not, directly or</p>
+			<p>indirectly, engage or associate yourself with, be connected with, concerned, employed</p>
+			<p>or engaged in any other business or activites or any other post or work part time or</p>
+			<p>pursue any course of study whatsoever, without the prior permission of the Company.</p><br>
+			<p>12.2 You must always maintain the highest level of confidentiality and keep as</p>
+			<p>confidential the records, documents and other Confidential Information relating to the</p>
+			<p>business of the Company which may be known to you or confided in you by any means</p>
+			<p>and you will use such records, documents and information only in a duly authorized</p>
+			<p>manner in the interest of the Company.For hte purposes of this clause 'Confidential</p>
+			<p>Information' means information about the Company's business and that of its</p>
+			<p>customers which is not available to the general public and which may be learnt by you</p>
+			<p>in the course of your employment. This includes, but is not limited to, information</p>
+			<p>relating to the organization, its customer lists,employment policies, personnel, and</p>
+			<p>information about the Company's products, processes including ideas, concepts,</p>
+			<p>projections, technology, manuals, drawing, designs, specification, and all papers,</p>
+			<p>resumes, records and other documents containing such Confidential Information.</p><br>
+			<br><br><br><br><br><br><br><br><br>
+			<p>12.3 At no time, will you remove any Confidential Information from the office without</p>
+			<p>permission.</p><br>
+			<p>12.4 Your duty to safeguard and not disclose Confidential Information will survive the</p>
+			<p>expiration or termination of this Agreement and/or your employment with the Company.</p>
+			
+			<p>12.5 Breach of the conditions of this clause will render you liable to summary dismissal</p>
+			<p>under clause above in addition to any other remedy the Company may have against</p>
+			<p>you in law.</p><br>
+		</div>
+		<br>
+
+		<h6>13. Notices</h6><br>
+		<div class="para">
+			<p>Notices may be given by you to the Company at its registered office address. Notices</p>
+			<p>may be given by the Company to you at the address intimated by you in the official</p>
+			<p>records.</p>
+		</div>
+		<br>
+
+		<h6>14. Applicability of Company Policy</h6><br>
+		<div class="para">
+			<p>The Company shall be entitled to make policy declarations from time to time</p>
+			<p>pertaining to matters like leave entitlement, maternity leave, employees' benefits,</p>
+			<p>working hours, transfer policies, etc., and may alter the same from time to time at its</p>
+			<p>sole discretion. All such policy decisions of the company shall be binding on you and</p>
+			<p>shall override this Agreement to that extent.</p>
+		</div>
+		<br>
+
+		<h6>15. Governing Law/Jurisdiction</h6><br>
+		<div class="para">
+			<p>Your employment with the Company is subject to Indian laws. All disputes shall be</p>
+			<p>subject to the jurisdiction of Sikkim High Court only.</p>
+		</div>
+		<br>
+
+		<h6>16. Acceptance of our offer</h6><br>
+		<div class="para">
+			<p>Please confirm your acceptance of this Contract of Employment by signing and</p>
+			<p>returning the duplicate copy within 2 working days. We welcome you, and look forward</p>
+			<p>to receiving your acceptance and to working with you.</p>
+		</div>
+		<br>
+
+		<p style="margin-top: 14rem;">Yours Sincerely</p>
+		<p style="margin-top: 3rem;">Barnabas Sherpa</p>
+		<p>Proprietor.</p>
+
+		</div>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<div style="margin-left:6rem;max-width: 46rem;">
+			<h6 class="text-center">Table 'A'</h6>
+			<hr>
+			<h6 class="text-center">SALARY COMPONENTS</h6>
+
+		<table class="table table-bordered">
+			<thead>
+			  <tr>
+				<th>Components</th>
+				<th>Monthly INR</th>
+				<th>Annual INR</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  	<tr>
+					<td class="text-left">Basic</td>
+					<td>&#8377; {{ basic_monthly }}</td>
+					<td>&#8377; {{ basic_annual }}</td>
+			  	</tr>
+				<tr>
+					<td class="text-left">House Rent Allowances</td>
+					<td>&#8377; {{ house_rent_allowance_monthly }}</td>
+					<td>&#8377; {{ house_rent_allowance_annual }}</td>
+				</tr>
+				<tr>
+					<td class="text-left">City Allowance</td>
+					<td>&#8377; {{ city_allowance_monthly }}</td>
+					<td>&#8377; {{ city_allowance_annual }}</td>
+				</tr>
+				<tr>
+					<td class="text-left">Conveyance Allowance</td>
+					<td>&#8377; {{ conveyance_allowance_monthly }}</td>
+					<td>&#8377; {{ conveyance_allowance_annual }}</td>
+				</tr>
+				<tr>
+					<td class="text-left">Children Education Allowance</td>
+					<td>&#8377; {{ children_education_allowance_monthly }}</td>
+					<td>&#8377; {{ children_education_allowance_annual }}</td>
+				</tr>
+				<tr>
+					<td class="text-left">Medical Allowance</td>
+					<td>&#8377; {{ medical_allowance_monthly }}</td>
+					<td>&#8377; {{ medical_allowance_annual }}</td>
+				</tr>
+				<tr>
+					<td class="text-left">Special Allowance</td>
+					<td>&#8377; {{ special_allowance_monthly }}</td>
+					<td>&#8377; {{ special_allowance_annual }}</td>
+				</tr>
+				<tr>
+					<th>Gross Salary</th>
+					<td style="font-weight:bold;">&#8377; {{ gross_salary_monthly }}/-</td>
+					<td style="font-weight:bold;">&#8377; {{ gross_salary_annually }}/-</td>
+				</tr>
+			</tbody>
+		</table>
+		<p class="text-danger">* Your Total Salary Compensation will be Rupees: <strong class="text-dark">{{ words_salary|capfirst }}</strong>only.</p>
+		
+		</div>
+
+		<br>
+		<br>
+		
+		<div style="margin-left:6rem;max-width: 46rem;">
+		<h6 class="text-center">Table 'B'</h6>
+		<h6>Deductions from Salary</h6>
+		<table class="table table-bordered">
+			<thead>
+			  <tr>
+				<th>Components</th>
+				<th>Monthly INR</th>
+				<th>Annual INR</th>
+			  </tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left">Deductions</td>
+					<td class="text-left"></td>
+					<td class="text-left"></td>
+			  	</tr>
+				<tr>
+					<td class="text-left">PF</td>
+					<td>&#8377; {{ pf_monthly }}</td>
+					<td>&#8377; {{ pf_annually }}</td>
+				</tr>
+				<tr>
+					<td class="text-left">ESI</td>
+					<td>----------</td>
+					<td>----------</td>
+				</tr>
+				<tr>
+					<td class="text-left">TDS</td>
+					<td>&#8377; {{ tds_monthly }}</td>
+					<td>&#8377; {{ tds_annually }}</td>
+				</tr>
+				<tr>
+					<th >Net Salary Payable</th>
+					<td style="font-weight:bold;">&#8377; {{ net_payable_salary_monthly }}/-</td>
+					<td style="font-weight:bold;">&#8377; {{ net_payable_salary_annually }}/-</td>
+				</tr>
+			</tbody>
+		</table>
+		<p class="text-danger">** Deductions are done as per eligibility and applicability of Law</p>
+
+		</div>
+
+		<br>
+		<br>
+
+		<div style="margin-left:6rem;max-width: 46rem;">
+			<h6 class="text-center">Table 'C'</h6>
+			<h6>Retiral Benefits (Employer Share)</h6>
+			<table class="table table-bordered">
+				<thead>
+				  <tr>
+					<th>Components</th>
+					<th>Monthly INR</th>
+					<th>Annual INR</th>
+				  </tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-left">PF</td>
+						<td>&#8377; {{ pf_monthly }}</td>
+						<td>&#8377; {{ pf_annually }}</td>
+					</tr>
+					<tr>
+						<th>Total Deductions</th>
+						<td style="font-weight:bold;">&#8377; {{ pf_monthly }}/-</td>
+						<td style="font-weight:bold;">&#8377; {{ pf_annually }}/-</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+<script>
+	window.print(); 
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</html>

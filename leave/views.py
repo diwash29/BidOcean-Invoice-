@@ -64,7 +64,7 @@ class LeaveRequestDisplayView(AdminOrHRPanelMixin,TemplateView):
             from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
             leave_requests = leave_requests.filter(Q(from_date__gte=from_date), Q(from_date__lte=to_date))	
 
-        paginator        = Paginator(leave_requests,5)
+        paginator        = Paginator(leave_requests,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)    
 

@@ -158,7 +158,7 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
         		    
         
         roles            = Role.objects.all()
-        paginator        = Paginator(employee_list,5)
+        paginator        = Paginator(employee_list,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
         context = {
@@ -278,7 +278,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
             from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
             invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
 
-        paginator        = Paginator(invoice,5)
+        paginator        = Paginator(invoice,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)	
         context = {
