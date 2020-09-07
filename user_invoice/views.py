@@ -295,7 +295,7 @@ class IrEditView(IRPanelMixin,TemplateView):
     def get(self, request, pk):
         invoice  = Invoice.objects.get(pk=pk)
         employee = invoice.emp_ownwer
-        rates    = Rate.objects.get(pk=1)
+        rates    = invoice.rate
         rolename = employee.role.name.lower()
         context ={
             'employee' : employee,
@@ -376,7 +376,7 @@ class IrAddView(IRPanelMixin,TemplateView):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
         rolename      = employee.role.name.lower()
-        rates         = Rate.objects.get(pk=1)
+        rates         = Rate.objects.get(is_approved=1)
         context = {
             'employee'  : employee,
             'submit'    : 'Add IR Invoice',
@@ -390,10 +390,11 @@ class IrAddView(IRPanelMixin,TemplateView):
         print(request.POST)
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
+        rate          = Rate.objects.get(is_approved =1)
         try:
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
-            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], additional_auth_days = request.POST['additional_auth_days'], wds_source_checked_completely = request.POST['wds_source_checked_completely'], new_solicitation_entered_correctly = request.POST['new_solicitation_entered_correctly'], updated_solicitation_by_addenda = request.POST['updated_solicitation_by_addenda'], extra_hours_worked = request.POST['extra_hours_worked'], file_attached = request.POST['file_attached'], difficult_and_nonproductive_source=request.POST['difficult_and_nonproductive_source'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee)    
+            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], additional_auth_days = request.POST['additional_auth_days'], wds_source_checked_completely = request.POST['wds_source_checked_completely'], new_solicitation_entered_correctly = request.POST['new_solicitation_entered_correctly'], updated_solicitation_by_addenda = request.POST['updated_solicitation_by_addenda'], extra_hours_worked = request.POST['extra_hours_worked'], file_attached = request.POST['file_attached'], difficult_and_nonproductive_source=request.POST['difficult_and_nonproductive_source'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee, rate=rate)    
             messages.success(request, "Successfully added invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
@@ -407,7 +408,7 @@ class BrEditView(BRPanelMixin,TemplateView):
     def get(self, request, pk):
         invoice  = Invoice.objects.get(pk=pk)
         employee = invoice.emp_ownwer
-        rates    = Rate.objects.get(pk=1)
+        rates    = invoice.rate
         rolename = employee.role.name.lower()
         context ={
             'employee' : employee,
@@ -459,7 +460,7 @@ class BrAddView(BRPanelMixin,TemplateView):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
         rolename      = employee.role.name.lower()
-        rates         = Rate.objects.get(pk=1)
+        rates         = Rate.objects.get(is_approved=1)
         context = {
             'employee'  : employee,
             'submit'    : 'Add BR Invoice',
@@ -473,10 +474,11 @@ class BrAddView(BRPanelMixin,TemplateView):
         print(request.POST)
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
+        rate          = Rate.objects.get(is_approved=1)
         try:
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
-            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], new_entities_added=request.POST['new_entities_added'], ph_added_to_bid_list=request.POST['ph_added_to_bid_list'], ph_edited_in_bid_list=request.POST['ph_edited_in_bid_list'], ph_deleted_in_bid_list=request.POST['ph_deleted_in_bid_list'], extra_days_worked=request.POST['extra_days_worked'], total_working_days=request.POST['total_working_days'], total_days_worked=request.POST['total_days_worked'], authorised_day_off=request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], duplicate_entities=request.POST['duplicate_entities'],errors=request.POST['errors'],fines=request.POST['fines'], total_deduction=request.POST['total_deduction'], total_payable=request.POST['total_payable'],emp_ownwer=employee)
+            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], new_entities_added=request.POST['new_entities_added'], ph_added_to_bid_list=request.POST['ph_added_to_bid_list'], ph_edited_in_bid_list=request.POST['ph_edited_in_bid_list'], ph_deleted_in_bid_list=request.POST['ph_deleted_in_bid_list'], extra_days_worked=request.POST['extra_days_worked'], total_working_days=request.POST['total_working_days'], total_days_worked=request.POST['total_days_worked'], authorised_day_off=request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], duplicate_entities=request.POST['duplicate_entities'],errors=request.POST['errors'],fines=request.POST['fines'], total_deduction=request.POST['total_deduction'], total_payable=request.POST['total_payable'],emp_ownwer=employee, rate=rate)
             messages.success(request, "Successfully added invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
@@ -491,7 +493,7 @@ class FixedAddView(FixedPanelMixin,TemplateView):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
         rolename      = employee.role.name.lower()
-        rates         = Rate.objects.get(pk=1)
+        rates         = Rate.objects.get(is_approved=1)
         context = {
             'employee'  : employee,
             'submit'    : 'Add IR Invoice',
@@ -505,10 +507,11 @@ class FixedAddView(FixedPanelMixin,TemplateView):
         print(request.POST)
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
+        rate          = Rate.objects.get(is_approved=1)
         try:
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
-            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, total_pay=request.POST['total_pay'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee)    
+            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, total_pay=request.POST['total_pay'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee, rate=rate)    
             messages.success(request, "Successfully added invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
@@ -522,7 +525,7 @@ class FixedEditView(FixedPanelMixin, TemplateView):
     def get(self, request, pk):
         invoice  = Invoice.objects.get(pk=pk)
         employee = invoice.emp_ownwer
-        rates    = Rate.objects.get(pk=1)
+        rates    = invoice.rate
         rolename = employee.role.name.lower()
         context ={
             'employee' : employee,
