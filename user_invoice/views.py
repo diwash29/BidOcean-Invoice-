@@ -105,24 +105,24 @@ class RoleEditView(AdminOrHRPanelMixin,TemplateView):
 class RateAddView(TemplateView):
     template_name = 'user_invoice/add_rate.html'
     def get(self, request):
-        rate_form = RateAddForm()
+        # rate_form = RateAddForm()
         context = {
-            'rate_form' : rate_form,
+            # 'rate_form' : rate_form,
             'submit'    : 'Add Rate',
             'title'     : 'Add rate',
             'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
 
-    def post(self, request):
-        rate_form = RateAddForm(request.POST)
-        print(rate_form)
-        if rate_form.is_valid():        	
-            rate = rate_form.save()
-            rate.added_by = Employee.objects.get(auth_tbl=self.request.user)
-            rate.save() 
-            messages.success(request, "Successfully created new Rate")
-            return HttpResponseRedirect('/rate-list/')
+    # def post(self, request):
+    #     rate_form = RateAddForm(request.POST)
+    #     print(rate_form)
+    #     if rate_form.is_valid():        	
+    #         rate = rate_form.save()
+    #         rate.added_by = Employee.objects.get(auth_tbl=self.request.user)
+    #         rate.save() 
+    #         messages.success(request, "Successfully created new Rate")
+    #         return HttpResponseRedirect('/rate-list/')
         # else:
         #     messages.error(request, "There was a problem adding the role")
         #     return render(request, self.template_name, {
