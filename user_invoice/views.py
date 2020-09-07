@@ -114,23 +114,15 @@ class RateAddView(TemplateView):
         }
         return render(request, self.template_name, context)
 
-    # def post(self, request):
-    #     rate_form = RateAddForm(request.POST)
-    #     print(rate_form)
-    #     if rate_form.is_valid():        	
-    #         rate = rate_form.save()
-    #         rate.added_by = Employee.objects.get(auth_tbl=self.request.user)
-    #         rate.save() 
-    #         messages.success(request, "Successfully created new Rate")
-    #         return HttpResponseRedirect('/rate-list/')
-        # else:
-        #     messages.error(request, "There was a problem adding the role")
-        #     return render(request, self.template_name, {
-        #         'rate_form'   : rate_form,
-        #         'submit'      : 'Edit Rate',
-        #         'title'       : 'Edit rate',
-        #         'role'        : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
-        #     })	
+    def post(self, request):
+        print(request.POST)
+        user          = self.request.user
+        employee      = Employee.objects.get(auth_tbl=user)
+        # try:
+        return HttpResponseRedirect('/rate-add/')
+
+
+        
 
 
 
