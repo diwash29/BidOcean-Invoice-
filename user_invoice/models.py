@@ -142,6 +142,7 @@ class Invoice(models.Model):
 	total_deduction                    = models.CharField(max_length=200, default=0, blank=True)
 	total_payable                      = models.CharField(max_length=200, default=0, blank=True)
 	emp_ownwer                         = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
+	rate                               = models.ForeignKey(Rate, on_delete=models.SET_NULL, null=True, blank=True)
 	is_approved                        = models.SmallIntegerField(default=0)
 
 
