@@ -5,6 +5,9 @@ from django.contrib import messages
 import datetime
 import math
 
+from user_invoice.models import Employee
+from django.contrib.auth.models import User
+
 from .converter import convertToWords
 from .models import EmployeeDetail
 from .utils import *
@@ -12,6 +15,10 @@ from .utils import *
 # Create your views here.
 
 def createEmployee(request):
+	user           = request.user
+	employee       = Employee.objects.get(auth_tbl=user)
+	rolename       = employee.role.name.lower()
+
 	if request.method=="POST":
 		form = EmployeeDetail.objects.create(
 			first_name 		= request.POST['first_name'],
@@ -26,7 +33,7 @@ def createEmployee(request):
 		messages.success(request,'Employee Just Added')
 		return HttpResponseRedirect(reverse('letter:employee-list'))
 	
-	return render(request,'letter/add_employee.html')
+	return render(request,'letter/add_employee.html', {'role':rolename, "employee":employee})
 
 def employeeList(request):
 	employee_list = EmployeeDetail.objects.all()
@@ -43,9 +50,13 @@ def employeeList(request):
 	paginator = Paginator(employee_list, 50)
 	page = request.GET.get('page')
 	employee_list = paginator.get_page(page)
+	user           = request.user
+	employee       = Employee.objects.get(auth_tbl=user)
+	rolename       = employee.role.name.lower()
 
 	context = {
 		'emps':employee_list,
+		'role':rolename
 	}
 	return render(request,'letter/employee_list.html',context)
 

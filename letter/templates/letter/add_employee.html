@@ -1,4 +1,4 @@
-{% extends 'letter/base.html' %}
+{% extends 'user_invoice/base.html' %}
 {% load static %}
 {% block title %}Add Employee{% endblock title %}
 <link rel="stylesheet" href="{% static 'css/letter.css' %}">
@@ -38,7 +38,7 @@
             <input type="date" class="form-control" required name="joining_date" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Joining Date">
         </div>
         
-        <button type="submit" class="btn btn-outline-success">Submit</button>
+        <button type="submit" style="margin-bottom: 80px" class="btn btn-outline-success">Submit</button>
     </form>
 </div>
 

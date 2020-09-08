@@ -35,6 +35,7 @@
               <a class="nav-item nav-link" href="{% url 'leave' %}" >Leave</a>
               {% if role == 'hr' or role == 'admin' %}
                 <a class="nav-item nav-link" href="{% url 'rate_list' %}" >Rates</a>
+                <a class="nav-item nav-link" href="{% url 'letter:joinee_list' %}" >Letter</a>
                 <a class="nav-item nav-link" href="{% url 'role_list' %}" >Role</a>
                 <a class="nav-item nav-link" href="{% url 'employee_list' %}" >Employee</a>  
                 <a class="nav-item nav-link" href="{% url 'approve_leave' %}">LeaveRequests</a>            
