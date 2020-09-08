@@ -24,7 +24,7 @@
 			</div>	
 			<div class="form-group">
 				<label for="mobile_no">Mobile No*</label>
-				<input type="number" class="form-control" id="mobile_no" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{{employee.phone_no}}" placeholder="Enter Mobile No" >
+				<input type="number" class="form-control" id="mobile_no" maxlength="10" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{{employee.phone_no}}" placeholder="Enter Mobile No" >
 			</div>
 			<div class="form-group">
 				<label for="mobile_no">Employee Id*</label>
@@ -51,7 +51,7 @@
 			<div class="form-group">
 				
 				
-				<a href="{{submit}}"><button  class="btn btn-primary" style="background-color:teal;border: none;">Edit</button></a>
+				<a href="{{submit}}"><button  class="btn btn-primary" style="background-color:teal;border: none;">Add</button></a>
 				{% if 'Edit' in submit %}
 				<a href="{% url 'employee_delete' employee.pk %}"><input onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger" type="button" value="Delete"></a>
 				{% endif %}				
