@@ -102,8 +102,18 @@ class RoleEditView(AdminOrHRPanelMixin,TemplateView):
             })
 
 
-# class RateDisplayView(AdminOrHRPanelMixin,TemplateView):
-#     template_name
+class RateDisplayView(AdminOrHRPanelMixin,TemplateView):
+    template_name = "user_invoice/rate_list.html"
+    def get(self, request):
+        employee = Employee.objects.get(auth_tbl=self.request.user)
+        role     = employee.role.name.lower()
+        context = {
+            'role'     : role,
+            'rates'    : Rate.objects.all(),
+            'title'    : 'Rate list', 
+            'employee' : employee
+        }
+        return render(request, self.template_name, context)
 
 class RateAddView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/add_rate.html'
