@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,11 @@
 	<title>{% block title %} {% endblock title %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{% static 'css/letter.css' %}">
+
 </head>
 <body>
+	{% include 'user_invoice/navbar.html' %}
 	<div class="container">
 		{% block content %}
 		
