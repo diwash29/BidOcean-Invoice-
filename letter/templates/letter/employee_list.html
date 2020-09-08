@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block title %}Employee List{% endblock title %}
+
+<link rel="stylesheet" href="{% static 'css/letter.css' %}">
+
 {% block content %}
 
 	<div class='row'>
@@ -9,7 +12,7 @@
 			<h2 class="mt-5"><a href="{% url 'letter:employee-list' %}" class='text-success'>Employee List:</a></h2>
 		</div>
 		<div class="col-6">
-		<h2 class=" text-right mt-5"><a href="{% url 'letter:add-employee' %}" class='text-success'>Add New</a></h2>
+		<h2 class=" text-right mt-5"><a href="{% url 'letter:add-employee' %}" class='text-info'>Add New</a></h2>
 		</div>
 	</div>
 		<div class="row">
@@ -38,8 +41,8 @@
 					{% for e in emps %}
 					<tr>
 						<th scope="row">{{ forloop.counter }}</th>
-						<td>{{ e }}</td>
-						<td><a href="{% url 'letter:pdf-generate' e.id %}">Generate</a></td>
+						<td class="text-left">{{ e }}</td>
+						<td class="text-left"><a href="{% url 'letter:pdf-generate' e.id %}">Generate</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
