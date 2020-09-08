@@ -87,7 +87,7 @@
 	  <li>
 		<img src="{% static 'images/c3.jpg' %}" alt="">
 		<div class="caption center-align">
-		  <h3 style="color: aliceblue;">Welcome to Bid Ocean Invoice!</h3>
+			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
 		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
 		</div>
 	  </li>
@@ -104,6 +104,7 @@
 		<div class="caption center-align">
 			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
 		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+
 		</div>
 	  </li>
 	  <li>
@@ -122,46 +123,80 @@
 	  </li>
 	</ul>
   </div>
-
-  
-  
-  <div class="buysellads buysellads-demo hide-on-small-only">
-	<a href="#!" class="close"><i class="material-icons">close</i></a>
-	<!-- CarbonAds Zone Code -->
-	<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=materializecss" id="_carbonads_js"></script>
-  </div>
-	  <!--  Scripts-->
-	  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	  <script>if (!window.jQuery) { document.write('<script src="bin/jquery-2.1.1.min.js"><\/script>'); }
-	  </script>
-	  <script src="js/jquery.timeago.min.js"></script>
-	  <script src="js/prism.js"></script>
-	  <script src="jade/lunr.min.js"></script>
-	  <script src="jade/search.js"></script>
-	  <script src="bin/materialize.js"></script>
-	  <script src="js/init.js"></script>
-	  <!-- Twitter Button -->
-	  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  
-	  <!-- Google Plus Button-->
-	  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  
-	  <!--  Google Analytics  -->
-	  <script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
-	  ga('create', 'UA-56218128-1', 'auto');
-	  ga('require', 'displayfeatures');
-	  ga('send', 'pageview');
-	  </script>
-  
-	
-
-
 <style>
+	.btn-12{
+  position: relative;
+  right: 20px;
+  bottom: 20px;
+  border:none;
+  box-shadow: none;
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  -webkit-perspective: 230px;
+  perspective: 230px;
+}
+.btn-12 span {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  display: block;
+  position: absolute;
+  width: 130px;
+  height: 40px;
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  border-radius: 5px;
+  margin:0;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+.btn-12 span:nth-child(1) {
+  box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+  -webkit-transform: rotateX(90deg);
+  -moz-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+.btn-12 span:nth-child(2) {
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+.btn-12:hover span:nth-child(1) {
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+.btn-12:hover span:nth-child(2) {
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+ color: transparent;
+  -webkit-transform: rotateX(-90deg);
+  -moz-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+}
+
+
+
+
 	
 	h3 {
   animation-duration: 3s;

@@ -49,7 +49,7 @@ ul {
 }
 
 a.article-title:hover {
-  color: #428bca;
+  /* color: #428bca; */
   text-decoration: none;
 }
 
