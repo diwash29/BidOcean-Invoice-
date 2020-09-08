@@ -42,7 +42,7 @@
 					<tr>
 						<th scope="row">{{ forloop.counter }}</th>
 						<td class="text-left">{{ e }}</td>
-						<td><a href="{% url 'letter:pdf-generate' e.id %}">Generate</a></td>
+						<td class="text-left"><a href="{% url 'letter:pdf-generate' e.id %}">Generate</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
