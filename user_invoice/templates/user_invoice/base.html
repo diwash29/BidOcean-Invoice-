@@ -34,6 +34,7 @@
               <a class="nav-item nav-link" href="{% url 'invoice_list' %}" >Invoices</a>
               <a class="nav-item nav-link" href="{% url 'leave' %}" >Leave</a>
               {% if role == 'hr' or role == 'admin' %}
+                <a class="nav-item nav-link" href="{% url 'rate_list' %}" >Rates</a>
                 <a class="nav-item nav-link" href="{% url 'role_list' %}" >Role</a>
                 <a class="nav-item nav-link" href="{% url 'employee_list' %}" >Employee</a>  
                 <a class="nav-item nav-link" href="{% url 'approve_leave' %}">LeaveRequests</a>            
@@ -133,9 +134,9 @@
             </li> -->
           </ul>
         </nav>
-        <div id="call-action" class="d-none d-lg-flex align-items-center">
+        <!-- <div id="call-action" class="d-none d-lg-flex align-items-center">
           <a href="#" title="Call Now" class="d-none d-lg-inline-block call-action">Call Now</a>
-        </div>
+        </div> -->
         <div
           class="side-menu-close d-flex d-lg-none flex-wrap flex-column align-items-center justify-content-center ml-auto">
           <span></span>

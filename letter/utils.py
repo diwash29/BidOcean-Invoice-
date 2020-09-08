@@ -37,7 +37,7 @@ def get_pf_annually(salary_annually):
 
 
 def get_tds_annually(salary_annually):
-    if salary_annually > 250000 and salary_annually < 500000:
+    if salary_annually > 250000 and salary_annually <= 500000:
         return math.floor((5/100)*salary_annually)
     else:
         tds_annually = 1
