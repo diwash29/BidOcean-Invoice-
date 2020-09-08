@@ -213,12 +213,16 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 				<th style="color: teal;"><b> Action</b></th>
 			</tr>
 			{% for rate in rates %}
-				<tr>
+				<tr {% if rate.is_approved == 1 %} style="background-color:#C8FF9D" {% endif %}>
 					<td style="color: rgb(0, 0, 0);">{{rate.base_ir}}</td>
 					<td style="color: rgb(0, 0, 0);">{{rate.base_br}}</td>
 					<td style="color: rgb(0, 0, 0);">{{rate.added_by.name}}</td>
 					<td style="color: rgb(0, 0, 0);">{{rate.added_date}}</td>
-					<td style="color: rgb(0, 0, 0);">{% if employee.pk == rate.added_by.pk %}<a href="#"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a>{% endif %}</td>
+					<td style="color: rgb(0, 0, 0);">{% if employee.pk == rate.added_by.pk %}<a href="{% url 'rate_edit' rate.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a>{% endif %} <a href="{% url 'rate_pull' rate.pk %}"><button  class="btn btn-warning" >Pull</button></a> 
+						{% if rate.is_approved == 0 %}
+						<a href="{% url 'rate_approve' rate.pk %}" onclick="return confirm('Are you sure want to use this rate?')" ><button  class="btn btn-danger" >Use</button></a> </td>
+						{% endif %}
+						
 
 					<style>
 						.btn-primary:hover {

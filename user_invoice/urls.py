@@ -12,6 +12,9 @@ urlpatterns = [
 
     path('rate-add/',views.RateAddView.as_view(),name='rate_add'),
     path('rate-list/',views.RateDisplayView.as_view(),name='rate_list'),
+    path('rate-edit/<int:pk>',views.RateEditView.as_view(),name='rate_edit'),
+    path('rate-pull/<int:pk>',views.RatePullView.as_view(),name='rate_pull'),
+    path('rate-approve/<int:pk>',views.RateApproveView.as_view(),name='rate_approve'),
 
     path('role-add/',views.RoleAddView.as_view(),name='role_add'),
     path('role-list/',views.RoleDisplayView.as_view(),name='role_list'),

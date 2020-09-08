@@ -40,7 +40,7 @@ def employeeList(request):
 	if lastName != '' and lastName is not None:
 		employee_list = EmployeeDetail.objects.filter(last_name__icontains = lastName)
 	
-	paginator = Paginator(employee_list, 2)
+	paginator = Paginator(employee_list, 50)
 	page = request.GET.get('page')
 	employee_list = paginator.get_page(page)
 
