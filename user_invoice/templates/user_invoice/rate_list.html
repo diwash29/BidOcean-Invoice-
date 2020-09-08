@@ -140,12 +140,12 @@ tr:hover .cut { opacity: 1; }
 				<th style="color: teal;"><b> Action</b></th>
 			</tr>
 			{% for rate in rates %}
-				<tr>
+				<tr {% if rate.is_approved == 1 %} style="background-color:#C8FF9D" {% endif %}>
 					<td style="color: rgb(0, 0, 0);">{{rate.base_ir}}</td>
 					<td style="color: rgb(0, 0, 0);">{{rate.base_br}}</td>
 					<td style="color: rgb(0, 0, 0);">{{rate.added_by.name}}</td>
 					<td style="color: rgb(0, 0, 0);">{{rate.added_date}}</td>
-					<td style="color: rgb(0, 0, 0);">{% if employee.pk == rate.added_by.pk %}<a href="#"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a>{% endif %}</td>
+					<td style="color: rgb(0, 0, 0);">{% if employee.pk == rate.added_by.pk %}<a href="{% url 'rate_edit' rate.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a>{% endif %}</td>
 
 					<style>
 						.btn-primary:hover {
