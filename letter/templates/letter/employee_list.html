@@ -1,0 +1,85 @@
+{% extends 'letter/base.html' %}
+{% load static %}
+
+{% block title %}Employee List{% endblock title %}
+
+<link rel="stylesheet" href="{% static 'css/letter.css' %}">
+
+{% block content %}
+
+	<div class='row'>
+		<div class="col-6">
+			<h2 class="mt-5"><a href="{% url 'letter:employee-list' %}" class='text-success'>Employee List:</a></h2>
+		</div>
+		<div class="col-6">
+		<h2 class=" text-right mt-5"><a href="{% url 'letter:add-employee' %}" class='text-info'>Add New</a></h2>
+		</div>
+	</div>
+		<div class="row">
+				<form class="form-inline" method="POST" action="">
+					{% csrf_token %}
+					<label class="sr-only" for="inlineFormInputName2">First Name</label>
+					<input type="text" name="first_name" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Enter First Name">
+				  
+					<label class="sr-only" for="inlineFormInputGroupUsername2">Last Name</label>
+					<div class="input-group mb-2 mr-sm-2">
+						<input type="text" name="last_name" class="form-control" id="inlineFormInputGroupUsername2" placeholder="Enter Last Name">
+					</div>
+					<button type="submit" class="btn btn-primary mb-2">Search</button>
+				  </form>
+		</div>
+		<div class="list">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Employee Name</th>
+						<th scope="col">Offer Letter</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for e in emps %}
+					<tr>
+						<th scope="row">{{ forloop.counter }}</th>
+						<td class="text-left">{{ e }}</td>
+						<td class="text-left"><a href="{% url 'letter:pdf-generate' e.id %}">Generate</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="mt-5" style="align-items: center;justify-content: center; display: flex;">
+			<ul class="pagination">
+				{% if emps.has_previous %}
+				<li class="page-item">
+					<a class="page-link" href="?page={{ emps.previous_page_number }}">&laquo; Prev</a>
+				</li>
+				{% else %}
+				<li class="page-item disabled">
+					<a class="page-link" href="?page={{ i }}">&laquo; Prev</a>
+				</li>
+				{% endif %}
+				{% for i in emps.paginator.page_range %}
+				{% if emps.number == i %}
+				<li class="page-item">
+					<a class="page-link active" id=myid  href="?page={{ i }}">{{i}}</a>
+				</li>
+				{% else %}
+				<li class="page-item">
+					<a class="nav-link" id=myid  href="?page={{ i }}">{{i}}</a>
+				</li>
+				{% endif %}
+				{% endfor %}
+				{% if emps.has_next %}
+				<li class="page-item">
+					<a class="page-link" href="?page={{ emps.next_page_number }}">Next &raquo;</a>
+				</li>
+				{% else %}
+				<li class="page-item disabled">
+					<a class="page-link" href="?page={{ i }}">Next &raquo;</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+
+{% endblock content %}

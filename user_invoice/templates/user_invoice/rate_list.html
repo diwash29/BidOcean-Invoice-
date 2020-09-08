@@ -1,0 +1,319 @@
+{% extends "user_invoice/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<style>
+ *
+{
+	border: 0;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	vertical-align: top;
+}
+*[contenteditable] { border-radius: 0.25em; min-width: 1em; outline: 0; }
+
+*[contenteditable] { cursor: pointer; }
+
+*[contenteditable]:hover, *[contenteditable]:focus, td:hover *[contenteditable], td:focus *[contenteditable], img.hover { background: #DEF; box-shadow: 0 0 1em 0.5em #DEF; }
+
+span[contenteditable] { display: inline-block; }
+
+/* heading */
+
+h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+table { font-size: 75%; table-layout: fixed; width: 100%; }
+table { border-collapse: collapse; border-spacing: 2px; }
+th, td { border-width: 0px; padding: 0.5em; position: relative;  }
+th, td { border-radius: 0.25em; border-style: solid; }
+th { background: #EEE; border-color: #BBB; }
+td { border-color: #DDD; }
+
+html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; padding: 0.5in; }
+html { background: #999; cursor: default; }
+
+body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
+
+
+header { margin: 0 0 3em; }
+header:after { clear: both; content: ""; display: table; }
+
+header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
+header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+header address p { margin: 0 0 0.25em; }
+header span, header img { display: block; float: right; }
+header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+header img { max-height: 100%; max-width: 100%; }
+header input { cursor: pointer; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; height: 100%; left: 0; opacity: 0; position: absolute; top: 0; width: 100%; }
+
+/* article */
+
+article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article h1 { clip: rect(0 0 0 0); position: absolute; }
+
+article address { float: left; font-size: 125%; font-weight: bold; }
+
+/* table meta & balance */
+
+table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+
+/* table meta */
+
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+
+/* table items */
+
+table.inventory { clear: both; width: 100%; }
+table.inventory th { font-weight: bold; text-align: center; }
+
+table.inventory td:nth-child(1) { width: 26%; }
+table.inventory td:nth-child(2) { width: 38%; }
+table.inventory td:nth-child(3) { text-align: right; width: 12%; }
+table.inventory td:nth-child(4) { text-align: right; width: 12%; }
+table.inventory td:nth-child(5) { text-align: right; width: 12%; }
+
+/* table balance */
+
+table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; }
+
+/* aside */
+
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; }
+
+/* javascript */
+
+
+
+
+
+.add { margin: -2.5em 0 0; }
+
+.add:hover { background: #00ADEE; }
+
+.cut { opacity: 0; position: absolute; top: 0; left: -1.5em; }
+.cut { -webkit-transition: opacity 100ms ease-in; }
+
+tr:hover .cut { opacity: 1; }
+
+@media print {
+	* { -webkit-print-color-adjust: exact; }
+	html { background: none; padding: 0; }
+	body { box-shadow: none; margin: 0; }
+	span:empty { display: none; }
+	.add, .cut { display: none; }
+}
+
+@page { margin: 0; }
+
+    </style>
+	<!-- <article>
+		<legend class="border-bottom mb-4">Role List</legend>
+
+		
+
+	</article>
+			 -->
+		<div class='container'>	 
+		<table  width="100%">
+			<tr>
+				<td><legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b>Rate list</b> </legend></td>
+				<td align="right"><a href="{% url 'rate_add' %}"><button class="custom-btn btn-12"><span>Click!</span><span><b> Add Rate</b></span></button></a></td>
+				
+				<style>
+					.btn-12{
+  position: relative;
+  right: 20px;
+  bottom: 20px;
+  border:none;
+  box-shadow: none;
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  -webkit-perspective: 230px;
+  perspective: 230px;
+}
+.btn-12 span {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  display: block;
+  position: absolute;
+  width: 130px;
+  height: 40px;
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  border-radius: 5px;
+  margin:0;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+.btn-12 span:nth-child(1) {
+  box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+  -webkit-transform: rotateX(90deg);
+  -moz-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+.btn-12 span:nth-child(2) {
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+.btn-12:hover span:nth-child(1) {
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+.btn-12:hover span:nth-child(2) {
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+ color: transparent;
+  -webkit-transform: rotateX(-90deg);
+  -moz-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+}
+
+				</style>
+			</tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
+			<tr>
+				<th style="color: teal;"><b>Ir base rate</b>  </th>
+				<th style="color: teal;"><b>Br base rate</b></th>
+				<th style="color: teal;"><b> Added by</b></th>
+				<th style="color: teal;"><b> Added time</b></th>
+				<th style="color: teal;"><b> Action</b></th>
+			</tr>
+			{% for rate in rates %}
+				<tr {% if rate.is_approved == 1 %} style="background-color:#C8FF9D" {% endif %}>
+					<td style="color: rgb(0, 0, 0);">{{rate.base_ir}}</td>
+					<td style="color: rgb(0, 0, 0);">{{rate.base_br}}</td>
+					<td style="color: rgb(0, 0, 0);">{{rate.added_by.name}}</td>
+					<td style="color: rgb(0, 0, 0);">{{rate.added_date}}</td>
+					<td style="color: rgb(0, 0, 0);">{% if employee.pk == rate.added_by.pk %}<a href="{% url 'rate_edit' rate.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a>{% endif %} <a href="{% url 'rate_pull' rate.pk %}"><button  class="btn btn-warning" >Pull</button></a> 
+						{% if rate.is_approved == 0 %}
+						<a href="{% url 'rate_approve' rate.pk %}" onclick="return confirm('Are you sure want to use this rate?')" ><button  class="btn btn-danger" >Use</button></a> </td>
+						{% endif %}
+						
+
+					<style>
+						.btn-primary:hover {
+				 background-color: green !important;
+			 }
+			 
+					</style>
+			
+				</tr>
+			{% endfor %}
+		</table>
+
+		</div>
+		
+			
+			
+{% if employees.paginator.num_pages > 1 %}
+
+  <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center" style="margin-bottom: 20px;" >
+    {% if employees.has_previous %}
+      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.previous_page_number }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="#">Previous</a></li>
+    {% endif %}
+    {% if employees.number|add:'-4' > 1 %}
+      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link font-weight-bolder" href="?page=1{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role.}}{% endif %}">1</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.number|add:'-5' }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">&hellip;</a></li>
+    {% endif %}
+    
+    {% for i in employees.paginator.page_range %}
+      {% if employees.number == i %}
+        <li class="page-item active">
+          <a class="active" style="margin-bottom: 20px;" href="?page={{ i }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">{{i}}</a>
+        </li>
+      {% elif i > employees.number|add:'-5' and i < employees.number|add:'5' %}
+        <li class="page-item {% if i == employees.number %} active {% endif %}">
+          <a class="page-link font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ i }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">{{i}}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    
+    {% if employees.paginator.num_pages > employees.number|add:'4' %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.number|add:'5' }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">&hellip;</a></li>
+      {% if book.number != employees.paginator.num_pages %}
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.paginator.num_pages }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">{{ employees.paginator.num_pages }}</a></li>
+    {% endif %}
+    {% endif %}
+    {% if employees.has_next %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.next_page_number }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
+    {% endif %}
+    
+  </ul>
+</nav>
+
+  
+  {% endif %}	
+
+		
+
+
+
+
+
+<style type="text/css">
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}	
+			
+		  
+</style>
+		
+
+		  
+	
+		
+
+
+{% endblock content %}

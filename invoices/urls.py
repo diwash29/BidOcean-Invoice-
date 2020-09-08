@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('user_invoice.urls')),
-     
+    path('leave/', include('leave.urls')), 
+    path('letter/', include('letter.urls')),
     path('admin/', admin.site.urls),
     path('login/',auth_views.LoginView.as_view(template_name='user_invoice/login.html'),name='login'),
     path('logout/',auth_views.LogoutView.as_view(template_name='user_invoice/logout.html'),name='logout'),

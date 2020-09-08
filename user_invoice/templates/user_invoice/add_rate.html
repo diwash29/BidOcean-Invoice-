@@ -1,270 +1,224 @@
+
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<article>
-		<legend class="border-bottom mb-4">{{submit}} </legend>
-		
-		<form method='POST'>
-			{% csrf_token %}
-			<div class="form-group">
-				<h6><u>Please Fill in the details below:</u></h6>
-				<label for="formGropuNameInput">Base rate</label>
-				{{rate_form.base}}
-			</div>
-			<div class="form-group">	
-				<label for="formGropuNameInput">Difficult and Non-Productive Source Rate</label>
-				{{rate_form.difficultnp}}
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Extra hours rate:</label>
-				{{rate_form.extra_hours}}
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">File attaching rate:</label>
-				{{rate_form.file_attach}}
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Duplicate solic rate:</label>
-				{{rate_form.duplicate_solic}}
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Entity/Contact wrong/incomplete/not edited rate:</label>
-				{{rate_form.entity_cont_wrong}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">False referral rate:</label>
-				{{rate_form.false_referal}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Fraudulent solicitation 'update'rate:</label>
-				{{rate_form.fraudsolic_update}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Source returned without good reason rate:</label>
-				{{rate_form.source_ret_wo_res}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Missed Bid Bond/Incomplete Plans & Specs rate:</label>
-				{{rate_form.missed_bond}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Missed Categories rate:</label>
-				{{rate_form.missed_categories}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Missed Solic./Addend. From Source rate:</label>
-				{{rate_form.missed_solic_src}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Missed/Incorrect File Type rate:</label>
-				{{rate_form.missed_file}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Missing or Wrong Outside Link rate:</label>
-				{{rate_form.missed_link}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Missing or wrong Term Contract rate:</label>
-				{{rate_form.missed_term}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Not Posted As Lead rate:</label>
-				{{rate_form.not_posted_lead}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Other error rate:</label>
-				{{rate_form.other_error}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Other serious error rate:</label>
-				{{rate_form.other_serious_err}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Refreshing WDS page to a different source rate:</label>
-				{{rate_form.refreshing_wds}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Setaside/Prequalification/Prevailing Wage not selected rate:</label>
-				{{rate_form.wage_not_selected}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Skipped solicitation rate:</label>
-				{{rate_form.skipped_solic}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Source returned without a note rate:</label>
-				{{rate_form.source_ret_wo_note}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Unexcused/unjustified absence rate:</label>
-				{{rate_form.unjustified_absence}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Wrong bid/pre-bid, mandatory rate:</label>
-				{{rate_form.wrong_pre_bid}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Wrong categories rate:</label>
-				{{rate_form.wrong_categories}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Wrong geographic location rate:</label>
-				{{rate_form.wrong_geo_location}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Incomplete or incorrect scope rate:</label>
-				{{rate_form.incorrect_scope}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Wrong text format rate:</label>
-				{{rate_form.wrong_text_format}}				
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Authorized Days Off rate:</label>
-				{{rate_form.auth_day_off}}				
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Unauthorized Days Off rate:</label>
-				{{rate_form.unauth_day_off}}				
-			</div>	
-			<div class="form-group">
-				
-				<input type="submit" class="form-control" id="submit" value="{{submit}}">
-			</div>	
-		</form>
-	</article>
-			
-		
-		
-			
-			
-	
+<p class='heading' style="color: teal;text-decoration: underline;"> Rates</p>
+<div class='container'>
+  <div class='table'>
+    <div class='fix-div'>
+      <div>Description</div>
+      <div style="margin-left: 100px;">Rate</div>
+   
+    </div>
+<form method="post">    
+	{% csrf_token %}
+    <div class='tbody'>
+      <div class='first'>
+        <div>Base ir rate</div>
+        <div>Base br rate</div>
+        <div>Total pay fixed(store '1')</div> 
+        <div>Difficult & non productive source rate(IR)</div>  
+        <div>Extra hours worked rate(IR)</div>
+        <div>File attached rate(IR)</div>
+        <div>Add authorized days worked rate(IR)</div>
+        <div>New entities added rate(BR)</div>
+        <div>Extra days worked rate(BR)</div>
+        <div>Duplicate entities rate(BR)</div>
+        <div>Errors rate(BR)</div>
+        <div>Fines rate(BR)</div>
+        <div>Duplicate solic rate</div>
 
-		
-		
-			
-		  
+        <div>Entity/Contact wrong/incomplete/not edited rate</div>
+        <div>False referal rate</div>
+        <div>Fraudulent solicitation 'update' rate</div> 
+        <div>Source returned without good reason rate</div>  
+        <div>Missed Bid Bond/Incomplete Plans & Specs rate</div>
+        <div>Missed categories rate</div>
+        <div>Missed Solic./Addend. From Source rate</div>
+        <div>Missed/Incorrect File Type rate</div>
+        <div>Missing or Wrong Outside Link rate</div>
+        <div>Missing or wrong Term Contract rate</div>
+        <div>Not Posted As Lead rate</div>
+        <div>Other error rate</div>
+        <div>Other serious error rate</div>
 
-		
+        <div>Refreshing WDS page to a different source rate</div>
+        <div>Setaside/Prequalification/Prevailing Wage not selected rate</div>
+        <div>Skipped solicitation rate</div> 
+        <div>Source returned without a note rate</div>  
+        <div>Unexcused/unjustified absence rate</div>
+        <div>Wrong bid/pre-bid, mandatory rate</div>
+        <div>Wrong categories rate</div>
+        <div>Wrong geographic location rate</div>
+        <div>Incomplete or incorrect scope rate</div>
+        <div>Wrong text format rate</div>
+        <div>Authorized day off rate</div>
+        <div>Unauthorized day off rate</div>       
+      </div>
+    <div class='second' style="margin-left: 100px;">
+      <input name="base_ir" value="{{rate.base_ir}}" style="margin-bottom: 15px;margin-top: 10px;" required>
+      <input name="base_br" value="{{rate.base_br}}" style="margin-bottom: 15px;" required>
+      <input name="total_pay" value="{{rate.total_pay}}" style="margin-bottom: 15px;" required> 
+      <input name="difficultnp" value="{{rate.difficultnp}}" style="margin-bottom: 15px;" required>    
+      <input name="extra_hours" value="{{rate.extra_hours}}" style="margin-bottom: 15px;"required> 
+      <input name="file_attach" value="{{rate.file_attach}}" style="margin-bottom: 15px;"required> 
+      <input name="add_auth_days" value="{{rate.add_auth_days}}" style="margin-bottom: 15px;"required> 
+      <input name="new_entities_added" value="{{rate.new_entities_added}}" style="margin-bottom: 15px;"required> 
+      <input name="extra_days" value="{{rate.extra_days}}" style="margin-bottom: 15px;"required> 
+      <input name="duplicate_entities" value="{{rate.duplicate_entities}}" style="margin-bottom: 15px;"required> 
+      <input name="errors" value="{{rate.errors}}" style="margin-bottom: 15px;"required> 
+      <input name="fines" value="{{rate.fines}}" style="margin-bottom: 15px;"required> 
+      <input name="duplicate_solic" value="{{rate.duplicate_solic}}" style="margin-bottom: 15px;"required> 
+      <input name="entity_cont_wrong" value="{{rate.entity_cont_wrong}}" style="margin-bottom: 15px;"required> 
+      <input name="false_referal" value="{{rate.false_referal}}" style="margin-bottom: 15px;"required> 
+      <input name="fraudsolic_update" value="{{rate.fraudsolic_update}}" style="margin-bottom: 15px;"required> 
+      <input name="source_ret_wo_res" value="{{rate.source_ret_wo_res}}" style="margin-bottom: 15px;"required> 
+      <input name="missed_bond" value="{{rate.missed_bond}}" style="margin-bottom: 15px;"required> 
+      <input name="missed_categories" value="{{rate.missed_categories}}" style="margin-bottom: 15px;"required> 
+      <input name="missed_solic_src" value="{{rate.missed_solic_src}}" style="margin-bottom: 15px;"required> 
+      <input name="missed_file" value="{{rate.missed_file}}" style="margin-bottom: 15px;"required> 
+      <input name="missed_link" value="{{rate.missed_link}}" style="margin-bottom: 15px;"required> 
+      <input name="missed_term" value="{{rate.missed_term}}" style="margin-bottom: 15px;"required> 
+      <input name="not_posted_lead" value="{{rate.not_posted_lead}}" style="margin-bottom: 15px;"required> 
+      <input name="other_error" value="{{rate.other_error}}" style="margin-bottom: 15px;"required> 
+      <input name="other_serious_err" value="{{rate.other_serious_err}}" style="margin-bottom: 15px;"required> 
+      <input name="refreshing_wds" value="{{rate.refreshing_wds}}" style="margin-bottom: 15px;"required> 
+      <input name="wage_not_selected" value="{{rate.wage_not_selected}}" style="margin-bottom: 15px;"required> 
+      <input name="skipped_solic" value="{{rate.skipped_solic}}" style="margin-bottom: 15px;"required> 
+      <input name="source_ret_wo_note" value="{{rate.source_ret_wo_note}}" style="margin-bottom: 15px;"required> 
+      <input name="unjustified_absence" value="{{rate.unjustified_absence}}" style="margin-bottom: 15px;"required> 
+      <input name="wrong_pre_bid" value="{{rate.wrong_pre_bid}}" style="margin-bottom: 15px;"required> 
+      <input name="wrong_categories" value="{{rate.wrong_categories}}" style="margin-bottom: 15px;"required> 
+      <input name="wrong_geo_location" value="{{rate.wrong_geo_location}}" style="margin-bottom: 15px;"required> 
+      <input name="incorrect_scope" value="{{rate.incorrect_scope}}" style="margin-bottom: 15px;"required> 
+      <input name="wrong_text_format" value="{{rate.wrong_text_format}}" style="margin-bottom: 15px;"required> 
+      <input name="auth_day_off" value="{{rate.auth_day_off}}" style="margin-bottom: 15px;"required> 
+      <input name="unauth_day_off" value="{{rate.unauth_day_off}}" style="margin-bottom: 15px;"required> 
+      <div class="col-auto my-1" >
+        <button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;"><b> {{submit}}</b></button>
+       <style>
+           .btn-primary:hover {
+    background-color: green !important;
+    }
+    
+       </style>
+      </div>
+    </div>
+    
+    <!-- <div class='third'>
+      <div>117.5697</div> 
+      <div>72.1242</div> 
+      <div>75.5735</div> 
+      <div>14.4992</div> 
+      <div>1.3147</div> 
+      <div>11.3659</div> 
+      <div>32.7273</div> 
+      <div>131.7308</div>
+      <div>60.1124</div>
+      <div>24.2262</div>
+      <div>26.4826</div>
+      <div>34.5032</div>
+      <div>17.9234</div>
+    </div>  -->
+  </div>
 
-		  
-	
-		
-	<style>
- *
-{
-	border: 0;
-	color: inherit;
-	font-family: inherit;
-	font-size: inherit;
-	font-style: inherit;
-	font-weight: inherit;
-	line-height: inherit;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	text-decoration: none;
-	vertical-align: top;
-}
-*[contenteditable] { border-radius: 0.25em; min-width: 1em; outline: 0; }
+</form>  
+  </div>
+  </div>
+</div>
 
-*[contenteditable] { cursor: pointer; }
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
 
-*[contenteditable]:hover, *[contenteditable]:focus, td:hover *[contenteditable], td:focus *[contenteditable], img.hover { background: #DEF; box-shadow: 0 0 1em 0.5em #DEF; }
-
-span[contenteditable] { display: inline-block; }
-
-/* heading */
-
-h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
-table { font-size: 75%; table-layout: fixed; width: 100%; }
-table { border-collapse: separate; border-spacing: 2px; }
-th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
-th, td { border-radius: 0.25em; border-style: solid; }
-th { background: #EEE; border-color: #BBB; }
-td { border-color: #DDD; }
-
-html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; padding: 0.5in; }
-html { background: #999; cursor: default; }
-
-body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
-
-
-header { margin: 0 0 3em; }
-header:after { clear: both; content: ""; display: table; }
-
-header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
-header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
-header address p { margin: 0 0 0.25em; }
-header span, header img { display: block; float: right; }
-header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
-header img { max-height: 100%; max-width: 100%; }
-header input { cursor: pointer; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; height: 100%; left: 0; opacity: 0; position: absolute; top: 0; width: 100%; }
-
-/* article */
-
-article, article address, table.meta, table.inventory { margin: 0 0 3em; }
-article:after { clear: both; content: ""; display: table; }
-article h1 { clip: rect(0 0 0 0); position: absolute; }
-
-article address { float: left; font-size: 125%; font-weight: bold; }
-
-/* table meta & balance */
-
-table.meta, table.balance { float: right; width: 36%; }
-table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
-
-/* table meta */
-
-table.meta th { width: 40%; }
-table.meta td { width: 60%; }
-
-/* table items */
-
-table.inventory { clear: both; width: 100%; }
-table.inventory th { font-weight: bold; text-align: center; }
-
-table.inventory td:nth-child(1) { width: 26%; }
-table.inventory td:nth-child(2) { width: 38%; }
-table.inventory td:nth-child(3) { text-align: right; width: 12%; }
-table.inventory td:nth-child(4) { text-align: right; width: 12%; }
-table.inventory td:nth-child(5) { text-align: right; width: 12%; }
-
-/* table balance */
-
-table.balance th, table.balance td { width: 50%; }
-table.balance td { text-align: right; }
-
-/* aside */
-
-aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
-aside h1 { border-color: #999; border-bottom-style: solid; }
-
-/* javascript */
-
-
-
-
-
-.add { margin: -2.5em 0 0; }
-
-.add:hover { background: #00ADEE; }
-
-.cut { opacity: 0; position: absolute; top: 0; left: -1.5em; }
-.cut { -webkit-transition: opacity 100ms ease-in; }
-
-tr:hover .cut { opacity: 1; }
-
-@media print {
-	* { -webkit-print-color-adjust: exact; }
-	html { background: none; padding: 0; }
-	body { box-shadow: none; margin: 0; }
-	span:empty { display: none; }
-	.add, .cut { display: none; }
+html{
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', 'sans-serif';
+  height: 100%;
+  width: 100%;
+  background: linear-gradient( to right, #eff0f1, #f4f3f5);
+  color: #fff;
 }
 
-@page { margin: 0; }
+.heading{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 2rem;
+}
 
-    </style>
+.table{
+ margin-left: 35px;
+ margin-right: 35px;
+ border: 2px solid #72ddf7;
+ font-size: 1rem;
+ text-align: left;
+}
 
+.fix-div{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: linear-gradient(to right, #72ddf7, #a8dadc);
+}
+.tbody{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height:350px;
+  overflow-y: scroll;
+  grid-gap: 0px;
+   
+}
+
+::-webkit-scrollbar{
+  width: 6px;
+}
+::-webkit-scrollbar-track{
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+
+.fix-div > div {
+    padding: 15px;
+  
+}
+.first > div{
+    padding: 10px;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+.second > div{
+    padding: 10px;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+.third > div{
+  padding: 10px;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+@media screen and (max-width: 700px){
+  .fix-div{
+    font-size: 14px;
+  }
+  .tbody{
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .fix-div{
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 400px){
+  .fix-div{
+    font-size: 10px;
+  }
+}
+</style>
 {% endblock content %}

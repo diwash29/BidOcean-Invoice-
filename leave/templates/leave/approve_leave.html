@@ -1,0 +1,320 @@
+{% extends "user_invoice/base.html" %}
+{% load crispy_forms_tags %}
+{% load user_invoice_extras %}
+{% block content %}
+<style>
+*
+{
+border: 0;
+color: inherit;
+font-family: inherit;
+font-size: inherit;
+font-style: inherit;
+font-weight: inherit;
+line-height: inherit;
+list-style: none;
+margin: 0;
+padding: 0;
+text-decoration: none;
+vertical-align: top;
+}
+.nav-link {
+
+color: white;
+}
+*[contenteditable] { border-radius: 0.25em; min-width: 1em; outline: 0; }
+
+*[contenteditable] { cursor: pointer; }
+
+[contenteditable]:hover, [contenteditable]:focus, td:hover [contenteditable], td:focus [contenteditable], img.hover { background: #DEF; box-shadow: 0 0 1em 0.5em #DEF; }
+
+span[contenteditable] { display: inline-block; }
+
+/ heading /
+
+h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+table { font-size: 75%; table-layout: fixed; width: 100%; }
+table { border-collapse: collapse; border-spacing: 2px; }
+th, td { border-width: 0px; padding: 0.5em; position: relative; }
+th, td { border-radius: 0.25em; border-style: solid; }
+th { background: #EEE; border-color: #BBB; }
+td { border-color: #DDD; }
+
+html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; padding: 0.5in; }
+html { background: #999; cursor: default; }
+
+body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
+
+
+header { margin: 0 0 3em; }
+header:after { clear: both; content: ""; display: table; }
+/*
+header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
+header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+header address p { margin: 0 0 0.25em; }
+header span, header img { display: block; float: right; }
+header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+header img { max-height: 100%; max-width: 100%; }
+header input { cursor: pointer; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; height: 100%; left: 0; opacity: 0; position: absolute; top: 0; width: 100%; } */
+
+/ article /
+
+/* article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article h1 { clip: rect(0 0 0 0); position: absolute; }
+
+article address { float: left; font-size: 125%; font-weight: bold; } */
+
+/ table meta & balance /
+
+/* table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; } */
+
+/ table meta /
+
+/* table.meta th { width: 40%; }
+table.meta td { width: 60%; } */
+
+/ table items /
+
+/* table.inventory { clear: both; width: 100%; }
+table.inventory th { font-weight: bold; text-align: center; }
+
+table.inventory td:nth-child(1) { width: 26%; }
+table.inventory td:nth-child(2) { width: 38%; }
+table.inventory td:nth-child(3) { text-align: right; width: 12%; }
+table.inventory td:nth-child(4) { text-align: right; width: 12%; }
+table.inventory td:nth-child(5) { text-align: right; width: 12%; } */
+
+/ table balance /
+
+/* table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; } */
+
+/ aside /
+
+/* aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; } */
+
+/ javascript /
+
+
+
+
+/*
+.add { margin: -2.5em 0 0; }
+
+.add:hover { background: #00ADEE; }
+
+.cut { opacity: 0; position: absolute; top: 0; left: -1.5em; }
+.cut { -webkit-transition: opacity 100ms ease-in; }
+
+tr:hover .cut { opacity: 1; } */
+/*
+@media print {
+* { -webkit-print-color-adjust: exact; }
+html { background: none; padding: 0; }
+body { box-shadow: none; margin: 0; }
+span:empty { display: none; }
+.add, .cut { display: none; }
+}
+
+@page { margin: 0; } */
+
+
+</style>
+
+	<!-- <article>
+		<legend class="border-bottom mb-4">Role List</legend>
+
+		
+
+	</article>
+			 -->
+		<div class='container'>	 
+		<table  width="100%">
+		
+			<legend class="border-bottom mb-4" style="color:rgb(15, 9, 105);text-align:center;"><b>Leave Approve/Decline list</b> </legend>
+		
+				<td align="right"></td>
+			
+		</table>
+		<form>
+			<table>
+				<tr>
+
+					
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+				
+				
+				
+					<div class="form-group w-40" >
+						<div class="input-group mb-3">
+							
+							<input type="text" name="search" style="width: 30px;height: 30px;" class="form-control border-secondary py-2" value="{{request.GET.search}}" placeholder="search">
+							<div class="input-group-append">
+								
+							 <button class="input-group-text" style="height: 30px;" type="submit" name="submitbtn" value="Search"><i class="fa fa-search"></i>
+								
+							</div>
+							<select class="form-control"style=" height:32px;color:white;background-color:teal;margin-left:20px;"  onchange="this.form.submit()" name="leave_type">
+								<option value=""><b> Select leave type</b></option>
+								<option {% if request.GET.leave_type == 'sl' %}selected{% endif %} value="sl">Sick Leave</option>
+								<option {% if request.GET.leave_type == 'cl' %}selected{% endif %} value="cl">Casual Leave</option>
+								<option {% if request.GET.leave_type == 'el' %}selected{% endif %} value="el">Earned Leave</option>
+							</select>
+							<p style="margin-left: 40px;"><b style="color: teal;"> From date :</b> <input type="date" name="from_date" value="{{request.GET.from_date}}"></p>
+								<p style="margin-left: 40px;"><b style="color: teal;"> To Date :</b><input type="date" name="to_date" value="{{request.GET.to_date}}"></p>
+						</div>	
+					
+						
+
+					<!-- <td><input type="text" name="search" value="{{request.GET.search}}" placeholder="search"></td> -->
+				
+					<!-- <td><input type="submit" name="submitbtn" value="Search"></td> -->
+				</tr>
+			</table>
+		</form>
+		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
+			<tr>
+				<th style="color: teal;"><b>Name</b>  </th>
+				<th style="color: teal;"><b>Leave Type</b></th>
+				<th style="color: teal;"><b>Begin Date</b></th>
+				<th style="color: teal;"><b> End Date</b></th>
+				<th style="color: teal;"><b> Availabe Days</b></th>
+				<th style="color: teal;"><b> Requested Days</b></th>
+				<th style="color: teal;"><b> Reasons/Comments</b></th>
+				<th style="color: teal;"><b> Leaves Remaining</b></th>
+				<th style="color: teal;"><b> Action</b></th>
+				
+			</tr>
+			{% for requests in leave_requests %}
+				<tr>
+					<td style="color: rgb(0, 0, 0);">{{requests.employee.name}}</td>
+					<td style="color: rgb(0, 0, 0);">{{requests.leave_type|upper}}</td>
+					<td style="color: rgb(0, 0, 0);">{{requests.from_date}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.to_date}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.available_days}}</td>
+					<td style="color: rgb(0, 128, 6);">{{requests.requesting_days}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.reason_msg}}</td>
+					<td style="color: rgb(0, 0, 0);;">{{requests.available_days|subtract:requests.requesting_days}}</td>
+
+					<td style="color: rgb(0, 0, 0);;"><!-- <a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a> -->
+					<!--your if code below-->
+						<!-- {% if requests.status == 0 %}<a href="#"><button  class="btn btn-success shadow-none"  >Approve</button></a><a href="#"><button  class="btn btn-danger shadow-none"  >Decline</button></a>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %} -->
+						<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+						<div class="btn-group">
+							{% if requests.status == 0 %}
+							<a href="{% url 'to_approve' requests.pk %}"><button onclick="return confirm('Are you sure want to approve?')" type="button" class="btn btn-primary">Approve</button></a>
+							<a href="{% url 'to_pending' requests.pk %}"><button onclick="return confirm('Are you sure want to decline?')" type="button" class="btn btn-danger">Decline</button></a>
+							{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %}
+							<!-- <button type="button" class="btn btn-primary">Approve</button>
+							<button type="button" class="btn btn-danger">Decline</button> -->
+						
+						  </div>
+					</td>
+
+					<style>
+						.btn-primary:hover {
+				 background-color: green !important;
+			 }
+			 
+					</style>
+			
+				</tr>
+			{% endfor %}
+		</table>
+
+		</div>
+		
+			
+			
+{% if leave_requests.paginator.num_pages > 1 %}
+
+  <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center" style="margin-bottom: 20px;" >
+    {% if leave_requests.has_previous %}
+      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ leave_requests.previous_page_number }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="#">Previous</a></li>
+    {% endif %}
+    {% if leave_requests.number|add:'-4' > 1 %}
+      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link font-weight-bolder" href="?page=1{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">1</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ leave_requests.number|add:'-5' }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">&hellip;</a></li>
+    {% endif %}
+    
+    {% for i in leave_requests.paginator.page_range %}
+      {% if leave_requests.number == i %}
+        <li class="page-item active">
+          <a class="active" style="margin-bottom: 20px;" href="?page={{ i }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{i}}</a>
+        </li>
+      {% elif i > leave_requests.number|add:'-5' and i < leave_requests.number|add:'5' %}
+        <li class="page-item {% if i == leave_requests.number %} active {% endif %}">
+          <a class="page-link font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ i }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{i}}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    
+    {% if leave_requests.paginator.num_pages > leave_requests.number|add:'4' %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ leave_requests.number|add:'5' }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">&hellip;</a></li>
+      {% if book.number != leave_requests.paginator.num_pages %}
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ leave_requests.paginator.num_pages }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{ leave_requests.paginator.num_pages }}</a></li>
+    {% endif %}
+    {% endif %}
+    {% if leave_requests.has_next %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ leave_requests.next_page_number }}{% if 'search' in query_param or 'leave_type' in query_param or 'from_date' in query_param %}&search={{query_param.search}}&leave_type={{query_param.leave_type}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
+    {% endif %}
+    
+  </ul>
+</nav>
+
+  
+  {% endif %}	
+
+		
+
+
+
+
+
+<style type="text/css">
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}	
+			
+
+ .table{
+   display: block !important;
+   overflow-x: auto !important;
+   width: 100% !important;
+ } 
+ table th {
+  width: 150px;
+}
+  
+
+ 
+</style>
+		
+
+		  
+	
+		
+
+
+{% endblock content %}

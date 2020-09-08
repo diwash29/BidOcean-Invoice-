@@ -189,12 +189,84 @@ tr:hover .cut { opacity: 1; }
 					<td style="color: rgb(0, 0, 0);;">{{employee.address}}</td>
 					<td style="color: rgb(0, 0, 0);;">{{employee.phone_no}}</td>
 					<td style="color: rgb(0, 128, 6);">{{employee.leaves}}</td>
-					<td style="color: rgb(0, 0, 0);;"><a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a></td>
+					<td style="color: rgb(0, 0, 0);;"><a href="{% url 'employee_edit' employee.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Edit</span></button></a></td>
 
 					<style>
 						.btn-primary:hover {
 				 background-color: green !important;
 			 }
+
+			 .btn-12{
+  position: relative;
+  right: 20px;
+  bottom: 20px;
+  border:none;
+  box-shadow: none;
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  -webkit-perspective: 230px;
+  perspective: 230px;
+}
+.btn-12 span {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  display: block;
+  position: absolute;
+  width: 130px;
+  height: 40px;
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  border-radius: 5px;
+  margin:0;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+.btn-12 span:nth-child(1) {
+  box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+  -webkit-transform: rotateX(90deg);
+  -moz-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+.btn-12 span:nth-child(2) {
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+.btn-12:hover span:nth-child(1) {
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+.btn-12:hover span:nth-child(2) {
+  box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+ color: transparent;
+  -webkit-transform: rotateX(-90deg);
+  -moz-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+}
+
+
 			 
 					</style>
 			
@@ -211,35 +283,35 @@ tr:hover .cut { opacity: 1; }
   <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center" style="margin-bottom: 20px;" >
     {% if employees.has_previous %}
-      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.previous_page_number }}">Previous</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.previous_page_number }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">Previous</a></li>
     {% else %}
       <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="#">Previous</a></li>
     {% endif %}
     {% if employees.number|add:'-4' > 1 %}
-      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
-      <li><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.number|add:'-5' }}">&hellip;</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;" ><a class="page-link font-weight-bolder" href="?page=1{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role.}}{% endif %}">1</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ employees.number|add:'-5' }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">&hellip;</a></li>
     {% endif %}
     
     {% for i in employees.paginator.page_range %}
       {% if employees.number == i %}
         <li class="page-item active">
-          <a class="active" style="margin-bottom: 20px;" href="?page={{ i }}">{{i}}</a>
+          <a class="active" style="margin-bottom: 20px;" href="?page={{ i }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">{{i}}</a>
         </li>
       {% elif i > employees.number|add:'-5' and i < employees.number|add:'5' %}
         <li class="page-item {% if i == employees.number %} active {% endif %}">
-          <a class="page-link font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ i }}">{{i}}</a>
+          <a class="page-link font-weight-bolder" style="margin-bottom: 20px;" href="?page={{ i }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">{{i}}</a>
         </li>
       {% endif %}
     {% endfor %}
     
     {% if employees.paginator.num_pages > employees.number|add:'4' %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.number|add:'5' }}">&hellip;</a></li>
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.number|add:'5' }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">&hellip;</a></li>
       {% if book.number != employees.paginator.num_pages %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.paginator.num_pages }}">{{ employees.paginator.num_pages }}</a></li>
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.paginator.num_pages }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">{{ employees.paginator.num_pages }}</a></li>
     {% endif %}
     {% endif %}
     {% if employees.has_next %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.next_page_number }}">Next</a></li>
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ employees.next_page_number }}{% if 'search' in query_param or 'role' in query_param %}&search={{query_param.search}}&role={{query_param.role}}{% endif %}">Next</a></li>
     {% else %}
       <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
     {% endif %}
