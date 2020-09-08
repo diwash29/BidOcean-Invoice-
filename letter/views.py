@@ -31,7 +31,7 @@ def createEmployee(request):
 		)
 		form.save()
 		messages.success(request,'Employee Just Added')
-		return HttpResponseRedirect(reverse('letter:employee-list'))
+		return HttpResponseRedirect(reverse('letter:joinee_list'))
 	
 	return render(request,'letter/add_employee.html', {'role':rolename, "employee":employee})
 
