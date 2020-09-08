@@ -64,16 +64,3 @@ def convertToWords(n):
     out += numToWords((n % 100), ""); 
   
     return out; 
-  
-# Driver code 
-  
-# long handles upto 9 digit no 
-# change to unsigned long long  
-# int to handle more digit number 
-
-  
-# convert given number in words 
-
-# print(convertToWords(480000)); 
-  
-# This code is contributed by mits 

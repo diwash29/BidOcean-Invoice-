@@ -1,14 +1,58 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect,reverse
+from django.core.paginator import Paginator
 from django.views.generic import View
-import math
+from django.contrib import messages
 import datetime
+import math
+
 from .converter import convertToWords
+from .models import EmployeeDetail
 from .utils import *
+
 # Create your views here.
 
-def generate_pdf(request):
-	salary_annually = 480000
+def createEmployee(request):
+	if request.method=="POST":
+		form = EmployeeDetail.objects.create(
+			first_name 		= request.POST['first_name'],
+			last_name 		= request.POST['last_name'],
+			designation 	= request.POST['designation'],
+			email 			= request.POST['email'],
+			phone 			= request.POST['phone'],
+			joining_date 	= request.POST['joining_date'],
+			ctc 			= request.POST['ctc'],
+		)
+		form.save()
+		messages.success(request,'Employee Just Added')
+		return HttpResponseRedirect(reverse('letter:employee-list'))
+	
+	return render(request,'letter/add_employee.html')
+
+def employeeList(request):
+	employee_list = EmployeeDetail.objects.all()
+
+	firstName = request.POST.get('first_name')
+	lastName = request.POST.get('last_name')
+
+	if firstName != '' and firstName is not None:
+		employee_list = EmployeeDetail.objects.filter(first_name__icontains = firstName)
+
+	if lastName != '' and lastName is not None:
+		employee_list = EmployeeDetail.objects.filter(last_name__icontains = lastName)
+	
+	paginator = Paginator(employee_list, 2)
+	page = request.GET.get('page')
+	employee_list = paginator.get_page(page)
+
+	context = {
+		'emps':employee_list,
+	}
+	return render(request,'letter/employee_list.html',context)
+
+
+def generatePDF(request,pk):
+	employee = EmployeeDetail.objects.get(id=pk)
+	salary_annually = employee.ctc
 	words_salary = convertToWords(salary_annually)
 
 	basic_annual = get_basic_annually(salary_annually)
@@ -23,18 +67,20 @@ def generate_pdf(request):
 		house_rent_al_annual,city_al_annual,
 		conveyance_al_annual,children_education_al_annual,
 		medical_al_annual,special_al_annual)
-	
+
 	pf_annually = get_pf_annually(salary_annually)
+	
+	#more tds conditions need to be added.
 	tds_annually = get_tds_annually(salary_annually)
 
 	net_payable_salary_annually = get_net_salary_annually(gross_salary_annually,pf_annually,tds_annually)
 
 	context = {
-		'name':'Name',
+		'name':employee,
 		'date':datetime.datetime.now().date,
-		'designation':'Designation',
-		'joining_date':'Date of Joining',
-		'ctc':'Amount CTC',
+		'designation':employee.designation,
+		'joining_date':employee.joining_date,
+		'ctc':salary_annually,
 
 		'basic_annual':basic_annual,
 		'house_rent_allowance_annual':house_rent_al_annual,
@@ -64,4 +110,4 @@ def generate_pdf(request):
 		'net_payable_salary_monthly':math.floor(net_payable_salary_annually/12),
 
 	}
-	return render(request,'letter/invoice.html',context)
+	return render(request,'letter/offer_letter.html',context)

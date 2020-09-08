@@ -10,6 +10,8 @@
       <div style="margin-left: 100px;">Rate</div>
    
     </div>
+<form method="post">    
+	{% csrf_token %}
     <div class='tbody'>
       <div class='first'>
         <div>Base ir</div>
@@ -51,48 +53,47 @@
         <div>Incorrect scope</div>
         <div>Wrong text format</div>
         <div>Auth day off</div>
-        <div>Unauth day off</div>
-       
+        <div>Unauth day off</div>       
       </div>
     <div class='second' style="margin-left: 100px;">
-      <input name="Base ir" style="margin-bottom: 15px;margin-top: 10px;" required>
-      <input name="Base br" style="margin-bottom: 15px;" required>
-      <input name="Total pay" style="margin-bottom: 15px;" required> 
-      <input name="Difficultnp" style="margin-bottom: 15px;" required>    
-      <input name="Extra hours" style="margin-bottom: 15px;"required> 
-      <input name="File attach" style="margin-bottom: 15px;"required> 
-      <input name="Add auth days" style="margin-bottom: 15px;"required> 
-      <input name="New entities added" style="margin-bottom: 15px;"required> 
-      <input name="Extra days" style="margin-bottom: 15px;"required> 
-      <input name="Duplicate entities" style="margin-bottom: 15px;"required> 
-      <input name="Errors" style="margin-bottom: 15px;"required> 
-      <input name="Fines" style="margin-bottom: 15px;"required> 
-      <input name="Duplicate solic" style="margin-bottom: 15px;"required> 
-      <input name="Entity cont wrong" style="margin-bottom: 15px;"required> 
-      <input name="False referal" style="margin-bottom: 15px;"required> 
-      <input name="Fraudsolic update" style="margin-bottom: 15px;"required> 
-      <input name="Source ret wo res" style="margin-bottom: 15px;"required> 
-      <input name="Missed bond" style="margin-bottom: 15px;"required> 
-      <input name="Missed categories" style="margin-bottom: 15px;"required> 
-      <input name="Missed solic src" style="margin-bottom: 15px;"required> 
-      <input name="Missed file" style="margin-bottom: 15px;"required> 
-      <input name="Missed link" style="margin-bottom: 15px;"required> 
-      <input name="Missed term" style="margin-bottom: 15px;"required> 
-      <input name="Not posted lead" style="margin-bottom: 15px;"required> 
-      <input name="Other error" style="margin-bottom: 15px;"required> 
-      <input name="Other serious err" style="margin-bottom: 15px;"required> 
-      <input name="Refreshing wds" style="margin-bottom: 15px;"required> 
-      <input name="Wage not selected" style="margin-bottom: 15px;"required> 
-      <input name="Skipped solic" style="margin-bottom: 15px;"required> 
-      <input name="Source ret wo note" style="margin-bottom: 15px;"required> 
-      <input name="Unjustified absence" style="margin-bottom: 15px;"required> 
-      <input name="Wrong pre bid" style="margin-bottom: 15px;"required> 
-      <input name="Wrong categories" style="margin-bottom: 15px;"required> 
-      <input name="Wrong geo location" style="margin-bottom: 15px;"required> 
-      <input name="Incorrect scope" style="margin-bottom: 15px;"required> 
-      <input name="Wrong text format" style="margin-bottom: 15px;"required> 
-      <input name="Auth day off" style="margin-bottom: 15px;"required> 
-      <input name="Unauth day off" style="margin-bottom: 15px;"required> 
+      <input name="base_ir" style="margin-bottom: 15px;margin-top: 10px;" required>
+      <input name="base_br" style="margin-bottom: 15px;" required>
+      <input name="total_pay" style="margin-bottom: 15px;" required> 
+      <input name="difficultnp" style="margin-bottom: 15px;" required>    
+      <input name="extra_hours" style="margin-bottom: 15px;"required> 
+      <input name="file_attach" style="margin-bottom: 15px;"required> 
+      <input name="add_auth_days" style="margin-bottom: 15px;"required> 
+      <input name="new_entities_added" style="margin-bottom: 15px;"required> 
+      <input name="extra_days" style="margin-bottom: 15px;"required> 
+      <input name="duplicate_entities" style="margin-bottom: 15px;"required> 
+      <input name="errors" style="margin-bottom: 15px;"required> 
+      <input name="fines" style="margin-bottom: 15px;"required> 
+      <input name="duplicate_solic" style="margin-bottom: 15px;"required> 
+      <input name="entity_cont_wrong" style="margin-bottom: 15px;"required> 
+      <input name="false_referal" style="margin-bottom: 15px;"required> 
+      <input name="fraudsolic_update" style="margin-bottom: 15px;"required> 
+      <input name="source_ret_wo_res" style="margin-bottom: 15px;"required> 
+      <input name="missed_bond" style="margin-bottom: 15px;"required> 
+      <input name="missed_categories" style="margin-bottom: 15px;"required> 
+      <input name="missed_solic_src" style="margin-bottom: 15px;"required> 
+      <input name="missed_file" style="margin-bottom: 15px;"required> 
+      <input name="missed_link" style="margin-bottom: 15px;"required> 
+      <input name="missed_term" style="margin-bottom: 15px;"required> 
+      <input name="not_posted_lead" style="margin-bottom: 15px;"required> 
+      <input name="other_error" style="margin-bottom: 15px;"required> 
+      <input name="other_serious_err" style="margin-bottom: 15px;"required> 
+      <input name="refreshing_wds" style="margin-bottom: 15px;"required> 
+      <input name="wage_not_selected" style="margin-bottom: 15px;"required> 
+      <input name="skipped_solic" style="margin-bottom: 15px;"required> 
+      <input name="source_ret_wo_note" style="margin-bottom: 15px;"required> 
+      <input name="unjustified_absence" style="margin-bottom: 15px;"required> 
+      <input name="wrong_pre_bid" style="margin-bottom: 15px;"required> 
+      <input name="wrong_categories" style="margin-bottom: 15px;"required> 
+      <input name="wrong_geo_location" style="margin-bottom: 15px;"required> 
+      <input name="incorrect_scope" style="margin-bottom: 15px;"required> 
+      <input name="wrong_text_format" style="margin-bottom: 15px;"required> 
+      <input name="auth_day_off" style="margin-bottom: 15px;"required> 
+      <input name="unauth_day_off" style="margin-bottom: 15px;"required> 
     </div>
     <!-- <div class='third'>
       <div>117.5697</div> 
@@ -110,6 +111,8 @@
       <div>17.9234</div>
     </div>  -->
   </div>
+
+</form>  
   </div>
   </div>
 </div>

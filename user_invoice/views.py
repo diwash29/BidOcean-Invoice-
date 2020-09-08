@@ -118,7 +118,14 @@ class RateAddView(TemplateView):
         print(request.POST)
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
-        # try:
+        try:
+            Rate.objects.all().update(is_approved=0)
+            rate = Rate.objects.create(base_ir=request.POST['base_ir'], base_br=request.POST['base_br'], total_pay=request.POST['total_pay'], difficultnp=request.POST['difficultnp'], extra_hours=request.POST['extra_hours'], file_attach=request.POST['file_attach'], add_auth_days=request.POST['add_auth_days'], new_entities_added=request.POST['new_entities_added'], extra_days=request.POST['extra_days'], duplicate_entities=request.POST['duplicate_entities'], errors=request.POST['errors'], fines=request.POST['fines'], duplicate_solic=request.POST['duplicate_solic'], entity_cont_wrong= request.POST['entity_cont_wrong'], false_referal=request.POST['false_referal'], fraudsolic_update=request.POST['fraudsolic_update'], source_ret_wo_res=request.POST['source_ret_wo_res'], missed_bond=request.POST['missed_bond'], missed_categories=request.POST['missed_categories'], missed_solic_src=request.POST['missed_solic_src'], missed_file=request.POST['missed_file'], missed_link=request.POST['missed_link'], missed_term=request.POST['missed_term'], not_posted_lead=request.POST['not_posted_lead'], other_error=request.POST['other_error'], other_serious_err=request.POST['other_serious_err'], refreshing_wds=request.POST['refreshing_wds'], wage_not_selected=request.POST['wage_not_selected'], skipped_solic=request.POST['skipped_solic'], source_ret_wo_note=request.POST['source_ret_wo_note'], unjustified_absence=request.POST['unjustified_absence'], wrong_pre_bid=request.POST['wrong_pre_bid'], wrong_categories=request.POST['wrong_categories'], wrong_geo_location=request.POST['wrong_geo_location'], incorrect_scope=request.POST['incorrect_scope'], wrong_text_format=request.POST['wrong_text_format'], auth_day_off=request.POST['auth_day_off'], unauth_day_off=request.POST['unauth_day_off'], added_by=employee, is_approved=1)
+            messages.success(request, "Successfully added rate")   
+            return HttpResponseRedirect('/rate-add/')
+        except:
+            print("error")
+            messages.error(request, "There was a problem adding rate")
         return HttpResponseRedirect('/rate-add/')
 
 
