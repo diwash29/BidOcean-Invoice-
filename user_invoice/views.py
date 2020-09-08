@@ -102,7 +102,10 @@ class RoleEditView(AdminOrHRPanelMixin,TemplateView):
             })
 
 
-class RateAddView(TemplateView):
+# class RateDisplayView(AdminOrHRPanelMixin,TemplateView):
+#     template_name
+
+class RateAddView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/add_rate.html'
     def get(self, request):
         # rate_form = RateAddForm()
