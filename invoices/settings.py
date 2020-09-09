@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'user_invoice.apps.UserInvoiceConfig',
     'leave.apps.LeaveConfig',
     'letter.apps.LetterConfig',
+    'manage_user.apps.ManageUserConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
