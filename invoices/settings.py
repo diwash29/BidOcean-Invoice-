@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'user_invoice.apps.UserInvoiceConfig',
+    'account_management.apps.AccountManagementConfig',
     'leave.apps.LeaveConfig',
     'letter.apps.LetterConfig',
     'manage_user.apps.ManageUserConfig',
