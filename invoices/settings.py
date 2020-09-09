@@ -146,3 +146,4 @@ STATICFILES_DIR = [
 CRISPY_TEMPLATE_PACK='bootstrap4'
 LOGIN_REDIRECT_URL='user_invoice-home'
 LOGIN_URL='login'
+AUTH_USER_MODEL = 'manage_user.Userdetail'

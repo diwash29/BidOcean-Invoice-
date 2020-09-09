@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from manage_user.models import Userdetail
 import pytz
 
 # Create your models here.
@@ -22,7 +23,7 @@ class Employee(models.Model):
 	emp_id   = models.CharField(max_length=300, null=True, blank=True)
 	phone_no = models.CharField(max_length=300)
 	leaves   = models.IntegerField()
-	auth_tbl = models.OneToOneField(User, on_delete=models.CASCADE)
+	auth_tbl = models.OneToOneField(Userdetail, on_delete=models.CASCADE)
 	added_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):

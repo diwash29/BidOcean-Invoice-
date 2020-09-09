@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import EmployeeForm, RoleAddForm, RateAddForm
 from django.contrib.auth.models import User
+from manage_user.models import Userdetail
 from .mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
@@ -286,7 +287,7 @@ class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
 class EmployeeAddView(AdminPanelMixin,TemplateView):
     template_name = 'user_invoice/add_employee.html'
     def get(self, request, user_id):
-        user          = User.objects.get(pk=user_id)
+        user          = Userdetail.objects.get(pk=user_id)
         roles         = Role.objects.all()
         try:
         	rolename = Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
@@ -304,7 +305,7 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request, user_id):
-        user     = User.objects.get(pk=user_id)
+        user     = Userdetail.objects.get(pk=user_id)
         name     = request.POST['name']
         role     = Role.objects.get(pk=request.POST['role'])
         salary   = request.POST['salary']
