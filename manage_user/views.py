@@ -17,8 +17,12 @@ from django.http import JsonResponse
 class ManageUser(AdminOrHRPanelMixin,TemplateView):
     template_name = 'manage_user/user_list.html'
     def get(self, request):
+        employee = Employee.objects.get(auth_tbl=self.request.user)
+        role     = employee.role.name.lower()
+        users    = Userdetail.objects.all()
         context = {
-            # 'roles': Role.objects.all(),
+            'role'  : role,
+            'users' : users
             # 'title': 'Role list',
             # 'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }

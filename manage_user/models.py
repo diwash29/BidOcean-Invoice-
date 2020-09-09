@@ -16,20 +16,17 @@ from django.utils.timezone import now
 #         return self.name
     
 class Userdetail(AbstractBaseUser, PermissionsMixin):
-    username  = models.CharField(max_length = 30, unique=True,null=True)
-    firstname = models.CharField(max_length = 30,null=True)
-    lastname  = models.CharField(max_length = 30,null=True,blank=True)
-    password  = models.TextField()
-    phone     = models.CharField(max_length=200,null=True)
-    #favorite_genres = models.ManyToManyField(Genre)
-    email=models.CharField(max_length=200,null=True)
-    #usertype = models.ForeignKey('Usertype', models.SET_NULL, blank=True, null=True, )
-    #profile_pic=models.FileField(upload_to='profile/',default='profile.png',blank=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    USERNAME_FIELD = 'username'
+    username        = models.CharField(max_length = 30, unique=True,null=True)
+    firstname       = models.CharField(max_length = 30,null=True)
+    lastname        = models.CharField(max_length = 30,null=True,blank=True)
+    password        = models.TextField()
+    phone           = models.CharField(max_length=200,null=True)
+    email           = models.CharField(max_length=200,null=True)
+    is_staff        = models.BooleanField(default=False)
+    is_active       = models.BooleanField(default=True)
+    USERNAME_FIELD  = 'username'
     REQUIRED_FIELDS = []
-    objects = CustomUserManager()
+    objects         = CustomUserManager()
 
     def __str__(self):
         return self.username
