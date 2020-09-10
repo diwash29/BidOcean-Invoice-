@@ -27,3 +27,34 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
             # 'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
+    def post(self, request):
+        print(request.POST)
+        try:
+            delete_id = request.POST['delete']
+            user = Userdetail.objects.get(pk=delete_id)
+            user.delete()
+            messages.success(request, "Successfully deleted user") 
+            return HttpResponseRedirect('/manage_user/')	
+        except:                        	 
+            if request.POST['hidden_user'] != "":
+                user           = Userdetail.objects.get(pk = request.POST['hidden_user'])
+                user.username  = request.POST['username']
+                user.firstname = request.POST['firstname']
+                user.lastname  = request.POST['lastname']
+                user.phone     = request.POST['phone']
+                user.email     = request.POST['email']
+                user.address   = request.POST['address']
+                user.save()
+            else:
+                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'])
+                user.set_password(request.POST["password"])
+                user.save()
+            return HttpResponseRedirect('/manage_user/')	
+
+
+def ajax_user_data(request):
+    edit_id = request.GET.get('edit_id', None)
+    user    = Userdetail.objects.get(pk=edit_id)
+    
+    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address }
+    return JsonResponse(data)

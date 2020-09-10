@@ -22,6 +22,7 @@ class Userdetail(AbstractBaseUser, PermissionsMixin):
     password        = models.TextField()
     phone           = models.CharField(max_length=200,null=True)
     email           = models.CharField(max_length=200,null=True)
+    address         = models.CharField(max_length=300,null=True)
     is_staff        = models.BooleanField(default=False)
     is_active       = models.BooleanField(default=True)
     USERNAME_FIELD  = 'username'

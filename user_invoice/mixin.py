@@ -8,7 +8,7 @@ class AdminPanelMixin(LoginRequiredMixin, UserPassesTestMixin):
     login_url = 'login'
 
     def test_func(self):
-        return self.request.user.is_staff or self.request.user.is_superuser
+        return self.request.user.is_staff or self.request.user.is_active
 
 
 class AdminOrHRPanelMixin(LoginRequiredMixin, UserPassesTestMixin):
