@@ -26,111 +26,50 @@
 					</div>
 					<div class="col-sm-6">
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add Account Detail</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+						<!-- <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>	 -->					
 					</div>
                 </div>
             </div>
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-						<th>
+						<!-- <th>
 							<span class="custom-checkbox">
 								<input type="checkbox" id="selectAll">
 								<label for="selectAll"></label>
 							</span>
-						</th>
+						</th> -->
                         <th>Name</th>
                         <th>Bank</th>
 						<th>Account Number</th>
-                        <th>Amount</th>
+                        <th>Other bank IFSC</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                	{% for account in accounts %}
                     <tr>
-						<td>
+						<!-- <td>
 							<span class="custom-checkbox">
 								<input type="checkbox" id="checkbox1" name="options[]" value="1">
 								<label for="checkbox1"></label>
 							</span>
-						</td>
-                        <td>Thomas Hardy</td>
-                        <td>thomashardy@mail.com</td>
-						<td>89 Chiaroscuro Rd, Portland, USA</td>
-                        <td>(171) 555-2222</td>
+						</td> -->
+                        <td>{{account.employee.name}}</td>
+                        <td>{% if account.bank == 'others' %}{{account.other_bank|upper}}{% else %}{{account.bank|upper}}{% endif %}</td>
+						<td>{{account.acc_no}}</td>
+                        <td>{{account.ifsc_other}}</td>
                         <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="#editEmployeeModal" alt="{{account.pk}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteEmployeeModal" alt="{{account.pk}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-						</td>
-                        <td>Dominique Perrier</td>
-                        <td>dominiqueperrier@mail.com</td>
-						<td>Obere Str. 57, Berlin, Germany</td>
-                        <td>(313) 555-5735</td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-						</td>
-                        <td>Maria Anders</td>
-                        <td>mariaanders@mail.com</td>
-						<td>25, rue Lauriston, Paris, France</td>
-                        <td>(503) 555-9931</td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox4" name="options[]" value="1">
-								<label for="checkbox4"></label>
-							</span>
-						</td>
-                        <td>Fran Wilson</td>
-                        <td>franwilson@mail.com</td>
-						<td>C/ Araquil, 67, Madrid, Spain</td>
-                        <td>(204) 619-5731</td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>					
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox5" name="options[]" value="1">
-								<label for="checkbox5"></label>
-							</span>
-						</td>
-                        <td>Martin Blank</td>
-                        <td>martinblank@mail.com</td>
-						<td>Via Monte Bianco 34, Turin, Italy</td>
-                        <td>(480) 631-2097</td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr> 
+                    {% endfor %}
+                     
                 </tbody>
             </table>
 			<div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                <!-- <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
                 <ul class="pagination">
                     <li class="page-item disabled"><a href="#">Previous</a></li>
                     <li class="page-item"><a href="#" class="page-link">1</a></li>
@@ -139,7 +78,49 @@
                     <li class="page-item"><a href="#" class="page-link">4</a></li>
                     <li class="page-item"><a href="#" class="page-link">5</a></li>
                     <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+                </ul> -->
+                   {% if accounts.paginator.num_pages > 1 %}
+
+  <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if accounts.has_previous %}
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.previous_page_number }}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
+    {% endif %}
+    {% if accounts.number|add:'-4' > 1 %}
+      <li class="text-dark page-item"><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.number|add:'-5' }}">&hellip;</a></li>
+    {% endif %}
+    
+    {% for i in accounts.paginator.page_range %}
+      {% if accounts.number == i %}
+        <li class="page-item active">
+          <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
+        </li>
+      {% elif i > accounts.number|add:'-5' and i < accounts.number|add:'5' %}
+        <li class="page-item {% if i == accounts.number %} active {% endif %}">
+          <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    
+    {% if accounts.paginator.num_pages > accounts.number|add:'4' %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.number|add:'5' }}">&hellip;</a></li>
+      {% if book.number != accounts.paginator.num_pages %}
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.paginator.num_pages }}">{{ accounts.paginator.num_pages }}</a></li>
+    {% endif %}
+    {% endif %}
+    {% if accounts.has_next %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
+    {% endif %}
+    
+  </ul>
+</nav>
+  
+  {% endif %}
             </div>
         </div>
     </div>
@@ -147,33 +128,46 @@
 	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content" style="margin-top: 200px;">
-				<form>
+				<form method="post">
+					{% csrf_token %}
+					<input type="hidden" name="hidden_account" value="">
 					<div class="modal-header">						
 						<h4 class="modal-title">Add Account Detail</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
-							<label>Full Name</label>
-							<input type="text" name="fullname" style="font-size: 17px;" class="form-control" required>
+							<label>Employee</label>
+							<select name="employee" class="form-control" required="" style="font-size: 14px;">
+								<option value="">Select Employee</option>
+								{% for emp in employee_list %}
+									<option value="{{emp.id}}">{{emp.name}}</option>
+								{% endfor %}
+							</select>
+							<!-- <input type="text" name="fullname" style="font-size: 17px;" class="form-control" required> -->
 						</div>
                   <div class="form-group">
                      <label for="bank">Bank</label>
-                  <select id="cars" name="cars" class="form-control" style="font-size: 14px;" >
-                     <option value="volvo">Axis</option>
-                     <option value="saab">HDFC</option>
-                     <option value="mercedes">Others</option>
+                  <select id="bank" name="bank" class="form-control" style="font-size: 14px;" >
+                     <option value="axis">Axis</option>
+                     <option value="hdfc">HDFC</option>
+                     <option value="others">Others</option>
                      
                    </select>
                   </div>
 						<div class="form-group">
 							<label>Account Number</label>
-							<input type="text" name="account_number" style="font-size: 17px;" class="form-control"  required>
+							<input type="text" name="acc_no" style="font-size: 17px;" class="form-control"  required>
 						</div>	
 						
 						<div class="form-group">
+							<label>Bank(Incase of others selected in Bank)</label>
+							<input type="text" name="other_bank" style="font-size: 17px;" class="form-control" >
+						</div>	
+
+						<div class="form-group">
 							<label>IFSC Code(Incase of others selected in Bank)</label>
-							<input type="text" name="account_number" style="font-size: 17px;" class="form-control"  required>
+							<input type="text" name="ifsc_other" style="font-size: 17px;" class="form-control" >
 						</div>	
 									
 																
@@ -190,40 +184,53 @@
 	<div id="editEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content" style="margin-top: 200px;">
-				<form>
+				<form method="post">
+					{% csrf_token %}
+					<input type="hidden" id="editid" name="hidden_account" value="">
 					<div class="modal-header">						
 						<h4 class="modal-title">Add Account Detail</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
-							<label>Full Name</label>
-							<input type="text" name="fullname" style="font-size: 17px;" class="form-control" required>
+							<label>Employee</label>
+							<select name="employee" id="editemployee" class="form-control" required="" style="font-size: 14px;">
+								<option value="">Select Employee</option>
+								{% for emp in employee_list %}
+									<option value="{{emp.id}}">{{emp.name}}</option>
+								{% endfor %}
+							</select>
+							<!-- <input type="text" name="fullname" style="font-size: 17px;" class="form-control" required> -->
 						</div>
                   <div class="form-group">
                      <label for="bank">Bank</label>
-                  <select id="cars" name="cars" class="form-control" style="font-size: 14px;" >
-                     <option value="volvo">Axis</option>
-                     <option value="saab">HDFC</option>
-                     <option value="mercedes">Others</option>
+                  <select id="editbank" name="bank" class="form-control" style="font-size: 14px;" >
+                     <option value="axis">Axis</option>
+                     <option value="hdfc">HDFC</option>
+                     <option value="others">Others</option>
                      
                    </select>
                   </div>
 						<div class="form-group">
 							<label>Account Number</label>
-							<input type="text" name="account_number" style="font-size: 17px;" class="form-control"  required>
+							<input type="text" id="editacc_no" name="acc_no" style="font-size: 17px;" class="form-control"  required>
 						</div>	
 						
 						<div class="form-group">
+							<label>Bank(Incase of others selected in Bank)</label>
+							<input type="text" id="editother_bank" name="other_bank" style="font-size: 17px;" class="form-control" >
+						</div>	
+
+						<div class="form-group">
 							<label>IFSC Code(Incase of others selected in Bank)</label>
-							<input type="text" name="account_number" style="font-size: 17px;" class="form-control"  required>
+							<input type="text" id="editifsc_other" name="ifsc_other" style="font-size: 17px;" class="form-control" >
 						</div>	
 									
 																
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-success" value="Add">
+						<input type="submit" class="btn btn-success" value="Edit">
 					</div>
 				</form>
 			</div>
@@ -233,9 +240,11 @@
 	<div id="deleteEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content" style="margin-top: 100px;">
-				<form>
+				<form method="post">
+					{% csrf_token %}
+					<input type="hidden" id="deleteaccount" name="delete" value="">
 					<div class="modal-header">						
-						<h4 class="modal-title">Delete Account Record</h4>
+						<h4 class="modal-title">Delete Employee</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
@@ -506,6 +515,7 @@
     color:white;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	var password = document.getElementById("password")
   , confirm_password = document.getElementById("confirm_password");
@@ -520,5 +530,32 @@ function validatePassword(){
 
 password.onchange = validatePassword;
 confirm_password.onkeyup = validatePassword;
+</script>
+<script type="text/javascript">
+	$(".edit").click(function () {
+    	var edit_id = $(this).attr('alt');
+    $.ajax({
+      url  : '{% url "edit_account_data" %}',
+      data : {
+            edit_id  : edit_id,
+          },
+      type : 'GET',
+      dataType: 'json',
+      success: function (data) {
+        $("#editid").val(data.id)
+        $("#editemployee").val(data.employee)
+        $("#editacc_no").val(data.acc_no)
+        $("#editbank").val(data.bank)
+        $("#editother_bank").val(data.other_bank)
+        $("#editifsc_other").val(data.ifsc_other)
+      }
+    });
+
+    });
+
+    $(".delete").click(function(){
+    	var delete_id = $(this).attr('alt');
+    	$("#deleteaccount").val(delete_id)
+    })
 </script>
 {% endblock content %}

@@ -20,11 +20,12 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
         employee = Employee.objects.get(auth_tbl=self.request.user)
         role     = employee.role.name.lower()
         users    = Userdetail.objects.all()
+        paginator        = Paginator(users,10)
+        page             = request.GET.get('page')
+        paginatedcontent = paginator.get_page(page)
         context = {
             'role'  : role,
-            'users' : users
-            # 'title': 'Role list',
-            # 'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+            'users' : paginatedcontent
         }
         return render(request, self.template_name, context)
     def post(self, request):
@@ -45,10 +46,12 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
                 user.email     = request.POST['email']
                 user.address   = request.POST['address']
                 user.save()
+                messages.success(request, "Successfully edited user")
             else:
                 user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'])
                 user.set_password(request.POST["password"])
                 user.save()
+                messages.success(request, "Successfully added user")
             return HttpResponseRedirect('/manage_user/')	
 
 
