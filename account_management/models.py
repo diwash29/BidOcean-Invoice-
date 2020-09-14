@@ -12,7 +12,7 @@ class AccountDetails(models.Model):
     bank       = models.CharField(max_length=200)
     other_bank = models.CharField(max_length=300, null=True, blank=True)
     ifsc_other = models.CharField(max_length=300, null=True, blank=True)
-    employee   = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    employee   = models.ForeignKey(Employee,on_delete=models.CASCADE, related_name='employee_accounts')
     created_at = models.DateTimeField(auto_now_add=True)
     status     = models.SmallIntegerField(default=1)
 
