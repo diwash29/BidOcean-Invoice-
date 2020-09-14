@@ -483,7 +483,7 @@ class IrEditView(IRPanelMixin,TemplateView):
             return HttpResponseRedirect('/invoice-list/')
         except:
             print("error")
-            messages.error(request, "There was a problem adding invoice")
+            messages.error(request, "There was a problem editing invoice")
             return HttpResponseRedirect('/ir/') 
 
 
@@ -582,11 +582,11 @@ class BrEditView(BRPanelMixin,TemplateView):
             invoice.total_deduction        = request.POST['total_deduction']
             invoice.total_payable          = request.POST['total_payable']
             invoice.save()
-            messages.success(request, "Successfully added invoice")   
+            messages.success(request, "Successfully edited invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
             print("error")
-            messages.error(request, "There was a problem adding invoice")
+            messages.error(request, "There was a problem editing invoice")
             return HttpResponseRedirect('/br/')   
 
 
@@ -740,11 +740,11 @@ class FixedEditView(FixedPanelMixin, TemplateView):
             invoice.total_deduction                    = request.POST['total_deduction']
             invoice.total_payable                      = request.POST['total_payable']
             invoice.save()
-            messages.success(request, "Successfully added invoice")   
+            messages.success(request, "Successfully edited invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
             print("error")
-            messages.error(request, "There was a problem adding invoice")
+            messages.error(request, "There was a problem editing invoice")
             return HttpResponseRedirect('/fixed/')
 
 
