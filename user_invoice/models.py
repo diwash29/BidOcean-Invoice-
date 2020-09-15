@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from manage_user.models import Userdetail
+# from account_management.models import AccountDetails
 import pytz
 
 # Create your models here.
@@ -115,6 +116,8 @@ class Invoice(models.Model):
 	duplicate_entities                 = models.CharField(max_length=200, default=0, blank=True)
 	errors                             = models.CharField(max_length=200, default=0, blank=True)
 	fines                              = models.CharField(max_length=200, default=0, blank=True)
+
+	bank_account                       = models.ForeignKey('account_management.AccountDetails', on_delete=models.SET_NULL, null=True, blank=True)
 
 	#ir and fixed invoice
 	duplicate_solic                    = models.CharField(max_length=200, default=0, blank=True)

@@ -8,11 +8,14 @@ from django.http import HttpResponseRedirect
 from .forms import EmployeeForm, RoleAddForm, RateAddForm
 from django.contrib.auth.models import User
 from manage_user.models import Userdetail
+from account_management.models import AccountDetails
+from leave.models import LeaveRequest
 from .mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 from leave.models import LeaveBalance
+from .utils import get_first_n_last_day, count_leaves, check_invoice
 # Create your views here.
 
 # 3650-8243-248
@@ -378,6 +381,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         search        = request.GET.get('search', None)
         from_date     = request.GET.get('from_date', None)
         to_date       = request.GET.get('to_date', None)
+        bank          = request.GET.get('bank',None)
         
         query_param = {}  
         if search is not None and search is not '':
@@ -390,11 +394,16 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
             to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
             from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
             invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+        if bank is not None and bank is not '':
+            query_param['bank'] = bank
+            invoice = invoice.filter(bank_account__bank__iexact=bank)
+
         invoice = invoice.order_by('-invoice_date')    
 
         paginator        = Paginator(invoice,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)	
+        print(query_param)
         context = {
             'query_param' : query_param,
             'invoices'    : paginatedcontent,
@@ -423,11 +432,15 @@ class IrEditView(IRPanelMixin,TemplateView):
     def post(self, request, pk):
         invoice = Invoice.objects.get(pk=pk)
         try:
+            bank_account = None
+            if 'bank_account' in request.POST:
+                bank_account = AccountDetails.objects.get(pk=request.POST['bank_account'])
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()   
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
             invoice.invoice_date                       = invoice_date
             invoice.monthdate                          = monthdate
             invoice.emp_type                           = request.POST['emp_type']
+            invoice.bank_account                       = bank_account
             invoice.additional_auth_days               = request.POST['additional_auth_days']
             invoice.wds_source_checked_completely      = request.POST['wds_source_checked_completely']
             invoice.new_solicitation_entered_correctly = request.POST['new_solicitation_entered_correctly']
@@ -470,7 +483,7 @@ class IrEditView(IRPanelMixin,TemplateView):
             return HttpResponseRedirect('/invoice-list/')
         except:
             print("error")
-            messages.error(request, "There was a problem adding invoice")
+            messages.error(request, "There was a problem editing invoice")
             return HttpResponseRedirect('/ir/') 
 
 
@@ -489,16 +502,22 @@ class IrAddView(IRPanelMixin,TemplateView):
     def get(self, request):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
-        rolename      = employee.role.name.lower()
-        rates         = Rate.objects.get(is_approved=1)
-        context = {
-            'employee'  : employee,
-            'submit'    : 'Add IR Invoice',
-            'title'     : 'Add ir',
-            'role'      : rolename,
-            'rates'     : rates,
-        }
-        return render(request, self.template_name, context)
+        ch_invoice    = check_invoice(employee)
+        if ch_invoice is None:
+            rolename      = employee.role.name.lower()
+            rates         = Rate.objects.get(is_approved=1)
+            leaves        = count_leaves(employee)
+            context = {
+                'employee'  : employee,
+                'submit'    : 'Add IR Invoice',
+                'title'     : 'Add ir',
+                'role'      : rolename,
+                'rates'     : rates,
+                'auth_leave': leaves,
+            }
+            return render(request, self.template_name, context)
+        else:
+             return HttpResponseRedirect('/ir/'+str(ch_invoice))   
 
     def post(self, request):
         print(request.POST)
@@ -506,9 +525,12 @@ class IrAddView(IRPanelMixin,TemplateView):
         employee      = Employee.objects.get(auth_tbl=user)
         rate          = Rate.objects.get(is_approved =1)
         try:
+            bank_account = None
+            if 'bank_account' in request.POST:
+                bank_account = AccountDetails.objects.get(pk=request.POST['bank_account'])
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
-            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], additional_auth_days = request.POST['additional_auth_days'], wds_source_checked_completely = request.POST['wds_source_checked_completely'], new_solicitation_entered_correctly = request.POST['new_solicitation_entered_correctly'], updated_solicitation_by_addenda = request.POST['updated_solicitation_by_addenda'], extra_hours_worked = request.POST['extra_hours_worked'], file_attached = request.POST['file_attached'], difficult_and_nonproductive_source=request.POST['difficult_and_nonproductive_source'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee, rate=rate)    
+            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], bank_account=bank_account, additional_auth_days = request.POST['additional_auth_days'], wds_source_checked_completely = request.POST['wds_source_checked_completely'], new_solicitation_entered_correctly = request.POST['new_solicitation_entered_correctly'], updated_solicitation_by_addenda = request.POST['updated_solicitation_by_addenda'], extra_hours_worked = request.POST['extra_hours_worked'], file_attached = request.POST['file_attached'], difficult_and_nonproductive_source=request.POST['difficult_and_nonproductive_source'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee, rate=rate)    
             messages.success(request, "Successfully added invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
@@ -536,10 +558,14 @@ class BrEditView(BRPanelMixin,TemplateView):
     def post(self, request, pk):
         invoice = Invoice.objects.get(pk=pk)
         try:
+            bank_account = None
+            if 'bank_account' in request.POST:
+                bank_account = AccountDetails.objects.get(pk=request.POST['bank_account'])
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()   
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
             invoice.invoice_date           = invoice_date
             invoice.monthdate              = monthdate
+            invoice.bank_account           = bank_account
             invoice.emp_type               = request.POST['emp_type']
             invoice.new_entities_added     = request.POST['new_entities_added']
             invoice.ph_added_to_bid_list   = request.POST['ph_added_to_bid_list']
@@ -556,11 +582,11 @@ class BrEditView(BRPanelMixin,TemplateView):
             invoice.total_deduction        = request.POST['total_deduction']
             invoice.total_payable          = request.POST['total_payable']
             invoice.save()
-            messages.success(request, "Successfully added invoice")   
+            messages.success(request, "Successfully edited invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
             print("error")
-            messages.error(request, "There was a problem adding invoice")
+            messages.error(request, "There was a problem editing invoice")
             return HttpResponseRedirect('/br/')   
 
 
@@ -573,16 +599,22 @@ class BrAddView(BRPanelMixin,TemplateView):
     def get(self, request):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
-        rolename      = employee.role.name.lower()
-        rates         = Rate.objects.get(is_approved=1)
-        context = {
-            'employee'  : employee,
-            'submit'    : 'Add BR Invoice',
-            'title'     : 'Add br',
-            'role'      : rolename,
-            'rates'     : rates,
-        }
-        return render(request, self.template_name, context)
+        ch_invoice    = check_invoice(employee)
+        if ch_invoice is None:
+            rolename      = employee.role.name.lower()
+            leaves        = count_leaves(employee)
+            rates         = Rate.objects.get(is_approved=1)
+            context = {
+                'employee'  : employee,
+                'submit'    : 'Add BR Invoice',
+                'title'     : 'Add br',
+                'role'      : rolename,
+                'rates'     : rates,
+                'auth_leave': leaves,
+            }
+            return render(request, self.template_name, context)
+        else:
+            return HttpResponseRedirect('/br/'+str(ch_invoice))     
 
     def post(self, request):
         print(request.POST)
@@ -590,9 +622,12 @@ class BrAddView(BRPanelMixin,TemplateView):
         employee      = Employee.objects.get(auth_tbl=user)
         rate          = Rate.objects.get(is_approved=1)
         try:
+            bank_account = None
+            if 'bank_account' in request.POST:
+                bank_account = AccountDetails.objects.get(pk=request.POST['bank_account'])
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
-            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, emp_type=request.POST['emp_type'], new_entities_added=request.POST['new_entities_added'], ph_added_to_bid_list=request.POST['ph_added_to_bid_list'], ph_edited_in_bid_list=request.POST['ph_edited_in_bid_list'], ph_deleted_in_bid_list=request.POST['ph_deleted_in_bid_list'], extra_days_worked=request.POST['extra_days_worked'], total_working_days=request.POST['total_working_days'], total_days_worked=request.POST['total_days_worked'], authorised_day_off=request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], duplicate_entities=request.POST['duplicate_entities'],errors=request.POST['errors'],fines=request.POST['fines'], total_deduction=request.POST['total_deduction'], total_payable=request.POST['total_payable'],emp_ownwer=employee, rate=rate)
+            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, bank_account=bank_account, emp_type=request.POST['emp_type'], new_entities_added=request.POST['new_entities_added'], ph_added_to_bid_list=request.POST['ph_added_to_bid_list'], ph_edited_in_bid_list=request.POST['ph_edited_in_bid_list'], ph_deleted_in_bid_list=request.POST['ph_deleted_in_bid_list'], extra_days_worked=request.POST['extra_days_worked'], total_working_days=request.POST['total_working_days'], total_days_worked=request.POST['total_days_worked'], authorised_day_off=request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], duplicate_entities=request.POST['duplicate_entities'],errors=request.POST['errors'],fines=request.POST['fines'], total_deduction=request.POST['total_deduction'], total_payable=request.POST['total_payable'],emp_ownwer=employee, rate=rate)
             messages.success(request, "Successfully added invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
@@ -603,19 +638,26 @@ class BrAddView(BRPanelMixin,TemplateView):
 class FixedAddView(FixedPanelMixin,TemplateView):
     template_name='user_invoice/fixed.html'
 
-    def get(self, request):
-        user          = self.request.user
-        employee      = Employee.objects.get(auth_tbl=user)
-        rolename      = employee.role.name.lower()
-        rates         = Rate.objects.get(is_approved=1)
-        context = {
-            'employee'  : employee,
-            'submit'    : 'Add IR Invoice',
-            'title'     : 'Add ir',
-            'role'      : rolename,
-            'rates'     : rates,
-        }
-        return render(request, self.template_name, context)
+    def get(self, request):        
+        user           = self.request.user
+        employee       = Employee.objects.get(auth_tbl=user)  
+        ch_invoice     = check_invoice(employee)    
+        if ch_invoice is None:  
+            leaves         = count_leaves(employee)
+            rolename       = employee.role.name.lower()
+            rates          = Rate.objects.get(is_approved=1)
+            context = {
+                'employee'  : employee,
+                'submit'    : 'Add IR Invoice',
+                'title'     : 'Add ir',
+                'role'      : rolename,
+                'rates'     : rates,
+                'auth_leave': leaves,
+            }
+            return render(request, self.template_name, context)
+        else:
+            return HttpResponseRedirect('/fixed/'+str(ch_invoice))
+                
 
     def post(self, request):
         print(request.POST)
@@ -623,9 +665,12 @@ class FixedAddView(FixedPanelMixin,TemplateView):
         employee      = Employee.objects.get(auth_tbl=user)
         rate          = Rate.objects.get(is_approved=1)
         try:
+            bank_account = None
+            if 'bank_account' in request.POST:
+                bank_account = AccountDetails.objects.get(pk=request.POST['bank_account'])
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()	
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
-            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, total_pay=request.POST['total_pay'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee, rate=rate)    
+            invoice = Invoice.objects.create(invoice_date=invoice_date, monthdate=monthdate, bank_account=bank_account, total_pay=request.POST['total_pay'], authorised_day_off = request.POST['authorised_day_off'], unauthorised_day_off=request.POST['unauthorised_day_off'], total_working_days = request.POST['total_working_days'], total_days_worked = request.POST['total_days_worked'], duplicate_solic = request.POST['duplicate_solic'], entity_cont_wrong = request.POST['entity_cont_wrong'], false_referal = request.POST['false_referal'], fraudulent_solicitation_update = request.POST['fraudulent_solicitation_update'], source_returned_without_good_res = request.POST['source_returned_without_good_res'], missed_bidbond_and_specs = request.POST['missed_bidbond_and_specs'], missed_categories = request.POST['missed_categories'], missed_solic_or_addend_from_source = request.POST['missed_solic_or_addend_from_source'], missed_incorrect_filetype = request.POST['missed_incorrect_filetype'], missing_or_wrong_outside_link  = request.POST['missing_or_wrong_outside_link'], missing_or_wrong_term_contract = request.POST['missing_or_wrong_term_contract'], not_posted_as_lead = request.POST['not_posted_as_lead'], other_error = request.POST['other_error'], other_serious_error = request.POST['other_serious_error'], refreshing_wds_page_to_diff_source = request.POST['refreshing_wds_page_to_diff_source'], prevailing_wage_not_selected = request.POST['prevailing_wage_not_selected'], skipped_solicitation = request.POST['skipped_solicitation'], source_returned_without_a_note = request.POST['source_returned_without_a_note'], unexcused_unjustified_absence = request.POST['unexcused_unjustified_absence'], wrongbid_prebid_mandatory = request.POST['wrongbid_prebid_mandatory'], wrong_categories = request.POST['wrong_categories'], wrong_geographic_location =  request.POST['wrong_geographic_location'], incomplete_and_incorrect_scope = request.POST['incomplete_and_incorrect_scope'], wrong_text_format = request.POST['wrong_text_format'], total_deduction = request.POST['total_deduction'] , total_payable = request.POST['total_payable'], emp_ownwer = employee, rate=rate)    
             messages.success(request, "Successfully added invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
@@ -652,12 +697,17 @@ class FixedEditView(FixedPanelMixin, TemplateView):
         return render(request, self.template_name, context) 
 
     def post(self,request,pk):
+        print(request.POST)
         invoice = Invoice.objects.get(pk=pk)
         try:
+            bank_account = None
+            if 'bank_account' in request.POST:
+                bank_account = AccountDetails.objects.get(pk=request.POST['bank_account'])
             invoice_date = datetime.strptime(request.POST['invoice_date'], '%Y-%m-%d').date()   
             monthdate    = datetime.strptime(request.POST['monthdate'], '%Y-%m').date()
             invoice.invoice_date                       = invoice_date
             invoice.monthdate                          = monthdate
+            invoice.bank_account                       = bank_account
             invoice.total_pay                          = request.POST['total_pay']
             invoice.authorised_day_off                 = request.POST['authorised_day_off']
             invoice.unauthorised_day_off               = request.POST['unauthorised_day_off']
@@ -690,11 +740,11 @@ class FixedEditView(FixedPanelMixin, TemplateView):
             invoice.total_deduction                    = request.POST['total_deduction']
             invoice.total_payable                      = request.POST['total_payable']
             invoice.save()
-            messages.success(request, "Successfully added invoice")   
+            messages.success(request, "Successfully edited invoice")   
             return HttpResponseRedirect('/invoice-list/')
         except:
             print("error")
-            messages.error(request, "There was a problem adding invoice")
+            messages.error(request, "There was a problem editing invoice")
             return HttpResponseRedirect('/fixed/')
 
 
