@@ -419,7 +419,7 @@ class IrEditView(IRPanelMixin,TemplateView):
         invoice  = Invoice.objects.get(pk=pk)
         employee = invoice.emp_ownwer
         rates    = invoice.rate
-        rolename = employee.role.name.lower()
+        rolename = Employee.objects.get(auth_tbl=request.user).role.name.lower()
         context ={
             'employee' : employee,
             'submit'   : 'Edit IR Invoice',
@@ -545,7 +545,7 @@ class BrEditView(BRPanelMixin,TemplateView):
         invoice  = Invoice.objects.get(pk=pk)
         employee = invoice.emp_ownwer
         rates    = invoice.rate
-        rolename = employee.role.name.lower()
+        rolename = Employee.objects.get(auth_tbl=request.user).role.name.lower()
         context ={
             'employee' : employee,
             'submit'   : 'Edit BR Invoice',
@@ -685,7 +685,7 @@ class FixedEditView(FixedPanelMixin, TemplateView):
         invoice  = Invoice.objects.get(pk=pk)
         employee = invoice.emp_ownwer
         rates    = invoice.rate
-        rolename = employee.role.name.lower()
+        rolename = Employee.objects.get(auth_tbl=request.user).role.name.lower()
         context ={
             'employee' : employee,
             'submit'   : 'Edit Fixed Invoice',
