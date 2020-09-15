@@ -82,7 +82,7 @@
                    {% if accounts.paginator.num_pages > 1 %}
 
   <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
+  <ul class="pagination justify-content-center" style="margin-bottom: 20px;">
     {% if accounts.has_previous %}
       <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.previous_page_number }}">Previous</a></li>
     {% else %}
@@ -558,4 +558,29 @@ confirm_password.onkeyup = validatePassword;
     	$("#deleteaccount").val(delete_id)
     })
 </script>
+
+<style type="text/css">
+	.pagination a {
+	  color: black;
+	  float: left;
+	  padding: 8px 16px;
+	  text-decoration: none;
+	  transition: background-color .3s;
+	}
+	
+	/* Style the active/current link */
+	.pagination a.active {
+	  background-color: green;
+	  color: white;
+	}
+	
+	/* Add a grey background color on mouse-over */
+	.pagination a:hover:not(.active) {background-color:yellow;}	
+				
+	.page-item.active .page-link {
+    z-index: 0;
+    color: #fff;
+   
+}	  
+	</style>
 {% endblock content %}
