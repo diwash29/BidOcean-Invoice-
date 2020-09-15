@@ -29,5 +29,7 @@ urlpatterns = [
     
     path('ir/<int:pk>', views.IrEditView.as_view(), name='edit_ir'),
     path('br/<int:pk>', views.BrEditView.as_view(), name='edit_br'),
-    path('fixed/<int:pk>', views.FixedEditView.as_view(), name='edit_fixed')
+    path('fixed/<int:pk>', views.FixedEditView.as_view(), name='edit_fixed'),
+
+    path('export/csv/', views.export_invoice_xls, name='export_invoice_xls'),
 ]
