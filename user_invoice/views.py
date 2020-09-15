@@ -16,6 +16,9 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from leave.models import LeaveBalance
 from .utils import get_first_n_last_day, count_leaves, check_invoice
+
+import xlwt
+
 # Create your views here.
 
 # 3650-8243-248
@@ -34,6 +37,63 @@ def index(request):
 		return render(request,'user_invoice/home.html',context)
 	except:
 		return HttpResponseRedirect('/employee/'+str(user.pk))
+
+def export_invoice_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="'+str(datetime.today())+'invoice.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Invoice')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Employee name', 'Employee id', 'Invoice type', 'Phone no', 'Total payable', 'Bank Name', 'IfscCode', 'Account no', 'Invoice date']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    invoice = Invoice.objects.all()
+    search        = request.GET.get('search', None)
+    from_date     = request.GET.get('from_date', None)
+    to_date       = request.GET.get('to_date', None)
+    bank          = request.GET.get('bank',None)
+    
+    query_param = {}  
+    if search is not None and search is not '':
+        search = search.strip()
+        query_param['search'] = search 
+        invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))|Q(emp_ownwer__emp_id__icontains=search)) 
+    if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
+        query_param['from_date'] = from_date
+        query_param['to_date']   = to_date
+        to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+        from_date = datetime.strptime(from_date,"%Y-%m-%d").date()  
+        invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+    if bank is not None and bank is not '':
+        query_param['bank'] = bank
+        invoice = invoice.filter(bank_account__bank__iexact=bank)
+
+    invoice = invoice.order_by('-invoice_date')    
+
+    # paginator        = Paginator(invoice,1)
+    # page             = request.GET.get('page')
+    # paginatedcontent = paginator.get_page(page)
+
+    rows = invoice.values_list('emp_ownwer__name', 'emp_ownwer__emp_id', 'emp_ownwer__role__name', 'emp_ownwer__phone_no','total_payable','bank_account__bank', 'bank_account__ifsc_other' ,'bank_account__acc_no','invoice_date')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response        
 
 class RoleDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/role_list.html'
@@ -403,7 +463,6 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         paginator        = Paginator(invoice,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)	
-        print(query_param)
         context = {
             'query_param' : query_param,
             'invoices'    : paginatedcontent,
