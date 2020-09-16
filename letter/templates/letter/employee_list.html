@@ -8,11 +8,13 @@
 {% block content %}
 
 	<div class='row'>
-		<div class="col-6">
+		<div class="col-12">
 			<h2 class="mt-5"><a href="{% url 'letter:joinee_list' %}" class='text-success'>Employee List:</a></h2>
+			<a href="{% url 'letter:add_joinee' %}" class='text-info'><button class="btn btn-primary" style="margin-bottom: 15px;float: right;">Add New</button></a>
 		</div>
 		<div class="col-6">
-		<h2 class=" text-right mt-5"><a href="{% url 'letter:add_joinee' %}" class='text-info'>Add New</a></h2>
+	
+		
 		</div>
 	</div>
 		<div class="row">
@@ -81,5 +83,13 @@
 				{% endif %}
 			</ul>
 		</div>
+		<style>
+			html{
+				background-color: #EFCFB0;
+			}
+			body{
+				background-color: #EFCFB0;
+			}
+		</style>
 
 {% endblock content %}
