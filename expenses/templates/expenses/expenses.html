@@ -189,37 +189,32 @@
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
-							<label>Employee</label>
-							<select name="employee" id="editemployee" class="form-control" required="" style="font-size: 14px;">
-								<option value="">Select Employee</option>
-								{% for emp in employee_list %}
-									<option value="{{emp.id}}">{{emp.name}}</option>
-								{% endfor %}
-							</select>
+                            <label for="birthday">Date</label>
+                            <input type="date" id="date" name="date" class="form-control">
 							<!-- <input type="text" name="fullname" style="font-size: 17px;" class="form-control" required> -->
 						</div>
                   <div class="form-group">
-                     <label for="bank">Bank</label>
-                  <select id="editbank" name="bank" class="form-control" style="font-size: 14px;" >
-                     <option value="axis">Axis</option>
-                     <option value="hdfc">HDFC</option>
-                     <option value="others">Others</option>
+                     <label for="bank">Expense Type</label>
+                  <select id="bank" name="bank" class="form-control" style="font-size: 14px;" >
+                     <option value="e1">e1</option>
+                     <option value="e2">e2</option>
+                     <option value="e3">e3</option>
                      
                    </select>
                   </div>
 						<div class="form-group">
-							<label>Account Number</label>
-							<input type="text" id="editacc_no" name="acc_no" style="font-size: 17px;" class="form-control"  required>
+							<label>Amount</label>
+							<input type="text" name="amount" style="font-size: 17px;" class="form-control"  required>
 						</div>	
 						
 						<div class="form-group">
-							<label>Bank(Incase of others selected in Bank)</label>
-							<input type="text" id="editother_bank" name="other_bank" style="font-size: 17px;" class="form-control" >
+							<label>Bill No</label>
+							<input type="text" name="bill_no" style="font-size: 17px;" class="form-control" >
 						</div>	
 
 						<div class="form-group">
-							<label>IFSC Code(Incase of others selected in Bank)</label>
-							<input type="text" id="editifsc_other" name="ifsc_other" style="font-size: 17px;" class="form-control" >
+							<label>Remarks</label>
+						<textarea name="remarks" id="remarks"  type="text" name="ifsc_other" style="font-size: 17px;" class="form-control"></textarea>
 						</div>	
 									
 																
