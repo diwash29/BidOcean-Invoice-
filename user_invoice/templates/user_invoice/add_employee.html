@@ -34,10 +34,10 @@
 				<label for="mobile_no">Salary*</label>
 				<input type="text" class="form-control" id="salary" name="salary" value="{{employee.salary}}" placeholder="Enter salary">
 			</div>	
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label for="mobile_no">Leaves*</label>
 				<input type="text" class="form-control" id="leaves" name="leaves" value="{{employee.leaves}}" placeholder="Enter no of leaves" required>
-			</div>	
+			</div> -->	
 			<div class="form-group">
 				<label for="mobile_no">Role*</label>
 				<select class="form-control" id="role" name='role' required="">
@@ -48,6 +48,21 @@
 				</select>
 				<!-- <input type="text" class="form-control" id="leaves" name="leaves" placeholder="Enter no of leaves" required> -->
 			</div>	
+			{% if 'Edit' in submit %}
+			<div class="form-group">
+				<label for="mobile_no">Sick Leave*</label>
+				<input type="text" class="form-control" id="leaves" name="sick_leave" value="{{employee.leave_bal.sick_leave}}" placeholder="Enter no of sick leaves" required>
+			</div>
+			<div class="form-group">
+				<label for="mobile_no">Earned Leave*</label>
+				<input type="text" class="form-control" id="leaves" name="earned_leave" value="{{employee.leave_bal.earned_leave}}" placeholder="Enter no of earned leaves" required>
+			</div>
+			<div class="form-group">
+				<label for="mobile_no">Casual Leave*</label>
+				<input type="text" class="form-control" id="leaves" name="casual_leave" value="{{employee.leave_bal.casual_leave}}" placeholder="Enter no of casual leaves" required>
+			</div>	
+
+			{% endif %}
 			<div class="form-group">
 				
 				

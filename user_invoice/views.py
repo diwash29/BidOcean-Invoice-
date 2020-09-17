@@ -9,7 +9,7 @@ from .forms import EmployeeForm, RoleAddForm, RateAddForm
 from django.contrib.auth.models import User
 from manage_user.models import Userdetail
 from account_management.models import AccountDetails
-from leave.models import LeaveRequest
+from leave.models import LeaveRequest, LeaveBalance
 from .mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
@@ -375,9 +375,9 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         address  = request.POST['address']
         phone_no = request.POST['phone_no']
         emp_id   = request.POST['emp_id']
-        leaves   = request.POST['leaves']
+        # leaves   = request.POST['leaves']
         auth_tbl = user
-        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, leaves=leaves, auth_tbl=auth_tbl)
+        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl)
         leave_bal = LeaveBalance.objects.create(casual_leave=3, sick_leave=3, earned_leave=4, employee=employee)
 
         return HttpResponseRedirect('/')
@@ -401,14 +401,19 @@ class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
     def post(self, request, pk):
         user              = request.user
         employee          = Employee.objects.get(pk=pk)
+        leave_bal         = LeaveBalance.objects.get(employee=employee)
         employee.name     = request.POST['name']
         employee.role     = Role.objects.get(pk=request.POST['role'])
         employee.salary   = request.POST['salary']
         employee.address  = request.POST['address']
         employee.phone_no = request.POST['phone_no']
-        employee.leaves   = request.POST['leaves']
+        # employee.leaves   = request.POST['leaves']
         employee.emp_id   = request.POST['emp_id']
         employee.save()
+        leave_bal.sick_leave   = request.POST['sick_leave']
+        leave_bal.casual_leave = request.POST['casual_leave']
+        leave_bal.earned_leave = request.POST['earned_leave']
+        leave_bal.save()
         return HttpResponseRedirect('/employee-list')
 
 class EmployeeDeleteView(AdminPanelMixin, View):

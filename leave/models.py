@@ -10,7 +10,7 @@ class LeaveBalance(models.Model):
 	casual_leave = models.CharField(max_length=200)
 	earned_leave = models.CharField(max_length=200)
 	sick_leave   = models.CharField(max_length=200)
-	employee     = models.OneToOneField(Employee, on_delete=models.CASCADE)
+	employee     = models.OneToOneField(Employee, on_delete=models.CASCADE, related_name='leave_bal')
 
 class LeaveRequest(models.Model):
 	id              = models.AutoField(primary_key=True)
