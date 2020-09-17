@@ -132,13 +132,13 @@ span:empty { display: none; }
             <div class="row" style="margin-bottom: 40px;">
                 <div class="column" style="background-color:white;" id="wrapper_1">
                   <label for="name" style="color: teal;"><b> Name: </b></label>
-                  <input type="text" id="fname" name="firstname" placeholder="Enter your name" class="form-control" value="{{employee.name}}" style="margin-bottom: 20px;background-color: rgb(230, 216, 216);">
+                  <input type="text" id="fname" name="firstname" placeholder="Enter your name" class="form-control" value="{{employee.name}}" style="margin-bottom: 20px;background-color: #EFCFB0;">
 
                         <div class="tasksInput">
                           <form method='post'>
                            {% csrf_token %}
                                 <div class="pure-css-select-style theme-default-w-line" class="form-control">
-                                    <select class="custom-select" id ="leave_type" name="leave_type" style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;background-color: rgb(230, 216, 216);" required>
+                                    <select class="custom-select" id ="leave_type" name="leave_type" style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;background-color: #EFCFB0;" required>
                                       <option disabled style="font-weight: bold;color: black;" selected value>  Leave Type </option>                    
                                         <option value="sl" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
                                         <option value="cl" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
@@ -159,14 +159,14 @@ span:empty { display: none; }
 }
 </style>
                          
-                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" id="begin_date"   style="background-color: rgb(230, 216, 216);;color: black;" name="from_date" required></p>
-                          <p ><b style="color: teal;"> End Date :<br></b><input type="date" id="end_date" style="background-color: rgb(230, 216, 216);;color: black; " name="to_date" required></p>
+                          <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" id="begin_date"   style="background-color: #EFCFB0;;color: black;" name="from_date" required></p>
+                          <p ><b style="color: teal;"> End Date :<br></b><input type="date" id="end_date" style="background-color: #EFCFB0;;color: black; " name="to_date" required></p>
                           <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
-                          <input type="text" name="available_days" style="background-color: rgb(230, 216, 216);" id="available_days"  class="form-control" maxlength="2">
+                          <input type="text" name="available_days" style="background-color: #EFCFB0;" id="available_days"  class="form-control" maxlength="2">
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
-                          <input type="text" id="requesting_days" name="requesting_days" style="background-color: rgb(230, 216, 216);"  class="form-control"  maxlength="2">
+                          <input type="text" id="requesting_days" name="requesting_days" style="background-color: #EFCFB0;"  class="form-control"  maxlength="2">
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
-                          <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;background-color: rgb(230, 216, 216);"></textarea>
+                          <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;background-color: #EFCFB0;"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
                           
                           <button class="custom-btn btn-12" style="margin-left:20px"><span>Click!</span><span>{{submit}}</span></button>
@@ -252,10 +252,10 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
                   <div class="divTable" style="margin-bottom:20px">
                     <div class="divTableBody">
                     <div class="divTableRow">
-                    <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Sick Leave </b></div>
+                    <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;"> Sick Leave </b></div>
 
-                    <div class="divTableCell"style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Casual Leave</b></div>
-                    <div class="divTableCell"style="background-color:rgb(230, 216, 216);"><b style="color: teal;"> Earned Leave</b></div>
+                    <div class="divTableCell"style="background-color: #EFCFB0;"><b style="color: teal;"> Casual Leave</b></div>
+                    <div class="divTableCell"style="background-color:#EFCFB0;"><b style="color: teal;"> Earned Leave</b></div>
                     </div>
                     <div class="divTableRow">
                     <div class="divTableCell"><b>{{rem_leaves.sick_leave}}</b> </div>
@@ -270,10 +270,10 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
                     <div class="divTable">
                     <div class="divTableBody">
                       <div class="divTableRow">
-                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Leave Type</b></div>
-                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;"> Available Days</b></div>
-                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;">Requesting Days</b> </div>
-                        <div class="divTableCell" style="background-color: rgb(230, 216, 216);"><b style="color: teal;">Status</b> </div>
+                        <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;"> Leave Type</b></div>
+                        <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;"> Available Days</b></div>
+                        <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;">Requesting Days</b> </div>
+                        <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;">Status</b> </div>
                       </div>
                       {% for requests in leave_requests %}
                       <div class="divTableRow">
