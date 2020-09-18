@@ -17,14 +17,14 @@ from django.http import JsonResponse
 
 # Create your views here.
 
-class ExpensesView(TemplateView):
+class ExpensesView(AdminOrHRPanelMixin, TemplateView):
     template_name = 'expenses/expenses.html'
     def get(self, request):
         employee         = Employee.objects.get(auth_tbl=self.request.user)
         role             = employee.role.name.lower()
         expenses_list    = Expenses.objects.all()
         expense_types    = ExpenseType.objects.all()
-        paginator        = Paginator(expense_types,10)
+        paginator        = Paginator(expenses_list,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
         context = {
@@ -35,14 +35,35 @@ class ExpensesView(TemplateView):
 
         return render(request, self.template_name, context)
     def post(self, request):
-    	pass    
+        print(request.POST)
+        try:
+            delete_id = request.POST['delete']
+            expenses = Expenses.objects.get(pk=delete_id)
+            expenses.delete()
+            messages.success(request, "Successfully deleted expenses") 
+            return HttpResponseRedirect('/expenses/')	
+        except:
+            if request.POST['hidden_expense'] != "":
+                expense_date          = datetime.strptime(request.POST['expense_date'], '%Y-%m-%d').date()   
+                expenses              = Expenses.objects.get(pk = request.POST['hidden_expense'])
+                expenses.expense_date = expense_date
+                expenses.expense_type = ExpenseType.objects.get(pk=request.POST['expense_type'])
+                expenses.amount       = request.POST['amount']
+                expenses.bill_no      = request.POST['bill_no']
+                expenses.remarks      = request.POST['remarks']
+                expenses.save()
+            else:
+            	expense_date = datetime.strptime(request.POST['expense_date'], '%Y-%m-%d').date()   
+            	expense = Expenses.objects.create(expense_date=expense_date, expense_type=ExpenseType.objects.get(pk=request.POST['expense_type']),amount=request.POST['amount'],bill_no=request.POST['bill_no'],remarks=request.POST['remarks'], added_by=Employee.objects.get(auth_tbl=self.request.user))
+        return HttpResponseRedirect('/expenses/')    	
+
 
 
 def ajax_expenses_data(request):
     edit_id = request.GET.get('edit_id', None)
     expense = Expenses.objects.get(pk=edit_id)
     
-    data = {}
+    data = {'id':expense.pk, 'expense_date':expense.expense_date, 'expense_type':expense.expense_type.pk, 'amount':expense.amount, 'bill_no':expense.bill_no, 'remarks':expense.remarks}
     return JsonResponse(data)  
 
 
