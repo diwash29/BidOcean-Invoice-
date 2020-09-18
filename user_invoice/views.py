@@ -51,7 +51,7 @@ def export_invoice_xls(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['Employee name', 'Employee id', 'Invoice type', 'Phone no', 'Total payable', 'Bank Name', 'IfscCode', 'Account no', 'Invoice date']
+    columns = ['Employee name', 'Employee id', 'Invoice type', 'Phone no', 'Total payable', 'Bank Name', 'IfscCode', 'Account no']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -75,7 +75,7 @@ def export_invoice_xls(request):
         query_param['to_date']   = to_date
         to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
         from_date = datetime.strptime(from_date,"%Y-%m-%d").date()  
-        invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+        invoice   = invoice.filter(monthdate__gte=from_date, monthdate__lte=to_date)
     if bank is not None and bank is not '':
         query_param['bank'] = bank
         invoice = invoice.filter(bank_account__bank__iexact=bank)
@@ -86,7 +86,7 @@ def export_invoice_xls(request):
     # page             = request.GET.get('page')
     # paginatedcontent = paginator.get_page(page)
 
-    rows = invoice.values_list('emp_ownwer__name', 'emp_ownwer__emp_id', 'emp_ownwer__role__name', 'emp_ownwer__phone_no','total_payable','bank_account__bank', 'bank_account__ifsc_other' ,'bank_account__acc_no','invoice_date')
+    rows = invoice.values_list('emp_ownwer__name', 'emp_ownwer__emp_id', 'emp_ownwer__role__name', 'emp_ownwer__phone_no','total_payable','bank_account__bank', 'bank_account__ifsc_other' ,'bank_account__acc_no')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -458,7 +458,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
             query_param['to_date']   = to_date
             to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
             from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
-            invoice   = invoice.filter(invoice_date__gte=from_date, invoice_date__lte=to_date)
+            invoice   = invoice.filter(monthdate__gte=from_date, monthdate__lte=to_date)
         if bank is not None and bank is not '':
             query_param['bank'] = bank
             invoice = invoice.filter(bank_account__bank__iexact=bank)
