@@ -40,7 +40,6 @@
 								<label for="selectAll"></label>
 							</span>
 						</th> -->
-                        <th>Sl No</th>
                         <th>Date</th>
 						<th>Expense Type</th>
                         <th>Amount</th>
@@ -49,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                	{% for account in accounts %}
+                	{% for expense in expenses %}
                     <tr>
 						<!-- <td>
 							<span class="custom-checkbox">
@@ -57,13 +56,14 @@
 								<label for="checkbox1"></label>
 							</span>
 						</td> -->
-                        <td>{{account.employee.name}}</td>
-                        <td>{% if account.bank == 'others' %}{{account.other_bank|upper}}{% else %}{{account.bank|upper}}{% endif %}</td>
-						<td>{{account.acc_no}}</td>
-                        <td>{{account.ifsc_other}}</td>
+                        <td>{{expense.expense_date}}</td>
+                        <td>{{expense.expense_type.expense_type}}</td>
+						<td>{{expense.amount}}</td>
+                        <td>{{expense.bill_no}}</td>
+                        <td>{{expense.remarks}}</td>
                         <td>
-                            <a href="#editEmployeeModal" alt="{{account.pk}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" alt="{{account.pk}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="#editEmployeeModal" alt="{{expense.pk}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteEmployeeModal" alt="{{expense.pk}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -81,40 +81,40 @@
                     <li class="page-item"><a href="#" class="page-link">5</a></li>
                     <li class="page-item"><a href="#" class="page-link">Next</a></li>
                 </ul> -->
-                   {% if accounts.paginator.num_pages > 1 %}
+                   {% if expenses.paginator.num_pages > 1 %}
 
   <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center" style="margin-bottom: 20px;">
-    {% if accounts.has_previous %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.previous_page_number }}">Previous</a></li>
+    {% if expenses.has_previous %}
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ expenses.previous_page_number }}">Previous</a></li>
     {% else %}
       <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
     {% endif %}
-    {% if accounts.number|add:'-4' > 1 %}
+    {% if expenses.number|add:'-4' > 1 %}
       <li class="text-dark page-item"><a class="page-link font-weight-bolder" href="?page=1">1</a></li>
-      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.number|add:'-5' }}">&hellip;</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ expenses.number|add:'-5' }}">&hellip;</a></li>
     {% endif %}
     
-    {% for i in accounts.paginator.page_range %}
-      {% if accounts.number == i %}
+    {% for i in expenses.paginator.page_range %}
+      {% if expenses.number == i %}
         <li class="page-item active">
           <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
         </li>
-      {% elif i > accounts.number|add:'-5' and i < accounts.number|add:'5' %}
-        <li class="page-item {% if i == accounts.number %} active {% endif %}">
+      {% elif i > expenses.number|add:'-5' and i < expenses.number|add:'5' %}
+        <li class="page-item {% if i == expenses.number %} active {% endif %}">
           <a class="page-link font-weight-bolder" href="?page={{ i }}">{{i}}</a>
         </li>
       {% endif %}
     {% endfor %}
     
-    {% if accounts.paginator.num_pages > accounts.number|add:'4' %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.number|add:'5' }}">&hellip;</a></li>
-      {% if book.number != accounts.paginator.num_pages %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.paginator.num_pages }}">{{ accounts.paginator.num_pages }}</a></li>
+    {% if expenses.paginator.num_pages > expenses.number|add:'4' %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ expenses.number|add:'5' }}">&hellip;</a></li>
+      {% if book.number != expenses.paginator.num_pages %}
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ expenses.paginator.num_pages }}">{{ expenses.paginator.num_pages }}</a></li>
     {% endif %}
     {% endif %}
-    {% if accounts.has_next %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ accounts.next_page_number }}">Next</a></li>
+    {% if expenses.has_next %}
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ expenses.next_page_number }}">Next</a></li>
     {% else %}
       <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
     {% endif %}
@@ -132,7 +132,7 @@
 			<div class="modal-content" style="margin-top: 200px;">
 				<form method="post">
 					{% csrf_token %}
-					<input type="hidden" name="hidden_account" value="">
+					<input type="hidden" name="hidden_expense" value="">
 					<div class="modal-header">						
 						<h4 class="modal-title">Add Expense Detail</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -140,15 +140,15 @@
 					<div class="modal-body">					
 						<div class="form-group">
                             <label for="birthday">Date</label>
-                            <input type="date" id="date" name="date" class="form-control">
+                            <input type="date" id="date" name="expense_date" class="form-control" required="">
 							<!-- <input type="text" name="fullname" style="font-size: 17px;" class="form-control" required> -->
 						</div>
                   <div class="form-group">
                      <label for="bank">Expense Type</label>
-                  <select id="bank" name="bank" class="form-control" style="font-size: 14px;" >
-                     <option value="e1">e1</option>
-                     <option value="e2">e2</option>
-                     <option value="e3">e3</option>
+                  <select id="bank" name="expense_type" class="form-control" style="font-size: 14px;" >
+                    {% for expense_type in expense_types  %}
+                    <option value='{{expense_type.pk}}'>{{expense_type.expense_type}}</option>
+                    {% endfor %}
                      
                    </select>
                   </div>
@@ -159,12 +159,12 @@
 						
 						<div class="form-group">
 							<label>Bill No</label>
-							<input type="text" name="bill_no" style="font-size: 17px;" class="form-control" >
+							<input type="text" name="bill_no" style="font-size: 17px;" class="form-control" required="">
 						</div>	
 
 						<div class="form-group">
 							<label>Remarks</label>
-						<textarea name="remarks" id="remarks"  type="text" name="ifsc_other" style="font-size: 17px;" class="form-control"></textarea>
+						<textarea name="remarks" id="remarks"  type="text" name="remarks" style="font-size: 17px;" class="form-control"></textarea>
 						</div>	
 									
 																
@@ -183,7 +183,7 @@
 			<div class="modal-content" style="margin-top: 200px;">
 				<form method="post">
 					{% csrf_token %}
-					<input type="hidden" id="editid" name="hidden_account" value="">
+					<input type="hidden" id="editid" name="hidden_expense" value="">
 					<div class="modal-header">						
 						<h4 class="modal-title">Add Expense Detail</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -191,31 +191,31 @@
 					<div class="modal-body">					
 						<div class="form-group">
                             <label for="birthday">Date</label>
-                            <input type="date" id="date" name="date" class="form-control">
+                            <input type="date" id="editexpense_date" name="expense_date" class="form-control" required="">
 							<!-- <input type="text" name="fullname" style="font-size: 17px;" class="form-control" required> -->
 						</div>
                   <div class="form-group">
                      <label for="bank">Expense Type</label>
-                  <select id="bank" name="bank" class="form-control" style="font-size: 14px;" >
-                     <option value="e1">e1</option>
-                     <option value="e2">e2</option>
-                     <option value="e3">e3</option>
+                  <select id="editexpense_type" name="expense_type" class="form-control" style="font-size: 14px;" >
+                    {% for expense_type in expense_types  %}
+                    <option value='{{expense_type.pk}}'>{{expense_type.expense_type}}</option>
+                    {% endfor %}
                      
                    </select>
                   </div>
 						<div class="form-group">
 							<label>Amount</label>
-							<input type="text" name="amount" style="font-size: 17px;" class="form-control"  required>
+							<input type="text" id="editamount" name="amount" style="font-size: 17px;" class="form-control"  required>
 						</div>	
 						
 						<div class="form-group">
 							<label>Bill No</label>
-							<input type="text" name="bill_no" style="font-size: 17px;" class="form-control" >
+							<input type="text" id="editbill_no" name="bill_no" style="font-size: 17px;" class="form-control" required="">
 						</div>	
 
 						<div class="form-group">
 							<label>Remarks</label>
-						<textarea name="remarks" id="remarks"  type="text" name="ifsc_other" style="font-size: 17px;" class="form-control"></textarea>
+						<textarea name="remarks" id="editremarks"  type="text" name="remarks" style="font-size: 17px;" class="form-control"></textarea>
 						</div>	
 									
 																
@@ -234,7 +234,7 @@
 			<div class="modal-content" style="margin-top: 100px;">
 				<form method="post">
 					{% csrf_token %}
-					<input type="hidden" id="deleteaccount" name="delete" value="">
+					<input type="hidden" id="deleteexpenses" name="delete" value="">
 					<div class="modal-header">						
 						<h4 class="modal-title">Delete Employee</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -499,6 +499,9 @@
 	});
 });
 </script>
+
+
+
 <style>
 	.nav-link {
     color: white;
@@ -527,19 +530,26 @@ confirm_password.onkeyup = validatePassword;
 	$(".edit").click(function () {
     	var edit_id = $(this).attr('alt');
     $.ajax({
-      url  : '{% url "edit_account_data" %}',
+      url  : '{% url "edit_expenses_data" %}',
       data : {
             edit_id  : edit_id,
           },
       type : 'GET',
       dataType: 'json',
       success: function (data) {
-        $("#editid").val(data.id)
-        $("#editemployee").val(data.employee)
+      	$("#editid").val(data.id)
+      	$("#editexpense_date").val(data.expense_date)
+      	$("#editexpense_type").val(data.expense_type)
+      	$("#editamount").val(data.amount)
+      	$("#editbill_no").val(data.bill_no)
+      	$("#editremarks").val(data.remarks)
+
+        
+        /*$("#editemployee").val(data.employee)
         $("#editacc_no").val(data.acc_no)
         $("#editbank").val(data.bank)
         $("#editother_bank").val(data.other_bank)
-        $("#editifsc_other").val(data.ifsc_other)
+        $("#editifsc_other").val(data.ifsc_other)*/
       }
     });
 
@@ -547,7 +557,7 @@ confirm_password.onkeyup = validatePassword;
 
     $(".delete").click(function(){
     	var delete_id = $(this).attr('alt');
-    	$("#deleteaccount").val(delete_id)
+    	$("#deleteexpenses").val(delete_id)
     })
 </script>
 

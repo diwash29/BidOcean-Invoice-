@@ -16,7 +16,7 @@ class ExpenseType(models.Model):
 
 class Expenses(models.Model):
 	id           = models.AutoField(primary_key=True)
-	expense_date = models.DateTimeField(auto_now_add=True)
+	expense_date = models.DateField()
 	expense_type = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
 	amount       = models.CharField(max_length=200)
 	bill_no      = models.CharField(max_length=200)
