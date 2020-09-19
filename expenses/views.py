@@ -15,7 +15,60 @@ from django.db.models import Q
 import calendar
 from django.http import JsonResponse
 
+import xlwt
+
 # Create your views here.
+
+
+def export_expenses_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="'+str(datetime.today())+'expenses.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Invoice')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Expense Type', 'Amount', 'Bill no', 'Remarks']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    expenses_list = Expenses.objects.all()
+    from_date     = request.GET.get('from_date', None)
+    to_date       = request.GET.get('to_date', None)
+    
+    query_param = {}  
+    
+    if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
+        query_param['from_date'] = from_date
+        query_param['to_date']   = to_date
+        to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+        from_date = datetime.strptime(from_date,"%Y-%m-%d").date()  
+        expenses_list   = expenses_list.filter(expense_date__gte=from_date, expense_date__lte=to_date)
+    
+
+    expenses_list = expenses_list.order_by('-amount')    
+
+    # paginator        = Paginator(invoice,1)
+    # page             = request.GET.get('page')
+    # paginatedcontent = paginator.get_page(page)
+
+    rows = expenses_list.values_list('expense_type__expense_type', 'amount', 'bill_no', 'remarks')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
 class ExpensesView(AdminOrHRPanelMixin, TemplateView):
     template_name = 'expenses/expenses.html'
@@ -24,6 +77,19 @@ class ExpensesView(AdminOrHRPanelMixin, TemplateView):
         role             = employee.role.name.lower()
         expenses_list    = Expenses.objects.all()
         expense_types    = ExpenseType.objects.all()
+
+        from_date     = request.GET.get('from_date', None)
+        to_date       = request.GET.get('to_date', None)
+
+        query_param = {}
+        if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
+            query_param['from_date'] = from_date
+            query_param['to_date']   = to_date
+            to_date       = datetime.strptime(to_date,"%Y-%m-%d").date()
+            from_date     = datetime.strptime(from_date,"%Y-%m-%d").date()	
+            expenses_list = expenses_list.filter(expense_date__gte=from_date, expense_date__lte=to_date)
+        expenses_list = expenses_list.order_by('-amount')    
+
         paginator        = Paginator(expenses_list,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
@@ -31,6 +97,7 @@ class ExpensesView(AdminOrHRPanelMixin, TemplateView):
             'role'          : role,
             'expense_types' : expense_types,
             'expenses'      : paginatedcontent,
+            'query_param'   : query_param,
         }
 
         return render(request, self.template_name, context)
