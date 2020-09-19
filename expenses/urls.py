@@ -9,5 +9,7 @@ urlpatterns = [
     path('expensetype-list/',views.ExpenceTypeDisplayView.as_view(),name='expensetype_list'),
     path('expensetype-edit/<int:pk>',views.ExpenseTypeEditView.as_view(),name='expensetype_edit'),
     path('expensetype-delete/<int:pk>',views.ExpenseTypeDeleteView.as_view(),name='expensetype_delete'),
+
+    path('export/csv/', views.export_expenses_xls, name='export_expenses_xls'),
     
 ]
