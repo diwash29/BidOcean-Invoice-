@@ -17,15 +17,17 @@ from django.http import JsonResponse
 class ManageUser(AdminOrHRPanelMixin,TemplateView):
     template_name = 'manage_user/user_list.html'
     def get(self, request):
-        employee = Employee.objects.get(auth_tbl=self.request.user)
-        role     = employee.role.name.lower()
-        users    = Userdetail.objects.all()
+        employee   = Employee.objects.get(auth_tbl=self.request.user)
+        role       = employee.role.name.lower()
+        roles_data = Role.objects.all() 
+        users      = Userdetail.objects.all()
         paginator        = Paginator(users,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
         context = {
-            'role'  : role,
-            'users' : paginatedcontent
+            'role'       : role,
+            'users'      : paginatedcontent,
+            'roles_data' : roles_data
         }
         return render(request, self.template_name, context)
     def post(self, request):
@@ -45,10 +47,21 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
                 user.phone     = request.POST['phone']
                 user.email     = request.POST['email']
                 user.address   = request.POST['address']
+                user.role      = Role.objects.get(pk=request.POST['role'])
                 user.save()
+                try:
+                    emp      = Employee.objects.get(auth_tbl=user)
+                    emp.role = Role.objects.get(pk=request.POST['role'])
+                    emp.save()
+                except:
+                    pass    
                 messages.success(request, "Successfully edited user")
             else:
-                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'])
+                try:
+                    role = Role.objects.get(pk=request.POST['role'])
+                except:
+                    role = None
+                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'], role=role)
                 user.set_password(request.POST["password"])
                 user.save()
                 messages.success(request, "Successfully added user")
@@ -58,6 +71,9 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
 def ajax_user_data(request):
     edit_id = request.GET.get('edit_id', None)
     user    = Userdetail.objects.get(pk=edit_id)
-    
-    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address }
+    try:
+        role = user.role.pk
+    except:
+        role = None
+    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address, 'role':role }
     return JsonResponse(data)
