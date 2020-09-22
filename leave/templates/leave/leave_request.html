@@ -161,10 +161,13 @@ span:empty { display: none; }
                          
                           <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" id="begin_date"   style="background-color: #EFCFB0;;color: black;" name="from_date" required></p>
                           <p ><b style="color: teal;"> End Date :<br></b><input type="date" id="end_date" style="background-color: #EFCFB0;;color: black; " name="to_date" required></p>
-                          <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
-                          <input type="text" name="available_days" style="background-color: #EFCFB0;" id="available_days"  class="form-control" maxlength="2">
+
                           <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
-                          <input type="text" id="requesting_days" name="requesting_days" style="background-color: #EFCFB0;"  class="form-control"  maxlength="2">
+                          <input type="text" id="requesting_days" name="requesting_days" style="background-color: #EFCFB0;"  class="form-control"  maxlength="2" required="">
+
+                          <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
+                          <input type="text" name="available_days" style="background-color: #EFCFB0;" id="available_days"  class="form-control" maxlength="2" required="">
+                          
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
                           <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;background-color: #EFCFB0;"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">

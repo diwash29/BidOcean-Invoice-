@@ -106,6 +106,15 @@ class RoleDisplayView(AdminOrHRPanelMixin,TemplateView):
         return render(request, self.template_name, context)
 
 
+class ErrorMessageView(AdminOrHRPanelMixin,TemplateView):
+    template_name = 'user_invoice/error_msg.html'
+    def get(self, request):
+        context = {
+            'title': 'Error',
+            'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+        }
+        return render(request, self.template_name, context)
+
 
 class RoleAddView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/add_role.html'
@@ -564,24 +573,27 @@ class IrAddView(IRPanelMixin,TemplateView):
     template_name='user_invoice/ir.html'
 
     def get(self, request):
-        user          = self.request.user
-        employee      = Employee.objects.get(auth_tbl=user)
-        ch_invoice    = check_invoice(employee)
-        if ch_invoice is None:
-            rolename      = employee.role.name.lower()
-            rates         = Rate.objects.get(is_approved=1)
-            leaves        = count_leaves(employee)
-            context = {
-                'employee'  : employee,
-                'submit'    : 'Add IR Invoice',
-                'title'     : 'Add ir',
-                'role'      : rolename,
-                'rates'     : rates,
-                'auth_leave': leaves,
-            }
-            return render(request, self.template_name, context)
-        else:
-             return HttpResponseRedirect('/ir/'+str(ch_invoice))   
+        try:
+            user          = self.request.user
+            employee      = Employee.objects.get(auth_tbl=user)
+            ch_invoice    = check_invoice(employee)
+            if ch_invoice is None:
+                rolename      = employee.role.name.lower()
+                rates         = Rate.objects.get(is_approved=1)
+                leaves        = count_leaves(employee)
+                context = {
+                    'employee'  : employee,
+                    'submit'    : 'Add IR Invoice',
+                    'title'     : 'Add ir',
+                    'role'      : rolename,
+                    'rates'     : rates,
+                    'auth_leave': leaves,
+                }
+                return render(request, self.template_name, context)
+            else:
+                 return HttpResponseRedirect('/ir/'+str(ch_invoice))  
+        except:
+            return HttpResponseRedirect('/error/')            
 
     def post(self, request):
         print(request.POST)
@@ -661,24 +673,27 @@ class BrAddView(BRPanelMixin,TemplateView):
     template_name='user_invoice/br.html'
 
     def get(self, request):
-        user          = self.request.user
-        employee      = Employee.objects.get(auth_tbl=user)
-        ch_invoice    = check_invoice(employee)
-        if ch_invoice is None:
-            rolename      = employee.role.name.lower()
-            leaves        = count_leaves(employee)
-            rates         = Rate.objects.get(is_approved=1)
-            context = {
-                'employee'  : employee,
-                'submit'    : 'Add BR Invoice',
-                'title'     : 'Add br',
-                'role'      : rolename,
-                'rates'     : rates,
-                'auth_leave': leaves,
-            }
-            return render(request, self.template_name, context)
-        else:
-            return HttpResponseRedirect('/br/'+str(ch_invoice))     
+        try:
+            user          = self.request.user
+            employee      = Employee.objects.get(auth_tbl=user)
+            ch_invoice    = check_invoice(employee)
+            if ch_invoice is None:
+                rolename      = employee.role.name.lower()
+                leaves        = count_leaves(employee)
+                rates         = Rate.objects.get(is_approved=1)
+                context = {
+                    'employee'  : employee,
+                    'submit'    : 'Add BR Invoice',
+                    'title'     : 'Add br',
+                    'role'      : rolename,
+                    'rates'     : rates,
+                    'auth_leave': leaves,
+                }
+                return render(request, self.template_name, context)
+            else:
+                return HttpResponseRedirect('/br/'+str(ch_invoice)) 
+        except:
+            return HttpResponseRedirect('/error/')                        
 
     def post(self, request):
         print(request.POST)
@@ -702,25 +717,28 @@ class BrAddView(BRPanelMixin,TemplateView):
 class FixedAddView(FixedPanelMixin,TemplateView):
     template_name='user_invoice/fixed.html'
 
-    def get(self, request):        
-        user           = self.request.user
-        employee       = Employee.objects.get(auth_tbl=user)  
-        ch_invoice     = check_invoice(employee)    
-        if ch_invoice is None:  
-            leaves         = count_leaves(employee)
-            rolename       = employee.role.name.lower()
-            rates          = Rate.objects.get(is_approved=1)
-            context = {
-                'employee'  : employee,
-                'submit'    : 'Add IR Invoice',
-                'title'     : 'Add ir',
-                'role'      : rolename,
-                'rates'     : rates,
-                'auth_leave': leaves,
-            }
-            return render(request, self.template_name, context)
-        else:
-            return HttpResponseRedirect('/fixed/'+str(ch_invoice))
+    def get(self, request):  
+        try:      
+            user           = self.request.user
+            employee       = Employee.objects.get(auth_tbl=user)  
+            ch_invoice     = check_invoice(employee)    
+            if ch_invoice is None:  
+                leaves         = count_leaves(employee)
+                rolename       = employee.role.name.lower()
+                rates          = Rate.objects.get(is_approved=1)
+                context = {
+                    'employee'  : employee,
+                    'submit'    : 'Add IR Invoice',
+                    'title'     : 'Add ir',
+                    'role'      : rolename,
+                    'rates'     : rates,
+                    'auth_leave': leaves,
+                }
+                return render(request, self.template_name, context)
+            else:
+                return HttpResponseRedirect('/fixed/'+str(ch_invoice))
+        except:
+            return HttpResponseRedirect('/error/')                    
                 
 
     def post(self, request):
