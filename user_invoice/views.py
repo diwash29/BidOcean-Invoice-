@@ -106,7 +106,7 @@ class RoleDisplayView(AdminOrHRPanelMixin,TemplateView):
         return render(request, self.template_name, context)
 
 
-class ErrorMessageView(AdminOrHRPanelMixin,TemplateView):
+class ErrorMessageView(TemplateView):
     template_name = 'user_invoice/error_msg.html'
     def get(self, request):
         context = {
