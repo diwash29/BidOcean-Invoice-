@@ -16,15 +16,15 @@
 	}
 	</style>
 				<label for="formGropuNameInput">Name*</label>
-				<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required>
+				<input name="name" class="form-control" id="formGroupNameInput" value="{% if employee.name %}{{employee.name}} {% else %}{{user.firstname}} {{user.lastname}}{% endif %}" placeholder="Enter your name" required>
 			</div>
 			<div class="form-group">	
 				<label for="formGropuNameInput">Address*</label>
-				<input name="address" class="form-control" id="formGroupNameInput" value="{{employee.address}}" placeholder="Enter your address" required>
+				<input name="address" class="form-control" id="formGroupNameInput" value="{% if employee.address %}{{employee.address}}{% else %}{{user.address}}{% endif %}" placeholder="Enter your address" required>
 			</div>	
 			<div class="form-group">
 				<label for="mobile_no">Mobile No*</label>
-				<input type="number" class="form-control" id="mobile_no" maxlength="10" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{{employee.phone_no}}" placeholder="Enter Mobile No" >
+				<input type="number" class="form-control" id="mobile_no" maxlength="10" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{% if employee.phone_no %}{{employee.phone_no}}{% else %}{{user.phone}}{% endif %}" placeholder="Enter Mobile No" >
 			</div>
 			<div class="form-group">
 				<label for="mobile_no">Employee Id*</label>
@@ -38,6 +38,7 @@
 				<label for="mobile_no">Leaves*</label>
 				<input type="text" class="form-control" id="leaves" name="leaves" value="{{employee.leaves}}" placeholder="Enter no of leaves" required>
 			</div> -->	
+			{% if user.role is None %}
 			<div class="form-group">
 				<label for="mobile_no">Role*</label>
 				<select class="form-control" id="role" name='role' required="">
@@ -48,6 +49,7 @@
 				</select>
 				<!-- <input type="text" class="form-control" id="leaves" name="leaves" placeholder="Enter no of leaves" required> -->
 			</div>	
+			{% endif %}
 			{% if 'Edit' in submit %}
 			<div class="form-group">
 				<label for="mobile_no">Sick Leave*</label>

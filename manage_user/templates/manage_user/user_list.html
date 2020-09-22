@@ -42,6 +42,7 @@
                         <th>Email</th>
 						<th>Address</th>
                         <th>Phone</th>
+                        <th>Role</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -58,6 +59,7 @@
                         <td>{{user.email}}</td>
 						<td>{{user.address}}</td>
                         <td>{{user.phone}}</td>
+                        <td>{{user.role.name}}</td>
                         <td>
                             <a href="#editEmployeeModal" alt="{{user.pk}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteEmployeeModal" alt="{{user.pk}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -158,6 +160,15 @@
 						<div class="form-group">
 							<label>Address</label>
 							<input type="text" name="address" style="font-size: 17px;" class="form-control" required>
+						</div>	
+						<div class="form-group">
+							<label>Role</label>
+							<select name="role" class="form-control" style="font-size: 14px;">
+								<option value="">Select Role</option>
+								{% for ad_role in roles_data %}
+									<option value="{{ad_role.id}}">{{ad_role.name}}</option>
+								{% endfor %}
+							</select>
 						</div>					
 						<div class="form-group">
 							<label>Password</label>
@@ -213,7 +224,16 @@
 						<div class="form-group">
 							<label>Address</label>
 							<input type="text" id="editaddress" name="address" style="font-size: 17px;" class="form-control" required>
-						</div>					
+						</div>	
+						<div class="form-group">
+							<label>Role</label>
+							<select name="role" id="editrole" class="form-control" style="font-size: 14px;">
+								<option value="">Select Role</option>
+								{% for ad_role in roles_data %}
+									<option value="{{ad_role.id}}">{{ad_role.name}}</option>
+								{% endfor %}
+							</select>
+						</div>				
 						<!-- <div class="form-group">
 							<label>Password</label>
 							<input type="password" name="password" autocomplete="new-password" class="form-control"  id="password" required>
@@ -552,6 +572,7 @@ confirm_password.onkeyup = validatePassword;
         $("#editphone").val(data.phone)
         $("#editemail").val(data.email)
         $("#editaddress").val(data.address)
+        $("#editrole").val(data.role)
       }
     });
 

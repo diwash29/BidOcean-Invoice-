@@ -379,7 +379,12 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
     def post(self, request, user_id):
         user     = Userdetail.objects.get(pk=user_id)
         name     = request.POST['name']
-        role     = Role.objects.get(pk=request.POST['role'])
+        try:
+            role      = Role.objects.get(pk=request.POST['role'])
+            user.role = role
+            user.save()
+        except:
+            role = user.role                 
         salary   = request.POST['salary']
         address  = request.POST['address']
         phone_no = request.POST['phone_no']
@@ -412,7 +417,7 @@ class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
         employee          = Employee.objects.get(pk=pk)
         leave_bal         = LeaveBalance.objects.get(employee=employee)
         employee.name     = request.POST['name']
-        employee.role     = Role.objects.get(pk=request.POST['role'])
+        employee.role     = user.role
         employee.salary   = request.POST['salary']
         employee.address  = request.POST['address']
         employee.phone_no = request.POST['phone_no']
