@@ -8,8 +8,9 @@ urlpatterns = [
     path('ir/',views.IrAddView.as_view(),name='ir'),
     path('br/',views.BrAddView.as_view(),name='br'),
     path('fixed/',views.FixedAddView.as_view(),name='fixed'),
- 
 
+    path('error/',views.ErrorMessageView.as_view(),name='error_msg'), 
+    
     path('rate-add/',views.RateAddView.as_view(),name='rate_add'),
     path('rate-list/',views.RateDisplayView.as_view(),name='rate_list'),
     path('rate-edit/<int:pk>',views.RateEditView.as_view(),name='rate_edit'),
