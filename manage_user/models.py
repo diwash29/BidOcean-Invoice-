@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import CustomUserManager
+#from user_invoice.models import Role
 #from LivingLibrary.models import Genre, Book
 # from courses.models import Lesson
 # from audios.models import Audio
@@ -23,6 +24,7 @@ class Userdetail(AbstractBaseUser, PermissionsMixin):
     phone           = models.CharField(max_length=200,null=True)
     email           = models.CharField(max_length=200,null=True)
     address         = models.CharField(max_length=300,null=True)
+    role            = models.ForeignKey('user_invoice.Role', on_delete=models.SET_NULL, null=True, blank=True)
     is_staff        = models.BooleanField(default=False)
     is_active       = models.BooleanField(default=True)
     USERNAME_FIELD  = 'username'
