@@ -102,7 +102,6 @@ class ExpensesView(AdminOrHRPanelMixin, TemplateView):
 
         return render(request, self.template_name, context)
     def post(self, request):
-        print(request.POST)
         try:
             delete_id = request.POST['delete']
             expenses = Expenses.objects.get(pk=delete_id)
@@ -110,6 +109,7 @@ class ExpensesView(AdminOrHRPanelMixin, TemplateView):
             messages.success(request, "Successfully deleted expenses") 
             return HttpResponseRedirect('/expenses/')	
         except:
+            print(request.FILES['expense_file'])
             if request.POST['hidden_expense'] != "":
                 expense_date          = datetime.strptime(request.POST['expense_date'], '%Y-%m-%d').date()   
                 expenses              = Expenses.objects.get(pk = request.POST['hidden_expense'])
@@ -118,10 +118,11 @@ class ExpensesView(AdminOrHRPanelMixin, TemplateView):
                 expenses.amount       = request.POST['amount']
                 expenses.bill_no      = request.POST['bill_no']
                 expenses.remarks      = request.POST['remarks']
+                expenses.expense_file = request.FILES['expense_file']
                 expenses.save()
             else:
             	expense_date = datetime.strptime(request.POST['expense_date'], '%Y-%m-%d').date()   
-            	expense = Expenses.objects.create(expense_date=expense_date, expense_type=ExpenseType.objects.get(pk=request.POST['expense_type']),amount=request.POST['amount'],bill_no=request.POST['bill_no'],remarks=request.POST['remarks'], added_by=Employee.objects.get(auth_tbl=self.request.user))
+            	expense = Expenses.objects.create(expense_date=expense_date, expense_type=ExpenseType.objects.get(pk=request.POST['expense_type']),amount=request.POST['amount'],bill_no=request.POST['bill_no'],remarks=request.POST['remarks'], added_by=Employee.objects.get(auth_tbl=self.request.user), expense_file=request.FILES['expense_file'])
         return HttpResponseRedirect('/expenses/')    	
 
 

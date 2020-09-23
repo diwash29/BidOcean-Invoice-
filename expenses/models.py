@@ -22,6 +22,7 @@ class Expenses(models.Model):
 	bill_no      = models.CharField(max_length=200)
 	remarks      = models.TextField(null=True, blank=True)
 	added_by     = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
+	expense_file = models.FileField(upload_to='expense_file/', null=True, blank=True)
 
 	def __str__(self):
 		return '%s' % self.bill_no 

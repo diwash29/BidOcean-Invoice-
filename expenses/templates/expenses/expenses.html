@@ -56,6 +56,7 @@
 						<th>Expense Type</th>
                         <th>Amount</th>
                         <th>Bill No</th>
+                        <th>Uploaded File</th>
                         <th>Remarks</th>
                     </tr>
                 </thead>
@@ -72,6 +73,7 @@
                         <td>{{expense.expense_type.expense_type}}</td>
 						<td>{{expense.amount}}</td>
                         <td>{{expense.bill_no}}</td>
+                        <td>{% if expense.expense_file %}<a target="_blank" href="{{expense.expense_file.url}}">view File</a>{% endif %}</td>
                         <td>{{expense.remarks}}</td>
                         <td>
                             <a href="#editEmployeeModal" alt="{{expense.pk}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -142,7 +144,7 @@
 	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content" style="margin-top: 200px;">
-				<form method="post">
+				<form method="post" enctype="multipart/form-data">
 					{% csrf_token %}
 					<input type="hidden" name="hidden_expense" value="">
 					<div class="modal-header">
@@ -173,8 +175,12 @@
 						<div class="form-group">
 							<label>Bill No</label>
 							<input type="text" name="bill_no" style="font-size: 17px;" class="form-control" required="">
+						</div>
+						<div class="form-group">
+							<label>Upload File</label>
+							<input type="file" name="expense_file" class="span8">
 						</div>	
-
+						
 						<div class="form-group">
 							<label>Remarks</label>
 						<textarea name="remarks" id="remarks"  type="text" name="remarks" style="font-size: 17px;" class="form-control"></textarea>
@@ -194,7 +200,7 @@
 	<div id="editEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content" style="margin-top: 200px;">
-				<form method="post">
+				<form method="post" enctype="multipart/form-data">
 					{% csrf_token %}
 					<input type="hidden" id="editid" name="hidden_expense" value="">
 					<div class="modal-header">						
@@ -225,6 +231,10 @@
 							<label>Bill No</label>
 							<input type="text" id="editbill_no" name="bill_no" style="font-size: 17px;" class="form-control" required="">
 						</div>	
+						<div class="form-group">
+							<label>Upload File</label>
+							<input type="file" name="expense_file" >
+						</div>
 
 						<div class="form-group">
 							<label>Remarks</label>
