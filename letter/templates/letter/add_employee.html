@@ -6,18 +6,19 @@
 {% block content %}
 <div class="container">
     <h2 class='text-center mt-2 text-danger'><u style="color: teal;">Offer Letter</u></h2>
-    <p>
-        Get User :
-        <select id="get_user">
-            <option value="">Select user</option>
-            {% for user in users %}
-                <option value="{{user.id}}">{{user.firstname}} {{user.lastname}}</option>
-            {% endfor %}
-        </select> 
-    </p>
+   
     <form action="" method="POST" autocomplete="off">
         {% csrf_token %}
         <p class="text-center" style="color: red;">( <span class="text-danger">*</span> fields are required fields )</p>
+        <p style="color: teal;"> <b>
+            Get User :</b>
+            <select id="get_user">
+                <option value="">Select user</option>
+                {% for user in users %}
+                    <option value="{{user.id}}">{{user.firstname}} {{user.lastname}}</option>
+                {% endfor %}
+            </select> 
+        </p>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">First Name:</label><span class="text-danger">*</span>
             <input type="text" class="form-control" required name="first_name" id="first_name" aria-describedby="emailHelp" placeholder="Enter First Name">
