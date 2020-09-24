@@ -13,7 +13,7 @@
         <p style="color: teal;"> <b>
             Select User :</b>
             <select id="get_user">
-                <option value="">Select user</option>
+                <option value="">User</option>
                 {% for user in users %}
                     <option value="{{user.id}}">{{user.firstname}} {{user.lastname}}</option>
                 {% endfor %}
