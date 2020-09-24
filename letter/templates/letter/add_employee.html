@@ -6,16 +6,25 @@
 {% block content %}
 <div class="container">
     <h2 class='text-center mt-2 text-danger'><u style="color: teal;">Offer Letter</u></h2>
+    <p>
+        Get User :
+        <select id="get_user">
+            <option value="">Select user</option>
+            {% for user in users %}
+                <option value="{{user.id}}">{{user.firstname}} {{user.lastname}}</option>
+            {% endfor %}
+        </select> 
+    </p>
     <form action="" method="POST" autocomplete="off">
         {% csrf_token %}
         <p class="text-center" style="color: red;">( <span class="text-danger">*</span> fields are required fields )</p>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">First Name:</label><span class="text-danger">*</span>
-            <input type="text" class="form-control" required name="first_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter First Name">
+            <input type="text" class="form-control" required name="first_name" id="first_name" aria-describedby="emailHelp" placeholder="Enter First Name">
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">Last Name:</label><span class="text-danger">*</span>
-            <input type="text" class="form-control" required name="last_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Last Name">
+            <input type="text" class="form-control" required name="last_name" id="last_name" aria-describedby="emailHelp" placeholder="Enter Last Name">
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">Designation:</label><span class="text-danger">*</span>
@@ -27,11 +36,11 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">Email:</label>
-            <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Email Address">
+            <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address">
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">Phone:</label>
-            <input type="text" class="form-control" name="phone" maxlength="10" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Phone Number">
+            <input type="text" class="form-control" name="phone" maxlength="10" id="phone" aria-describedby="emailHelp" placeholder="Enter Phone Number">
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1" style="color: teal;">Joining Date:</label><span class="text-danger">*</span>
@@ -49,4 +58,28 @@
 		background-color: #EFCFB0;
 	}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $("#get_user").change(function(){
+        var user_id = $(this).val()
+        if (user_id != ""){ 
+            $.ajax({
+              url  : '{% url "letter:get_user_data" %}',
+              data : {
+                    user_id  : user_id,
+                  },
+              type : 'GET',
+              dataType: 'json',
+              success: function (data) {
+                $("#first_name").val(data.firstname)
+                $("#last_name").val(data.lastname)
+                $("#phone").val(data.phone)
+                $("#email").val(data.email)
+                
+              }
+            });
+        }
+        
+    })
+</script>
 {% endblock content %}

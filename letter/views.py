@@ -8,16 +8,27 @@ import math
 from user_invoice.models import Employee
 from django.contrib.auth.models import User
 
+from manage_user.models import Userdetail
+
 from .converter import convertToWords
 from .models import EmployeeDetail
 from .utils import *
 
+from django.http import JsonResponse
+
 # Create your views here.
+
+def ajax_get_user_data(request):
+	user_id = request.GET.get('user_id', None)
+	user    = Userdetail.objects.get(pk=user_id)
+	data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address}
+	return JsonResponse(data)
 
 def createEmployee(request):
 	user           = request.user
 	employee       = Employee.objects.get(auth_tbl=user)
 	rolename       = employee.role.name.lower()
+	users          = Userdetail.objects.all().order_by('firstname')
 
 	if request.method=="POST":
 		form = EmployeeDetail.objects.create(
@@ -33,7 +44,7 @@ def createEmployee(request):
 		messages.success(request,'Employee Just Added')
 		return HttpResponseRedirect(reverse('letter:joinee_list'))
 	
-	return render(request,'letter/add_employee.html', {'role':rolename, "employee":employee})
+	return render(request,'letter/add_employee.html', {'role':rolename, "employee":employee, 'users':users})
 
 def employeeList(request):
 	employee_list = EmployeeDetail.objects.all()
