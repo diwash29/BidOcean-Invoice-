@@ -620,7 +620,7 @@ confirm_password.onkeyup = validatePassword;
 			dataType: 'json',
 			success: function (data) {
 				if (data.exist){
-					alert("username '"+data.username+"' is alredy exist, Please try diffrent")
+					alert("username '"+data.username+"'  alredy exists! Please try with a different username.")
 					$("#"+data.id).val("")
 					$("#"+data.id).focus()
 				}
