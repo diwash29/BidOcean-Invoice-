@@ -40,14 +40,16 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
             return HttpResponseRedirect('/manage_user/')	
         except:                        	 
             if request.POST['hidden_user'] != "":
-                user           = Userdetail.objects.get(pk = request.POST['hidden_user'])
-                user.username  = request.POST['username']
-                user.firstname = request.POST['firstname']
-                user.lastname  = request.POST['lastname']
-                user.phone     = request.POST['phone']
-                user.email     = request.POST['email']
-                user.address   = request.POST['address']
-                user.role      = Role.objects.get(pk=request.POST['role'])
+                user             = Userdetail.objects.get(pk = request.POST['hidden_user'])
+                user.username    = request.POST['username']
+                user.firstname   = request.POST['firstname']
+                user.lastname    = request.POST['lastname']
+                user.phone       = request.POST['phone']
+                user.email       = request.POST['email']
+                user.address     = request.POST['address']
+                user.employee_id = request.POST['employee_id']
+                user.salary      = request.POST['salary']
+                user.role        = Role.objects.get(pk=request.POST['role'])
                 user.save()
                 try:
                     emp      = Employee.objects.get(auth_tbl=user)
@@ -61,7 +63,7 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
                     role = Role.objects.get(pk=request.POST['role'])
                 except:
                     role = None
-                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'], role=role)
+                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'], employee_id=request.POST['employee_id'], salary=request.POST['salary'], role=role)
                 user.set_password(request.POST["password"])
                 user.save()
                 messages.success(request, "Successfully added user")
@@ -75,5 +77,22 @@ def ajax_user_data(request):
         role = user.role.pk
     except:
         role = None
-    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address, 'role':role }
+    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address, 'role':role, 'employee_id':user.employee_id, 'salary':user.salary }
     return JsonResponse(data)
+
+
+def ajx_check_username(request):
+    username  = request.GET.get('username',None)
+    editid    = request.GET.get('editid', None)
+    select_id = request.GET.get('id', None)       
+    if editid is not None and editid is not '':
+        user_exist = Userdetail.objects.filter(username=username).exclude(pk=editid)
+    else: 
+        user_exist = Userdetail.objects.filter(username=username)  
+    if user_exist:
+        exist = True
+    else:
+        exist = False
+    data = {'exist' : exist, 'id' : select_id, 'username' : username}
+    return JsonResponse(data)    
+
