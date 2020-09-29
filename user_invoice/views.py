@@ -17,7 +17,7 @@ from django.db.models import Q
 from leave.models import LeaveBalance
 from .utils import get_first_n_last_day, count_leaves, check_invoice
 
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 
 import xlwt
 
@@ -101,22 +101,25 @@ class ChangePassword(TemplateView):
     template_name = 'user_invoice/change_password.html'
     def get(self, request):
         context = {
-            'title': 'Role list',
+            'title': 'Change password',
             'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
     def post(self, request):
-        username     = request.POST['username']
+        print(request.POST)
+        username     = request.user.username
         old_password = request.POST['old_password']
         user = authenticate(request, username=username, password=old_password)  
         if user is not None:
-            user.set_password(request.POST['old_password'])           
+            user.set_password(request.POST['password'])
+            user.save()  
+            login(request, user)         
             messages.success(request, "password changed Successfully")
-            return HttpResponseRedirect('') 
+            return HttpResponseRedirect('/change-password') 
         else:
             messages.error(request, "Old password is not correct")
             context = {
-            'title': 'Role list',
+            'title': 'Change password',
             'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
             }
             return render(request, self.template_name, context)    
