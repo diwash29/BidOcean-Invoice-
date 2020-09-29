@@ -93,7 +93,16 @@ def export_invoice_xls(request):
             ws.write(row_num, col_num, row[col_num], font_style)
 
     wb.save(response)
-    return response        
+    return response   
+
+class ChangePassword(TemplateView):
+    template_name = 'user_invoice/change_password.html'
+    def get(self, request):
+        context = {
+            'title': 'Role list',
+            'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+        }
+        return render(request, self.template_name, context)         
 
 class RoleDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/role_list.html'
