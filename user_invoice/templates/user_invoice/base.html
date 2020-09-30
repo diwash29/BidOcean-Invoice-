@@ -33,6 +33,9 @@
               <a class="nav-item nav-link" href="{% url 'user_invoice-home' %}">Home</a>
               <a class="nav-item nav-link" href="{% url 'invoice_list' %}" >Invoices</a>
               <a class="nav-item nav-link" href="{% url 'leave' %}" >Leave</a>
+              {% if role == 'hr' or role == 'admin' or user.is_manager == 1 %}
+              <a class="nav-item nav-link" href="{% url 'approve_leave' %}">LeaveRequests</a>
+              {% endif %}
               {% if role == 'hr' or role == 'admin' %}
                 <!-- <a class="nav-item nav-link" href="{% url 'rate_list' %}" >Rates</a>
                 <a class="nav-item nav-link" href="{% url 'letter:joinee_list' %}" >Letter</a> -->
@@ -46,7 +49,7 @@
                   <option value="{% url 'letter:joinee_list' %}" style="color: white;">Letter</option>
                   <option value="{% url 'rate_list' %}" style="color:white">Rates</option>
                   <option value="{% url 'role_list' %}" style="color: white;">Role</option>
-                  <option value="{% url 'approve_leave' %}" style="color:white">LeaveRequests</option>
+                  <!-- <option value="{% url 'approve_leave' %}" style="color:white">LeaveRequests</option> -->
                   <option value="{% url 'manage_user' %}" style="color:white">ManageUsers</option>
                   <option value="{% url 'account_management' %}" style="color:white">ManageAccount</option>      
                   <option value="{% url 'expenses' %}" style="color:white">Expenses</option>

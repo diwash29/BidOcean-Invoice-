@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, View
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from user_invoice.mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
+from user_invoice.mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin, AdminOrHROrManagerPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -35,14 +35,17 @@ def leave_bal(request):
     data = {'leave' : leave_bal}
     return JsonResponse(data)	  
 
-class LeaveRequestDisplayView(AdminOrHRPanelMixin,TemplateView):
+class LeaveRequestDisplayView(AdminOrHROrManagerPanelMixin,TemplateView):
     template_name = "leave/approve_leave.html"
     def get(self, request):
         user           = self.request.user
         employee       = Employee.objects.get(auth_tbl=user)
         rolename       = employee.role.name.lower()
         leave_requests = LeaveRequest.objects.all()
-
+        if rolename != 'hr' and rolename != 'admin':
+            sub_emp = Employee.objects.filter(report_to=employee)
+            leave_requests = leave_requests.filter(employee__in=sub_emp) 
+        print(leave_requests.query)    
 
         search        = request.GET.get('search', None)
         leave_type    = request.GET.get('leave_type',None)

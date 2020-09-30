@@ -30,7 +30,7 @@ def check_invoice(employee):
 	current_month  = today.month
 	current_year   = today.year
 	start_end_date = get_first_n_last_day(today.year, today.month) 
-	invoice        = Invoice.objects.filter(emp_ownwer=employee, invoice_date__gte=start_end_date[0], invoice_date__lte=start_end_date[1])
+	invoice        = Invoice.objects.filter(emp_ownwer=employee, monthdate__gte=start_end_date[0], monthdate__lte=start_end_date[1])
 	if not invoice:
 		return None
 	else:

@@ -27,7 +27,7 @@ class Employee(models.Model):
 	auth_tbl   = models.OneToOneField(Userdetail, on_delete=models.CASCADE)
 	added_at   = models.DateTimeField(auto_now_add=True)
 	is_manager = models.SmallIntegerField(default=0)
-	report_to  = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+	report_to  = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='empreport_to')
 
 	def __str__(self):
 		return '%s' % self.name
