@@ -50,6 +50,17 @@
 				<!-- <input type="text" class="form-control" id="leaves" name="leaves" placeholder="Enter no of leaves" required> -->
 			</div>	
 			{% endif %}
+			{% if user.is_manager == 0 or employee.is_manager == 0 %}
+			<div class="form-group">
+				<label for="mobile_no">Report to*</label>
+				<select class="form-control" id="report_to" name='report_to' required="">
+					<option value=''>Select Manager</option>
+					{% for manager in managers %}
+						<option {% if employee.report_to.id == manager.id %}selected{% endif %} value='{{manager.id}}'>{{manager.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			{% endif %}
 			{% if 'Edit' in submit %}
 			<div class="form-group">
 				<label for="mobile_no">Sick Leave*</label>

@@ -57,11 +57,15 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
                 user.address     = request.POST['address']
                 user.employee_id = request.POST['employee_id']
                 user.salary      = request.POST['salary']
+                user.is_manager  = request.POST['editis_manager']
                 user.role        = Role.objects.get(pk=request.POST['role'])
                 user.save()
                 try:
-                    emp      = Employee.objects.get(auth_tbl=user)
-                    emp.role = Role.objects.get(pk=request.POST['role'])
+                    emp            = Employee.objects.get(auth_tbl=user)
+                    emp.role       = Role.objects.get(pk=request.POST['role'])
+                    emp.is_manager = request.POST['editis_manager']
+                    if emp.is_manager == 1:
+                        emp.report_to = None
                     emp.save()
                 except:
                     pass    
@@ -71,7 +75,7 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
                     role = Role.objects.get(pk=request.POST['role'])
                 except:
                     role = None
-                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'], employee_id=request.POST['employee_id'], salary=request.POST['salary'], role=role)
+                user = Userdetail.objects.create(username=request.POST['username'], firstname=request.POST['firstname'], lastname=request.POST['lastname'], phone=request.POST['phone'], email=request.POST['email'], address=request.POST['address'], employee_id=request.POST['employee_id'], salary=request.POST['salary'], role=role, is_manager=request.POST['is_manager'])
                 user.set_password(request.POST["password"])
                 user.save()
                 messages.success(request, "Successfully added user")
@@ -85,7 +89,7 @@ def ajax_user_data(request):
         role = user.role.pk
     except:
         role = None
-    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address, 'role':role, 'employee_id':user.employee_id, 'salary':user.salary }
+    data = {'id':user.pk, 'username':user.username, 'firstname':user.firstname, 'lastname':user.lastname, 'phone':user.phone, 'email':user.email, 'address':user.address, 'role':role, 'employee_id':user.employee_id, 'salary':user.salary, 'is_manager':user.is_manager }
     return JsonResponse(data)
 
 

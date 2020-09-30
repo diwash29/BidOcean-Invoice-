@@ -17,6 +17,8 @@ from django.db.models import Q
 from leave.models import LeaveBalance
 from .utils import get_first_n_last_day, count_leaves, check_invoice
 
+from django.contrib.auth import authenticate, login
+
 import xlwt
 
 # Create your views here.
@@ -93,7 +95,35 @@ def export_invoice_xls(request):
             ws.write(row_num, col_num, row[col_num], font_style)
 
     wb.save(response)
-    return response        
+    return response   
+
+class ChangePassword(TemplateView):
+    template_name = 'user_invoice/change_password.html'
+    def get(self, request):
+        context = {
+            'title': 'Change password',
+            'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+        }
+        return render(request, self.template_name, context)
+    def post(self, request):
+        print(request.POST)
+        username     = request.user.username
+        old_password = request.POST['old_password']
+        user = authenticate(request, username=username, password=old_password)  
+        if user is not None:
+            user.set_password(request.POST['password'])
+            user.save()  
+            login(request, user)         
+            messages.success(request, "password changed Successfully")
+            return HttpResponseRedirect('/change-password') 
+        else:
+            messages.error(request, "Old password is not correct")
+            context = {
+            'title': 'Change password',
+            'role' : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+            }
+            return render(request, self.template_name, context)    
+            #messages.error(request, "There was a problem updating the role")
 
 class RoleDisplayView(AdminOrHRPanelMixin,TemplateView):
     template_name = 'user_invoice/role_list.html'
@@ -361,6 +391,7 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
     def get(self, request, user_id):
         user          = Userdetail.objects.get(pk=user_id)
         roles         = Role.objects.all()
+        managers      = Employee.objects.filter(is_manager=1)
         try:
         	rolename = Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
         except:
@@ -372,7 +403,8 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
             'roles'        : roles,
             'submit'       : 'Add Employee',
             'role'         : rolename,
-            'title'        : 'Add employee'
+            'title'        : 'Add employee',
+            'managers'     : managers
         }
         return render(request, self.template_name, context)
 
@@ -385,13 +417,19 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
             user.save()
         except:
             role = user.role                 
-        salary   = request.POST['salary']
-        address  = request.POST['address']
-        phone_no = request.POST['phone_no']
-        emp_id   = request.POST['emp_id']
+        salary    = request.POST['salary']
+        address   = request.POST['address']
+        phone_no  = request.POST['phone_no']
+        emp_id    = request.POST['emp_id']
+        # report_to = None
+        if 'report_to' not in request.POST:
+            report_to = None
+        else:
+            report_to = Employee.objects.get(pk=request.POST['report_to'])
+
         # leaves   = request.POST['leaves']
         auth_tbl = user
-        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl)
+        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to)
         leave_bal = LeaveBalance.objects.create(casual_leave=3, sick_leave=3, earned_leave=4, employee=employee)
 
         return HttpResponseRedirect('/')
@@ -402,27 +440,34 @@ class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
     def get(self, request, pk):
         employee      = Employee.objects.get(pk=pk)
         roles         = Role.objects.all()        # employee_form = EmployeeForm()
+        managers      = Employee.objects.filter(is_manager=1)
         context = {
             # 'employee_form': employee_form,
             'employee'     : employee,
             'roles'        : roles,
             'submit'       : 'Edit Employee',
             'title'        : 'Edit employee',
-            'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+            'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'managers'     : managers
         }
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
-        user              = request.user
-        employee          = Employee.objects.get(pk=pk)
-        leave_bal         = LeaveBalance.objects.get(employee=employee)
-        employee.name     = request.POST['name']
-        employee.role     = user.role
-        employee.salary   = request.POST['salary']
-        employee.address  = request.POST['address']
-        employee.phone_no = request.POST['phone_no']
+        if 'report_to' not in request.POST:
+            report_to = None
+        else:
+            report_to = Employee.objects.get(pk=request.POST['report_to'])
+        user               = request.user
+        employee           = Employee.objects.get(pk=pk)
+        leave_bal          = LeaveBalance.objects.get(employee=employee)
+        employee.name      = request.POST['name']
+        employee.role      = user.role
+        employee.salary    = request.POST['salary']
+        employee.address   = request.POST['address']
+        employee.phone_no  = request.POST['phone_no']
         # employee.leaves   = request.POST['leaves']
-        employee.emp_id   = request.POST['emp_id']
+        employee.emp_id    = request.POST['emp_id']
+        employee.report_to = report_to    
         employee.save()
         leave_bal.sick_leave   = request.POST['sick_leave']
         leave_bal.casual_leave = request.POST['casual_leave']

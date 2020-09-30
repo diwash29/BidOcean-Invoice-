@@ -33,4 +33,6 @@ urlpatterns = [
     path('fixed/<int:pk>', views.FixedEditView.as_view(), name='edit_fixed'),
 
     path('export/csv/', views.export_invoice_xls, name='export_invoice_xls'),
+
+    path('change-password/', views.ChangePassword.as_view(), name='change_password'),
 ]
