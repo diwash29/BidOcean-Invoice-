@@ -33,11 +33,19 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
     def post(self, request):
         print(request.POST)
         try:
-            delete_id = request.POST['delete']
-            user = Userdetail.objects.get(pk=delete_id)
-            user.delete()
-            messages.success(request, "Successfully deleted user") 
-            return HttpResponseRedirect('/manage_user/')	
+            if 'delete' in request.POST:
+                delete_id = request.POST['delete']
+                user = Userdetail.objects.get(pk=delete_id)
+                user.delete()
+                messages.success(request, "Successfully deleted user") 
+                return HttpResponseRedirect('/manage_user/')	
+            else:
+                reset_password_id = request.POST['reset_password_user']
+                user = Userdetail.objects.get(pk=reset_password_id)
+                user.set_password(request.POST['new_password'])
+                user.save()
+                messages.success(request, "Successfully reset password") 
+                return HttpResponseRedirect('/manage_user/')        
         except:                        	 
             if request.POST['hidden_user'] != "":
                 user             = Userdetail.objects.get(pk = request.POST['hidden_user'])

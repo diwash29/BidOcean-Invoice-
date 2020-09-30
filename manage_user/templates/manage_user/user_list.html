@@ -43,7 +43,7 @@
 						<th>Address</th>
                         <th>Phone</th>
                         <th>Role</th>
-                        <th>Actions</th>
+                        <th style="width: 140px">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,6 +63,7 @@
                         <td>
                             <a href="#editEmployeeModal" alt="{{user.pk}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteEmployeeModal" alt="{{user.pk}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="#changePasswordModal" alt="{{user.pk}}" class="reset_password" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Reset Password">vpn_key</i></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -125,6 +126,40 @@
             </div>
         </div>
     </div>
+
+
+    <div id="changePasswordModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content" style="margin-top: 200px;">
+				<form method="post">
+					{% csrf_token %}
+					<input type="hidden" value="" name="reset_password_user" id="reset_password_user">
+					<div class="modal-header">						
+						<h4 class="modal-title">Reset Password</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">											
+						<div class="form-group">
+							<label>New Password</label>
+							<input type="password" name="new_password" class="form-control"  id="new_password" required>
+					
+						</div>	
+						<div class="form-group">
+							<label>Confirm New Password</label>
+							<input type="password" name="confirm_new_password"  class="form-control" id="confirm_new_password" required>
+							
+						</div>											
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-success" value="Reset password">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
 	<!-- Edit Modal HTML -->
 	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
@@ -569,6 +604,21 @@ password.onchange = validatePassword;
 confirm_password.onkeyup = validatePassword;
 
 
+var new_password = document.getElementById("new_password")
+  , confirm_new_password = document.getElementById("confirm_new_password");
+
+function validateresetPassword(){
+  if(new_password.value != confirm_new_password.value) {
+    confirm_new_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_new_password.setCustomValidity('');
+  }
+}
+
+new_password.onchange = validateresetPassword;
+confirm_new_password.onkeyup = validateresetPassword;
+
+
 </script>
 <script type="text/javascript">
 	$(".edit").click(function () {
@@ -601,6 +651,12 @@ confirm_password.onkeyup = validatePassword;
     	$("#deleteuser").val(delete_id)
     })
 
+    $('.reset_password').click(function(){
+    	var pass_reset_user_id = $(this).attr('alt');
+    	$("#reset_password_user").val(pass_reset_user_id)
+    	/*alert($("#reset_password_user").val())*/
+
+    })
 
     $("#username, #editusername").blur(function(){
 		var username = $(this).val()
