@@ -201,7 +201,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="total_working_days"/>
+						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);"  id="totalwd" class ="txtMult" name="total_working_days"/>
 					</td>
 					
 					
@@ -545,7 +545,7 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
+						<span data-prefix>$</span><input id="authday" class ="txtMult" name="txtEmmail" readonly="" onclick="dayoff()"/>
 					</td>
 					<td>
 						<input value="{% if invoice.authorised_day_off == None %}{{auth_leave}}{% else %}{{invoice.authorised_day_off}}{% endif %}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
@@ -563,7 +563,7 @@
 						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" readonly="" />
 					</td>
 					<td>
-						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail" />
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -588,7 +588,20 @@
 				</tr>
 
 
-        </table>
+		</table>
+		<script>
+			function dayoff() {
+			var myBox1 = document.getElementById('authres').value;	
+			var myBox2 = document.getElementById('totalwd').value;
+			var result = document.getElementById('authday');	
+			var myResult = myBox1/myBox2;
+			result.value = myResult;
+		
+
+			}
+			</script>
+	
+			
 
 		<script>
 					$(document).ready(function(){
