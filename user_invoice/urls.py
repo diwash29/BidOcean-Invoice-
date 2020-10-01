@@ -35,4 +35,6 @@ urlpatterns = [
     path('export/csv/', views.export_invoice_xls, name='export_invoice_xls'),
 
     path('change-password/', views.ChangePassword.as_view(), name='change_password'),
+
+    path('ajax/get_leave/', views.ajax_get_leave, name='ajax_get_leave')
 ]
