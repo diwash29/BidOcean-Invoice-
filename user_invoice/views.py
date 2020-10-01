@@ -495,45 +495,48 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
     template_name = 'user_invoice/invoice_list.html'
 
     def get(self, request):
-        employee  =  Employee.objects.get(auth_tbl=self.request.user)
-        rolename  =  employee.role.name.lower()
-        if rolename == 'admin' or  rolename == 'hr':
-            invoice = Invoice.objects.all()
-        else:
-            invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
+        try:
+            employee  =  Employee.objects.get(auth_tbl=self.request.user)
+            rolename  =  employee.role.name.lower()
+            if rolename == 'admin' or  rolename == 'hr':
+                invoice = Invoice.objects.all()
+            else:
+                invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
 
-        search        = request.GET.get('search', None)
-        from_date     = request.GET.get('from_date', None)
-        to_date       = request.GET.get('to_date', None)
-        bank          = request.GET.get('bank',None)
-        
-        query_param = {}  
-        if search is not None and search is not '':
-            search = search.strip()
-            query_param['search'] = search 
-            invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))|Q(emp_ownwer__emp_id__icontains=search)) 
-        if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
-            query_param['from_date'] = from_date
-            query_param['to_date']   = to_date
-            to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
-            from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
-            invoice   = invoice.filter(monthdate__gte=from_date, monthdate__lte=to_date)
-        if bank is not None and bank is not '':
-            query_param['bank'] = bank
-            invoice = invoice.filter(bank_account__bank__iexact=bank)
+            search        = request.GET.get('search', None)
+            from_date     = request.GET.get('from_date', None)
+            to_date       = request.GET.get('to_date', None)
+            bank          = request.GET.get('bank',None)
+            
+            query_param = {}  
+            if search is not None and search is not '':
+                search = search.strip()
+                query_param['search'] = search 
+                invoice = invoice.filter(Q(emp_ownwer__name__icontains=search)|Q(emp_ownwer__address__icontains=search)|(Q(emp_ownwer__phone_no__icontains=search))|Q(emp_ownwer__emp_id__icontains=search)) 
+            if (from_date is not None and to_date is not None) and (from_date != "" and to_date != ""):
+                query_param['from_date'] = from_date
+                query_param['to_date']   = to_date
+                to_date   = datetime.strptime(to_date,"%Y-%m-%d").date()
+                from_date = datetime.strptime(from_date,"%Y-%m-%d").date()	
+                invoice   = invoice.filter(monthdate__gte=from_date, monthdate__lte=to_date)
+            if bank is not None and bank is not '':
+                query_param['bank'] = bank
+                invoice = invoice.filter(bank_account__bank__iexact=bank)
 
-        invoice = invoice.order_by('-invoice_date')    
+            invoice = invoice.order_by('-invoice_date')    
 
-        paginator        = Paginator(invoice,10)
-        page             = request.GET.get('page')
-        paginatedcontent = paginator.get_page(page)	
-        context = {
-            'query_param' : query_param,
-            'invoices'    : paginatedcontent,
-            'title'       : 'Invoice list',
-            'role'        : rolename
-        }
-        return render(request, self.template_name, context)
+            paginator        = Paginator(invoice,10)
+            page             = request.GET.get('page')
+            paginatedcontent = paginator.get_page(page)	
+            context = {
+                'query_param' : query_param,
+                'invoices'    : paginatedcontent,
+                'title'       : 'Invoice list',
+                'role'        : rolename
+            }
+            return render(request, self.template_name, context)
+        except:
+            return HttpResponseRedirect('/employee/'+str(self.request.user.pk))
 
 class IrEditView(IRPanelMixin,TemplateView):
     template_name='user_invoice/ir.html'

@@ -92,20 +92,23 @@ class LeaveRequestAddView(AdminPanelMixin,TemplateView):
     to_date       = datetime.strptime(str(year)+"-"+str(month)+"-"+str(firstnlast_d[1]),"%Y-%m-%d").date()
     
     def get(self, request):
-        user           = self.request.user
-        employee       = Employee.objects.get(auth_tbl=user)
-        rem_leaves     = LeaveBalance.objects.get(employee=employee)
-        rolename       = employee.role.name.lower()
-        leave_requests = LeaveRequest.objects.filter(employee=employee, from_date__gte=self.from_date, from_date__lte=self.to_date) 
-        context = {
-            'employee'       : employee,
-            'role'           : rolename,
-            'title'          : 'request leave',
-            'submit'         : 'Request leave',
-            'rem_leaves'     : rem_leaves,
-            'leave_requests' : leave_requests,
-        }
-        return render(request, self.template_name, context)
+        try:
+            user           = self.request.user
+            employee       = Employee.objects.get(auth_tbl=user)
+            rem_leaves     = LeaveBalance.objects.get(employee=employee)
+            rolename       = employee.role.name.lower()
+            leave_requests = LeaveRequest.objects.filter(employee=employee, from_date__gte=self.from_date, from_date__lte=self.to_date) 
+            context = {
+                'employee'       : employee,
+                'role'           : rolename,
+                'title'          : 'request leave',
+                'submit'         : 'Request leave',
+                'rem_leaves'     : rem_leaves,
+                'leave_requests' : leave_requests,
+            }
+            return render(request, self.template_name, context)
+        except:
+            return HttpResponseRedirect('/employee/'+str(self.request.user.pk))
 
     def post(self, request):
         user     = self.request.user

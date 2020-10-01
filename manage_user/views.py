@@ -20,7 +20,7 @@ class ManageUser(AdminOrHRPanelMixin,TemplateView):
         employee   = Employee.objects.get(auth_tbl=self.request.user)
         role       = employee.role.name.lower()
         roles_data = Role.objects.all() 
-        users      = Userdetail.objects.all()
+        users      = Userdetail.objects.all().order_by('username')
         paginator        = Paginator(users,10)
         page             = request.GET.get('page')
         paginatedcontent = paginator.get_page(page)
