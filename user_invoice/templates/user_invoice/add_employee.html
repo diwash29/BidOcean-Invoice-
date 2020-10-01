@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 	<article>
-		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;" ><b> {{submit}} Details</b> </legend>
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;" ><b> {% if 'Add' in submit %}Verify Employee{% else %}{{submit}}{% endif %} Details</b> </legend>
 		
 		<form method='POST'>
 			{% csrf_token %}
@@ -16,23 +16,23 @@
 	}
 	</style>
 				<label for="formGropuNameInput">Name*</label>
-				<input name="name" class="form-control" id="formGroupNameInput" value="{% if employee.name %}{{employee.name}} {% else %}{{user.firstname}} {{user.lastname}}{% endif %}" placeholder="Enter your name" required>
+				<input name="name" class="form-control" id="formGroupNameInput" value="{% if employee.name %}{{employee.name}} {% else %}{{user.firstname}} {{user.lastname}}{% endif %}" placeholder="Enter your name" required {% if 'Add' in submit %}readonly{% endif %}>
 			</div>
 			<div class="form-group">	
 				<label for="formGropuNameInput">Address*</label>
-				<input name="address" class="form-control" id="formGroupNameInput" value="{% if employee.address %}{{employee.address}}{% else %}{{user.address}}{% endif %}" placeholder="Enter your address" required>
+				<input name="address" class="form-control" id="formGroupNameInput" value="{% if employee.address %}{{employee.address}}{% else %}{{user.address}}{% endif %}" placeholder="Enter your address" required {% if 'Add' in submit %}readonly{% endif %}>
 			</div>	
 			<div class="form-group">
 				<label for="mobile_no">Mobile No*</label>
-				<input type="number" class="form-control" id="mobile_no" maxlength="10" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{% if employee.phone_no %}{{employee.phone_no}}{% else %}{{user.phone}}{% endif %}" placeholder="Enter Mobile No" >
+				<input type="number" class="form-control" id="mobile_no" maxlength="10" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{% if employee.phone_no %}{{employee.phone_no}}{% else %}{{user.phone}}{% endif %}" placeholder="Enter Mobile No" {% if 'Add' in submit %}readonly{% endif %} >
 			</div>
 			<div class="form-group">
 				<label for="mobile_no">Employee Id*</label>
-				<input type="text" class="form-control" id="emp_id" name="emp_id"  value="{% if employee.emp_id %}{{employee.emp_id}}{% else %}{{user.employee_id}}{% endif %}" placeholder="Enter employee id" required="">
+				<input type="text" class="form-control" id="emp_id" name="emp_id"  value="{% if employee.emp_id %}{{employee.emp_id}}{% else %}{{user.employee_id}}{% endif %}" placeholder="Enter employee id" required="" {% if 'Add' in submit %}readonly{% endif %} >
 			</div>	
 			<div class="form-group">
 				<label for="mobile_no">Salary*</label>
-				<input type="text" class="form-control" id="salary" name="salary" value="{% if employee.salary %}{{employee.salary}}{% else %}{{user.salary}}{% endif %}" placeholder="Enter salary">
+				<input type="text" class="form-control" id="salary" name="salary" value="{% if employee.salary %}{{employee.salary}}{% else %}{{user.salary}}{% endif %}" placeholder="Enter salary" {% if 'Add' in submit %}readonly{% endif %}>
 			</div>	
 			<!-- <div class="form-group">
 				<label for="mobile_no">Leaves*</label>
