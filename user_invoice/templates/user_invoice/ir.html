@@ -1246,6 +1246,9 @@ function minus(tot) {
 		})
 	}
 	get_leave('{% url "ajax_get_leave" %}')
+	{% if 'Add' in submit %}
+		document.querySelector("#invoice_date").valueAsDate = new Date();
+	{% endif %}
 </script>
 
 {% endblock content %}
