@@ -20,6 +20,7 @@ from .utils import get_first_n_last_day, count_leaves, check_invoice
 from django.contrib.auth import authenticate, login
 
 import xlwt
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -39,6 +40,14 @@ def index(request):
 		return render(request,'user_invoice/home.html',context)
 	except:
 		return HttpResponseRedirect('/employee/'+str(user.pk))
+
+def ajax_get_leave(request):
+    date      = request.GET.get('date', None)    
+    monthdate = datetime.strptime(date, '%Y-%m').date() 
+    employee  = Employee.objects.get(auth_tbl=request.user)   
+    leaves    = count_leaves(employee, monthdate)
+    data      = {'leaves' : leaves}
+    return JsonResponse(data)
 
 def export_invoice_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
@@ -633,14 +642,13 @@ class IrAddView(IRPanelMixin,TemplateView):
             if ch_invoice is None:
                 rolename      = employee.role.name.lower()
                 rates         = Rate.objects.get(is_approved=1)
-                leaves        = count_leaves(employee)
+                # leaves        = count_leaves(employee)
                 context = {
                     'employee'  : employee,
                     'submit'    : 'Add IR Invoice',
                     'title'     : 'Add ir',
                     'role'      : rolename,
                     'rates'     : rates,
-                    'auth_leave': leaves,
                 }
                 return render(request, self.template_name, context)
             else:
@@ -732,7 +740,7 @@ class BrAddView(BRPanelMixin,TemplateView):
             ch_invoice    = check_invoice(employee)
             if ch_invoice is None:
                 rolename      = employee.role.name.lower()
-                leaves        = count_leaves(employee)
+                # leaves        = count_leaves(employee)
                 rates         = Rate.objects.get(is_approved=1)
                 context = {
                     'employee'  : employee,
@@ -740,7 +748,6 @@ class BrAddView(BRPanelMixin,TemplateView):
                     'title'     : 'Add br',
                     'role'      : rolename,
                     'rates'     : rates,
-                    'auth_leave': leaves,
                 }
                 return render(request, self.template_name, context)
             else:
@@ -776,7 +783,7 @@ class FixedAddView(FixedPanelMixin,TemplateView):
             employee       = Employee.objects.get(auth_tbl=user)  
             ch_invoice     = check_invoice(employee)    
             if ch_invoice is None:  
-                leaves         = count_leaves(employee)
+                # leaves         = count_leaves(employee)
                 rolename       = employee.role.name.lower()
                 rates          = Rate.objects.get(is_approved=1)
                 context = {
@@ -785,7 +792,6 @@ class FixedAddView(FixedPanelMixin,TemplateView):
                     'title'     : 'Add ir',
                     'role'      : rolename,
                     'rates'     : rates,
-                    'auth_leave': leaves,
                 }
                 return render(request, self.template_name, context)
             else:

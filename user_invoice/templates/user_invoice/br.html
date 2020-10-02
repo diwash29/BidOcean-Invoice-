@@ -272,7 +272,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
 					<td>
-						<input value="{% if invoice.authorised_day_off == None %}{{auth_leave}}{% else %}{{invoice.authorised_day_off}}{% endif %}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="authorised_day_off"/>
+						<input value="{{invoice.authorised_day_off}}" id="auth_leave" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="authorised_day_off"/>
 					</td>
 					
 				
@@ -364,7 +364,7 @@
 						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
 					</td>
 					<td>
-						<input value="{% if invoice.authorised_day_off == None %}{{auth_leave}}{% else %}{{invoice.authorised_day_off}}{% endif %}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
+						<input value="{{invoice.authorised_day_off}}" id="auth_leave_below" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -873,4 +873,27 @@ function minus(tot) {
 			document.getElementById("finaltotal").value = tot.toFixed(2);;
 			}
 </script>
+
+<script type="text/javascript">
+
+	function get_leave(url){
+		$("#monthdate").change(function(){
+			var date = $(this).val()
+			$.ajax({
+				url  : url,
+				data : {
+				    date  : date,
+				  },
+				type : 'GET',
+				dataType: 'json',
+				success: function (data) {
+					$("#auth_leave").val(data.leaves)
+					$("#auth_leave_below").val(data.leaves)
+				}
+		    });
+		})
+	}
+	get_leave('{% url "ajax_get_leave" %}')
+</script>
+
 {% endblock content %}
