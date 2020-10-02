@@ -788,8 +788,8 @@ class FixedAddView(FixedPanelMixin,TemplateView):
                 rates          = Rate.objects.get(is_approved=1)
                 context = {
                     'employee'  : employee,
-                    'submit'    : 'Add IR Invoice',
-                    'title'     : 'Add ir',
+                    'submit'    : 'Add Fixed Invoice',
+                    'title'     : 'Add fixed',
                     'role'      : rolename,
                     'rates'     : rates,
                 }

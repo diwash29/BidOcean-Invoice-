@@ -137,13 +137,11 @@
 			</tr>
 			<script>
 				function calci() {
-				var myBox1 = document.getElementById('z1').value;	
-				var myBox2 = document.getElementById('z2').value;
-				var result = document.getElementById('authres');	
-				var myResult = myBox1 * myBox2;
-				result.value = myResult;
-			
-	
+					var myBox1 = document.getElementById('z1').value;	
+					var myBox2 = document.getElementById('z2').value;
+					var result = document.getElementById('authres');	
+					var myResult = myBox1 * myBox2;
+					result.value = myResult;	
 				}
 				</script>
 		
@@ -201,7 +199,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);"  id="totalwd" class ="txtMult" name="total_working_days"/>
+						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);"  id="totalwd" class ="txtMult" name="total_working_days" onblur="dayoff()" />
 					</td>
 					
 					
@@ -595,7 +593,7 @@
 			var myBox2 = document.getElementById('totalwd').value;
 			var result = document.getElementById('authday');	
 			var myResult = myBox1/myBox2;
-			result.value = myResult;
+			result.value = myResult.toFixed(1);
 		
 
 			}
@@ -1092,5 +1090,9 @@ function minus(tot) {
 		})
 	}
 	get_leave('{% url "ajax_get_leave" %}')
+{% if 'Add' in submit %}
+document.querySelector("#invoice_date").valueAsDate = new Date();
+{% endif %}
+
 </script>
 {% endblock content %}
