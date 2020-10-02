@@ -125,7 +125,10 @@ tr:hover .cut { opacity: 1; }
 	</article>
 			 -->
 		<!-- <div class='container'>	  -->
-	<h2>Please contact Admin or HR for updation of "rates"
+
+
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <h2 style="color: red;"> Please contact Admin or HR for updation of "rates" <i class="fa fa-exclamation-triangle" aria-hidden="true" style="margin-right: 7px;margin-top: 8px;"></i>
 		{% if role == 'hr' or role == 'admin' %}
 			<a href="{% url 'rate_add' %}"><button type="button" class="btn btn-success">Add Rate</button></a>
 		{% endif %}
