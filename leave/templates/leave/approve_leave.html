@@ -159,9 +159,9 @@ span:empty { display: none; }
 							</div>
 							<select class="form-control"style=" height:32px;color:white;background-color:teal;margin-left:20px;"  onchange="this.form.submit()" name="leave_type">
 								<option value=""><b> Select leave type</b></option>
+								<option {% if request.GET.leave_type == 'pl' %}selected{% endif %} value="pl">Paid Leave</option>
 								<option {% if request.GET.leave_type == 'sl' %}selected{% endif %} value="sl">Sick Leave</option>
-								<option {% if request.GET.leave_type == 'cl' %}selected{% endif %} value="cl">Casual Leave</option>
-								<option {% if request.GET.leave_type == 'el' %}selected{% endif %} value="el">Earned Leave</option>
+								<option {% if request.GET.leave_type == 'ol' %}selected{% endif %} value="ol">Others Leave</option>
 							</select>
 							<p style="margin-left: 40px;"><b style="color: teal;"> From date :</b> <input type="date" name="from_date" value="{{request.GET.from_date}}"></p>
 								<p style="margin-left: 40px;"><b style="color: teal;"> To Date :</b><input type="date" name="to_date" value="{{request.GET.to_date}}"></p>
