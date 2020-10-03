@@ -135,14 +135,14 @@ span:empty { display: none; }
                   <input type="text" id="fname" name="firstname" placeholder="Enter your name" class="form-control" value="{{employee.name}}" style="margin-bottom: 20px;background-color: #EFCFB0;">
 
                         <div class="tasksInput">
-                          <form method='post'>
+                          <form method='post' enctype="multipart/form-data">
                            {% csrf_token %}
                                 <div class="pure-css-select-style theme-default-w-line" class="form-control">
                                     <select class="custom-select" id ="leave_type" name="leave_type" style="font-weight: bold;margin-bottom: 20px;width :145px;color: teal;background-color: #EFCFB0;" required>
                                       <option disabled style="font-weight: bold;color: black;" selected value>  Leave Type </option>                    
-                                        <option value="sl" style="color: teal;font-weight: bold ;"><b>Sick Leave </b></option>
-                                        <option value="cl" style="color: teal;font-weight: bold;"><b> Casual Leave</b></option>
-                                        <option value="el" style="color: teal;font-weight: bold;"><b> Earned Leave </b></option>
+                                        <option value="pl" style="color: teal;font-weight: bold ;"><b>Paid Leave </b></option>
+                                        <option value="sl" style="color: teal;font-weight: bold;"><b>Sick Leave</b></option>
+                                        <option value="ol" style="color: teal;font-weight: bold;"><b>Others Leave </b></option>
                                     </select>
                                 </div>
                           
@@ -162,7 +162,7 @@ span:empty { display: none; }
                           <p ><b style="color: teal;"> Begin Date :<br></b> <input type="date" id="begin_date"   style="background-color: #EFCFB0;;color: black;" name="from_date" required></p>
                           <p ><b style="color: teal;"> End Date :<br></b><input type="date" id="end_date" style="background-color: #EFCFB0;;color: black; " name="to_date" required></p>
 
-                          <label for="male" style="color: teal;"><b> Requesting Days: </b></label>
+                          <label for="male" style="color: teal;"><b> Requesting Days (please manage weekends): </b></label>
                           <input type="text" id="requesting_days" name="requesting_days" style="background-color: #EFCFB0;"  class="form-control"  maxlength="2" required="">
 
                           <label for="male" style="color: teal;"><b> Availabe Days: </b></label>
@@ -171,6 +171,10 @@ span:empty { display: none; }
                           <label for="male" style="color: teal;"><b> Reasons/Comments: </b></label>
                           <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;background-color: #EFCFB0;"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
+
+                          <label for="male" style="color: teal;"><b> File Upload: </b></label>
+                          <input type="file" name="leave_file" class="span8">
+                          <br><br>
                           
                           <button class="custom-btn btn-12" style="margin-left:20px"><span>Click!</span><span>{{submit}}</span></button>
                           <style>
@@ -255,15 +259,15 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
                   <div class="divTable" style="margin-bottom:20px">
                     <div class="divTableBody">
                     <div class="divTableRow">
-                    <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;"> Sick Leave </b></div>
+                    <div class="divTableCell" style="background-color: #EFCFB0;"><b style="color: teal;"> Paid Leave </b></div>
 
-                    <div class="divTableCell"style="background-color: #EFCFB0;"><b style="color: teal;"> Casual Leave</b></div>
-                    <div class="divTableCell"style="background-color:#EFCFB0;"><b style="color: teal;"> Earned Leave</b></div>
+                    <div class="divTableCell"style="background-color: #EFCFB0;"><b style="color: teal;"> Sick Leave</b></div>
+                    <div class="divTableCell"style="background-color:#EFCFB0;"><b style="color: teal;"> Others Leave</b></div>
                     </div>
                     <div class="divTableRow">
-                    <div class="divTableCell"><b>{{rem_leaves.sick_leave}}</b> </div>
-                    <div class="divTableCell"><b>{{rem_leaves.casual_leave}}</b></div>
-                    <div class="divTableCell"><b>{{rem_leaves.earned_leave}}</b> </div>
+                    <div class="divTableCell"><b>{{rem_leaves.paid_leave}}</b> </div>
+                    <div class="divTableCell"><b>{{rem_leaves.sick_leave}}</b></div>
+                    <div class="divTableCell"><b>{{rem_leaves.others_leave}}</b> </div>
                     </div>
                     </div>
                     </div>
@@ -516,13 +520,40 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 
     });
 
-    $("#requesting_days").click(function(){
-    
-        var begin_date = new Date($("#begin_date").val())
-        var end_date   = new Date($("#end_date").val())
-        var Difference_In_Time = end_date.getTime() - begin_date.getTime();
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);  
-        $("#requesting_days").val(Difference_In_Days+1)
+    $("#begin_date , #end_date").change(function(){
+        if ($("#begin_date").val() != '' && $("#end_date").val() != ''){
+
+          var start_date  = $("#begin_date").val()
+          var finish_date = $("#end_date").val()
+          var emp_id      = $("#hiddenemp").val()
+          $.ajax({
+            url  : '{% url "check_overlap_leave" %}',
+            data : {
+                  start_date  : start_date,
+                  finish_date : finish_date,
+                  emp_id      : emp_id,
+                },
+            type : 'GET',
+            dataType: 'json',
+            success: function (data) {
+              if (data.leave_applied){
+                alert(data.msg)
+                $("#begin_date").val("")
+                $("#end_date").val("")
+                $("#begin_date").focus()
+              }
+              
+            }
+          });
+
+
+
+          var begin_date = new Date($("#begin_date").val())
+          var end_date   = new Date($("#end_date").val())
+          var Difference_In_Time = end_date.getTime() - begin_date.getTime();
+          var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);  
+          $("#requesting_days").val(Difference_In_Days+1)
+        }
      
       //alert(Difference_In_Days+1)
     })
