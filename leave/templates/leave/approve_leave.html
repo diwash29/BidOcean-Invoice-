@@ -159,9 +159,9 @@ span:empty { display: none; }
 							</div>
 							<select class="form-control"style=" height:32px;color:white;background-color:teal;margin-left:20px;"  onchange="this.form.submit()" name="leave_type">
 								<option value=""><b> Select leave type</b></option>
+								<option {% if request.GET.leave_type == 'pl' %}selected{% endif %} value="pl">Paid Leave</option>
 								<option {% if request.GET.leave_type == 'sl' %}selected{% endif %} value="sl">Sick Leave</option>
-								<option {% if request.GET.leave_type == 'cl' %}selected{% endif %} value="cl">Casual Leave</option>
-								<option {% if request.GET.leave_type == 'el' %}selected{% endif %} value="el">Earned Leave</option>
+								<option {% if request.GET.leave_type == 'ol' %}selected{% endif %} value="ol">Others Leave</option>
 							</select>
 							<p style="margin-left: 40px;"><b style="color: teal;"> From date :</b> <input type="date" name="from_date" value="{{request.GET.from_date}}"></p>
 								<p style="margin-left: 40px;"><b style="color: teal;"> To Date :</b><input type="date" name="to_date" value="{{request.GET.to_date}}"></p>
@@ -185,6 +185,7 @@ span:empty { display: none; }
 				<th style="color: teal;"><b> Requested Days</b></th>
 				<th style="color: teal;"><b> Reasons/Comments</b></th>
 				<th style="color: teal;"><b> Leaves Remaining</b></th>
+				<th style="color: teal;"><b> File</b></th>
 				<th style="color: teal;"><b> Action</b></th>
 				
 			</tr>
@@ -197,8 +198,8 @@ span:empty { display: none; }
 					<td style="color: rgb(0, 0, 0);;">{{requests.available_days}}</td>
 					<td style="color: rgb(0, 128, 6);">{{requests.requesting_days}}</td>
 					<td style="color: rgb(0, 0, 0);;">{{requests.reason_msg}}</td>
-					<td style="color: rgb(0, 0, 0);;">{{requests.available_days|subtract:requests.requesting_days}}</td>
-
+					<td style="color: rgb(0, 0, 0);;">{% if requests.available_days|subtract:requests.requesting_days < 0 %}0{% else %}{{requests.available_days|subtract:requests.requesting_days}}{% endif %}</td>
+					<td>{% if requests.leave_file %}<a target="_blank" href="{{requests.leave_file.url}}">view File</a>{% endif %}</td>
 					<td style="color: rgb(0, 0, 0);;"><!-- <a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a> -->
 					<!--your if code below-->
 						<!-- {% if requests.status == 0 %}<a href="#"><button  class="btn btn-success shadow-none"  >Approve</button></a><a href="#"><button  class="btn btn-danger shadow-none"  >Decline</button></a>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %} -->

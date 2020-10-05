@@ -26,14 +26,33 @@ def leave_bal(request):
     employee   = Employee.objects.get(pk=emp)
     emp_leave_bal = LeaveBalance.objects.get(employee=employee)
     
-    if leave_type == 'sl':
+    if leave_type == 'pl':
+    	leave_bal = emp_leave_bal.paid_leave
+    elif leave_type == 'sl':
     	leave_bal = emp_leave_bal.sick_leave
-    elif leave_type == 'cl':
-    	leave_bal = emp_leave_bal.casual_leave
     else:
-    	leave_bal = emp_leave_bal.earned_leave
+    	leave_bal = emp_leave_bal.others_leave
     data = {'leave' : leave_bal}
     return JsonResponse(data)	  
+
+def check_overlap_leave(request):
+    start_date  = request.GET.get('start_date', None)
+    finish_date = request.GET.get('finish_date', None)
+    emp_id      = request.GET.get('emp_id', None)   
+
+    employee     = Employee.objects.get(pk=emp_id)
+    start_date   = datetime.strptime(start_date,"%Y-%m-%d").date()
+    finish_date  = datetime.strptime(finish_date,"%Y-%m-%d").date() 
+
+    leave_requests = LeaveRequest.objects.filter(Q(employee=employee)&(Q(from_date__lte=start_date)& Q(to_date__gte=start_date))|(Q(from_date__lte=finish_date)&Q(to_date__gte=finish_date))).all()
+    leave_applied = False
+    msg           = "" 
+    if leave_requests:
+        leave_applied = True
+        msg = "You've already taken a from date '"+str(leave_requests[0].from_date)+"' to '"+str(leave_requests[0].to_date)+"'. Please reschedule."
+
+    data = {'leave_applied' : leave_applied, 'msg' : msg}   
+    return JsonResponse(data) 
 
 class LeaveRequestDisplayView(AdminOrHROrManagerPanelMixin,TemplateView):
     template_name = "leave/approve_leave.html"
@@ -115,9 +134,13 @@ class LeaveRequestAddView(AdminPanelMixin,TemplateView):
         employee = Employee.objects.get(auth_tbl=user)  
 
         try:
+            file = request.FILES['leave_file']
+        except:
+            file = None
+        try:
             from_date = datetime.strptime(request.POST['from_date'], '%Y-%m-%d').date()
             to_date   = datetime.strptime(request.POST['to_date'], '%Y-%m-%d').date()   
-            leave_request = LeaveRequest.objects.create(leave_type=request.POST['leave_type'], reason_msg=request.POST['reason_msg'], from_date=from_date, to_date=to_date, available_days= request.POST['available_days'], requesting_days=request.POST['requesting_days'], employee=employee)
+            leave_request = LeaveRequest.objects.create(leave_type=request.POST['leave_type'], reason_msg=request.POST['reason_msg'], from_date=from_date, to_date=to_date, available_days= request.POST['available_days'], requesting_days=request.POST['requesting_days'], employee=employee, leave_file=file)
             messages.success(request, "Successfully added leave request")   
             return HttpResponseRedirect('/leave')
         except:
@@ -134,12 +157,12 @@ class ToApprove(AdminPanelMixin,TemplateView):
         leave_request.save()
 
         leave_balance = LeaveBalance.objects.get(employee=leave_request.employee)
-        if leave_type == "sl":
+        if leave_type == "pl":
+        	leave_balance.paid_leave = rem_leaves
+        elif leave_type == "sl":
         	leave_balance.sick_leave = rem_leaves
-        elif leave_type == "cl":
-        	leave_balance.casual_leave = rem_leaves
         else:
-        	leave_balance.earned_leave = rem_leaves
+        	leave_balance.others_leave = rem_leaves
         leave_balance.save()
         return HttpResponseRedirect('/leave/approve-leave/')	
 

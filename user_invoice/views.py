@@ -439,7 +439,7 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         # leaves   = request.POST['leaves']
         auth_tbl = user
         employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to)
-        leave_bal = LeaveBalance.objects.create(casual_leave=3, sick_leave=3, earned_leave=4, employee=employee)
+        leave_bal = LeaveBalance.objects.create(paid_leave=10, others_leave=0, sick_leave=0, employee=employee)
 
         return HttpResponseRedirect('/')
 

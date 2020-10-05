@@ -7,8 +7,8 @@ from user_invoice.models import Employee
 
 class LeaveBalance(models.Model):
 	id           = models.AutoField(primary_key=True)
-	casual_leave = models.CharField(max_length=200)
-	earned_leave = models.CharField(max_length=200)
+	paid_leave   = models.CharField(max_length=200)
+	others_leave = models.CharField(max_length=200)
 	sick_leave   = models.CharField(max_length=200)
 	employee     = models.OneToOneField(Employee, on_delete=models.CASCADE, related_name='leave_bal')
 
@@ -21,4 +21,5 @@ class LeaveRequest(models.Model):
 	requesting_days = models.CharField(max_length=200)
 	from_date       = models.DateField()
 	to_date         = models.DateField()	
+	leave_file      = models.FileField(upload_to='leave_file/', null=True, blank=True)
 	status          = models.SmallIntegerField(default=0)

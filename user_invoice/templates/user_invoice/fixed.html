@@ -551,7 +551,9 @@
 						<input value="{% if invoice.authorised_day_off %}{{invoice.authorised_day_off}}{% else %}0{% endif %}" type="number"  id="auth_leave_below" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
-						<span data-prefix>$</span><span id="multauth" class="multTotal">0.00</span>
+
+						<span data-prefix>$</span><span id="multauthdayoff" class="multTotal">0.00</span>
+
 					</td>
 					
 				</tr>
@@ -619,6 +621,19 @@
 			var result = document.getElementById('authday');	
 			var myResult = myBox1/myBox2;
 			result.value = myResult.toFixed(1);
+			var auth_day_rate = document.getElementById('authday').value;
+			var days_number   = document.getElementById('auth_leave_below').value;
+			var authday_value = auth_day_rate*days_number
+			var multauthdayoff  = document.getElementById('multauthdayoff');
+			var grandTotal      = document.getElementById('grandTotal');
+			var total_deduction = document.getElementById('total_deduction');
+			
+			multauthdayoff.innerHTML = authday_value;
+			grandTotal.innerHTML = authday_value;
+			total_deduction.value = authday_value;
+
+
+
 		
 
 			}

@@ -10,4 +10,6 @@ urlpatterns = [
     path('topending/<int:pk>', views.ToPending.as_view(), name="to_pending"),
     #path('topending/', views.ToPending.as_view(), name="to_pending"),
 
+    path('ajax/check_overlap_leave', views.check_overlap_leave, name="check_overlap_leave")
+
     ]
