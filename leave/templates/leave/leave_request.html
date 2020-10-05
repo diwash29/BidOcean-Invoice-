@@ -172,8 +172,8 @@ span:empty { display: none; }
                           <textarea name="reason_msg"   class="form-control" style="margin-bottom: 20px;height: 80px;background-color: #EFCFB0;"></textarea>
                           <input type="hidden" value="{{employee.id}}" id="hiddenemp">
 
-                          <label for="male" style="color: teal;"><b> File Upload: </b></label>
-                          <input type="file" name="leave_file" class="span8">
+                          <label for="male" style="color: teal; display:none" class="file_upload" ><b> File Upload: </b></label>
+                          <input type="file" style="display: none" name="leave_file" class="span8 file_upload">
                           <br><br>
                           
                           <button class="custom-btn btn-12" style="margin-left:20px"><span>Click!</span><span>{{submit}}</span></button>
@@ -504,6 +504,10 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 <script type="text/javascript">
   $("#leave_type").change(function () {
     var leave_type = $(this).val();
+    $(".file_upload").hide()
+    if(leave_type == 'sl'){
+      $(".file_upload").show()
+    }
     var emp        = $("#hiddenemp").val();
     $.ajax({
       url  : '{% url "leave_bal" %}',
