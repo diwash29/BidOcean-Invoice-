@@ -8,7 +8,7 @@ from django.contrib import messages
 from .forms import ExpenseTypeAddForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from user_invoice.mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
+from user_invoice.mixin import AdminOrHRPanelMixin, AdminOrAccountsPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -70,7 +70,7 @@ def export_expenses_xls(request):
     wb.save(response)
     return response
 
-class ExpensesView(AdminOrHRPanelMixin, TemplateView):
+class ExpensesView(AdminOrAccountsPanelMixin, TemplateView):
     template_name = 'expenses/expenses.html'
     def get(self, request):
         employee         = Employee.objects.get(auth_tbl=self.request.user)
@@ -140,7 +140,7 @@ def ajax_expenses_data(request):
 
 
 
-class ExpenceTypeDisplayView(AdminOrHRPanelMixin,TemplateView):
+class ExpenceTypeDisplayView(AdminOrAccountsPanelMixin,TemplateView):
     template_name = 'expenses/expense_type_list.html'
     def get(self, request):
         context = {
@@ -152,7 +152,7 @@ class ExpenceTypeDisplayView(AdminOrHRPanelMixin,TemplateView):
 
 
 
-class ExpenseTypeAddView(AdminOrHRPanelMixin,TemplateView):
+class ExpenseTypeAddView(AdminOrAccountsPanelMixin,TemplateView):
     template_name = 'expenses/add_expense_type.html'
     def get(self, request):
         expensetype_form = ExpenseTypeAddForm()
@@ -182,7 +182,7 @@ class ExpenseTypeAddView(AdminOrHRPanelMixin,TemplateView):
                 'role'               : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
             })	
 
-class ExpenseTypeEditView(AdminOrHRPanelMixin,TemplateView):
+class ExpenseTypeEditView(AdminOrAccountsPanelMixin,TemplateView):
     template_name = 'expenses/add_expense_type.html'
     def get(self, request, pk):
         expensetype      = ExpenseType.objects.get(id=pk)
@@ -213,7 +213,7 @@ class ExpenseTypeEditView(AdminOrHRPanelMixin,TemplateView):
                 'role'             : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
             })
 
-class ExpenseTypeDeleteView(AdminPanelMixin, TemplateView):
+class ExpenseTypeDeleteView(AdminOrAccountsPanelMixin, TemplateView):
 	def get(self, request, pk):
 		expensetype = ExpenseType.objects.get(pk=pk)
 		expensetype.delete()
