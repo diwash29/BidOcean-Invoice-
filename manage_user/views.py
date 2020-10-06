@@ -7,14 +7,14 @@ from django.views.generic import TemplateView, View
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from user_invoice.mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
+from user_invoice.mixin import OnlyAdminPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 import calendar
 from django.http import JsonResponse
 
-class ManageUser(AdminOrHRPanelMixin,TemplateView):
+class ManageUser(OnlyAdminPanelMixin,TemplateView):
     template_name = 'manage_user/user_list.html'
     def get(self, request):
         employee   = Employee.objects.get(auth_tbl=self.request.user)

@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, View
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from user_invoice.mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
+from user_invoice.mixin import AdminOrHRPanelMixin, AdminOrAccountsPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -24,7 +24,7 @@ from django.http import JsonResponse
 #         }
 #         return render(request, self.template_name, context)
 
-class ManageAccounts(AdminOrHRPanelMixin,TemplateView):
+class ManageAccounts(AdminOrAccountsPanelMixin,TemplateView):
     template_name = 'account_management/account_management.html'
     def get(self, request):
         employee      = Employee.objects.get(auth_tbl=self.request.user)
