@@ -44,7 +44,8 @@ def check_overlap_leave(request):
     start_date   = datetime.strptime(start_date,"%Y-%m-%d").date()
     finish_date  = datetime.strptime(finish_date,"%Y-%m-%d").date() 
 
-    leave_requests = LeaveRequest.objects.filter(Q(employee=employee)&(Q(from_date__lte=start_date)& Q(to_date__gte=start_date))|(Q(from_date__lte=finish_date)&Q(to_date__gte=finish_date))).all()
+    leave_requests = LeaveRequest.objects.filter(Q(employee=employee)&(Q(status=0)|Q(status=1))&((Q(from_date__lte=start_date)& Q(to_date__gte=start_date))|(Q(from_date__lte=finish_date)&Q(to_date__gte=finish_date)))).all()
+
     leave_applied = False
     msg           = "" 
     if leave_requests:

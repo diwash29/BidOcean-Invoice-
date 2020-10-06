@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from manage_user.models import Userdetail
 from account_management.models import AccountDetails
 from leave.models import LeaveRequest, LeaveBalance
-from .mixin import AdminOrHRPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
+from .mixin import AdminOrHRPanelMixin, AdminOrHROrAccountsPanelMixin, AdminPanelMixin, IRPanelMixin, BRPanelMixin, FixedPanelMixin
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -134,7 +134,7 @@ class ChangePassword(TemplateView):
             return render(request, self.template_name, context)    
             #messages.error(request, "There was a problem updating the role")
 
-class RoleDisplayView(AdminOrHRPanelMixin,TemplateView):
+class RoleDisplayView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/role_list.html'
     def get(self, request):
         context = {
@@ -155,7 +155,7 @@ class ErrorMessageView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class RoleAddView(AdminOrHRPanelMixin,TemplateView):
+class RoleAddView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/add_role.html'
     def get(self, request):
         role_form = RoleAddForm()
@@ -183,7 +183,7 @@ class RoleAddView(AdminOrHRPanelMixin,TemplateView):
                 'role'        : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
             })	
 
-class RoleEditView(AdminOrHRPanelMixin,TemplateView):
+class RoleEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/add_role.html'
     def get(self, request, pk):
         role = Role.objects.get(id=pk)
@@ -214,7 +214,7 @@ class RoleEditView(AdminOrHRPanelMixin,TemplateView):
             })
 
 
-class RateDisplayView(AdminOrHRPanelMixin,TemplateView):
+class RateDisplayView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = "user_invoice/rate_list.html"
     def get(self, request):
         employee = Employee.objects.get(auth_tbl=self.request.user)
@@ -227,7 +227,7 @@ class RateDisplayView(AdminOrHRPanelMixin,TemplateView):
         }
         return render(request, self.template_name, context)
 
-class RateApproveView(AdminOrHRPanelMixin, TemplateView):
+class RateApproveView(AdminOrHROrAccountsPanelMixin, TemplateView):
     def get(self, request,pk):
         Rate.objects.all().update(is_approved=0)
         rate = Rate.objects.get(pk=pk)
@@ -238,7 +238,7 @@ class RateApproveView(AdminOrHRPanelMixin, TemplateView):
 
 
 
-class RatePullView(AdminOrHRPanelMixin, TemplateView):
+class RatePullView(AdminOrHROrAccountsPanelMixin, TemplateView):
     template_name = 'user_invoice/add_rate.html'
     def get(self, request, pk):
         rate = Rate.objects.get(pk=pk)
@@ -264,7 +264,7 @@ class RatePullView(AdminOrHRPanelMixin, TemplateView):
               
 
 
-class RateEditView(AdminOrHRPanelMixin,TemplateView):
+class RateEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/add_rate.html'
     def get(self, request, pk):
         rate = Rate.objects.get(pk=pk)
@@ -327,7 +327,7 @@ class RateEditView(AdminOrHRPanelMixin,TemplateView):
         return HttpResponseRedirect('/rate-edit/'+pk)    
 
 
-class RateAddView(AdminOrHRPanelMixin,TemplateView):
+class RateAddView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/add_rate.html'
     def get(self, request):
         # rate_form = RateAddForm()
@@ -358,7 +358,7 @@ class RateAddView(AdminOrHRPanelMixin,TemplateView):
 
 
 
-class EmployeeDisplayView(AdminOrHRPanelMixin,TemplateView):
+class EmployeeDisplayView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
         employee_list    = Employee.objects.all()
@@ -443,7 +443,7 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
 
         return HttpResponseRedirect('/')
 
-class EmployeeEditView(AdminOrHRPanelMixin,TemplateView):
+class EmployeeEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/add_employee.html'
 
     def get(self, request, pk):

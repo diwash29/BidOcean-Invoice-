@@ -136,8 +136,8 @@
 			
 			<tr>
 				<td></a><span style="font-weight:bold">New Entities Added</span></td>
-					<td><input id="z1" type="text" value="{{invoice.new_entities_added}}" name="new_entities_added" oninput="calci()" style="background-color: rgb(96, 221, 96);" /></td>
-					<td><span data-prefix>$</span><input value="{{rates.new_entities_added}}" id="z2" type="text" oninput="calci()" style="background-color: rgb(96, 221, 96);" /></td>
+					<td><input id="z1" type="number" value="{{invoice.new_entities_added}}" name="new_entities_added" oninput="calci()" style="background-color: rgb(96, 221, 96);" /></td>
+					<td><span data-prefix>$</span><input value="{{rates.new_entities_added}}" type="number" id="z2" type="text" oninput="calci()" style="background-color: rgb(96, 221, 96);" /></td>
 					<td><span data-prefix>$</span><input value="0" id="authres" /></td>
 				 
 			
@@ -162,18 +162,18 @@
             <tr>
 		
 				<td></a><span style="font-weight:bold">PH Added to Bid List</span></td>
-				<td><input class="txt" type="text" value="{{invoice.ph_added_to_bid_list}}" name="ph_added_to_bid_list" style="background-color: rgb(96, 221, 96);"/></td>
+				<td><input class="txt" type="number" value="{{invoice.ph_added_to_bid_list}}"  name="ph_added_to_bid_list" style="background-color: rgb(96, 221, 96);" onblur="sum()"/></td>
 			</tr>
 			<tr>
 			
 				<td></a><span style="font-weight:bold">PH Edited in Bid List</span></td>
-				<td><input class="txt" type="text" value="{{invoice.ph_edited_in_bid_list}}" name="ph_edited_in_bid_list" style="background-color: rgb(96, 221, 96);"/></td>
+				<td><input class="txt" type="number" value="{{invoice.ph_edited_in_bid_list}}" name="ph_edited_in_bid_list" style="background-color: rgb(96, 221, 96);" onblur="sum()"/></td>
 
 			</tr>
 			<tr>
 		
 				<td></a><span style="font-weight:bold">PH Deleted in Bid List</span></td>
-				<td><input class="txt" type="text" style="background-color: rgb(96, 221, 96);" value="{{invoice.ph_deleted_in_bid_list}}" name="ph_deleted_in_bid_list"/></td>
+				<td><input class="txt" type="number" style="background-color: rgb(96, 221, 96);" value="{{invoice.ph_deleted_in_bid_list}}" name="ph_deleted_in_bid_list" onblur="sum()"/></td>
 			</tr>
 			
 			
@@ -187,7 +187,7 @@
 			<tr>
 				<td align="right" style="font-weight:bold">Total :</td>
 				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="text" value = "{{rates.base_br}}" style="background-color: rgb(96, 221, 96);" onClick="calculate()"  /></td>
+				<td><span data-prefix>$</span><input  id="box2" name = "quantity" type="number" value = "{{rates.base_br}}" style="background-color: rgb(96, 221, 96);" onClick="calculate()"  /></td>
 				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
 			  </tr>
 			  <tr>
@@ -221,8 +221,8 @@
 			
 				<tr>
 					<td></a><span style="font-weight:bold">Extra Day Worked</span></td>
-						<td><input id="g1" style="background-color: rgb(96, 221, 96);" type="text" name='extra_days_worked' value="{{invoice.extra_days_worked}}" oninput="godcal()" /></td>
-						<td><span data-prefix>$</span><input value="{{rates.extra_days}}" style="background-color: rgb(96, 221, 96);" id="g2" type="text" oninput="godcal()" /></td>
+						<td><input id="g1" style="background-color: rgb(96, 221, 96);" type="number" name='extra_days_worked' value="{{invoice.extra_days_worked}}" oninput="godcal()" onblur="sum()"/></td>
+						<td><span data-prefix>$</span><input value="{{rates.extra_days}}" style="background-color: rgb(96, 221, 96);" id="g2" type="number" oninput="godcal()" /></td>
 						<td><span data-prefix>$</span><input value="0" id="godres" /></td>
 					 
 				
@@ -272,7 +272,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
 					<td>
-						<input value="{{invoice.authorised_day_off}}" id="auth_leave" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="authorised_day_off"/>
+						<input value="{{invoice.authorised_day_off}}" type="number" id="auth_leave" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="authorised_day_off"/>
 					</td>
 					
 				
@@ -280,7 +280,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
 					<td>
-						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="unauthorised_day_off"/>
+						<input value="{{invoice.unauthorised_day_off}}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="unauthorised_day_off"/>
 					</td>
 					
 				
@@ -289,7 +289,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="total_working_days"/>
+						<input value="{{invoice.total_working_days}}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="total_working_days"/>
 					</td>
 					
 					
@@ -297,7 +297,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
 					<td>
-						<input value="{{invoice.total_days_worked}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="total_days_worked"/>
+						<input value="{{invoice.total_days_worked}}" type="number" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="total_days_worked"/>
 					</td>					
 				</tr>
 				<thead>
@@ -321,10 +321,10 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Duplicate Entities </span></td>
 					<td>
-						<span data-prefix>$</span>	<input value="{{rates.duplicate_entities}}" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="txtEmmail" />
+						<span data-prefix>$</span>	<input value="{{rates.duplicate_entities}}"   class ="txtMult" name="txtEmmail" readonly/>
 					</td>
 					<td>
-						<input value="{{invoice.duplicate_entities}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="duplicate_entities"/>
+						<input value="{% if invoice.duplicate_entities %}{{invoice.duplicate_entities}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="duplicate_entities"/>
 					</td>
 					<td>
 						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
@@ -334,10 +334,10 @@
 					<td></a><span style="font-weight:bold">Errors
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.errors}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
+						<span data-prefix>$</span><input value="{{rates.errors}}"  class ="txtMult" name="txtEmmail" readonly />
 					</td>
 					<td>
-						<input value="{{invoice.errors}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="errors"/>
+						<input value="{% if invoice.errors %}{{invoice.errors}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="errors"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -347,10 +347,10 @@
 					<td></a><span style="font-weight:bold">Fines
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.fines}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
+						<span data-prefix>$</span><input value="{{rates.fines}}"  class ="txtMult" name="txtEmmail" readonly />
 					</td>
 					<td>
-						<input value="{{invoice.fines}}"  style="background-color: rgb(96, 221, 96);" class ="txtMult" name="fines"/>
+						<input value="{% if invoice.fines %}{{invoice.fines}}{% else %}0{% endif %}" type="number"  style="background-color: rgb(96, 221, 96);" class ="txtMult" name="fines"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -361,13 +361,13 @@
 					<td></a><span style="font-weight:bold">Authorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.auth_day_off}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
+						<span data-prefix>$</span><input value="{{rates.auth_day_off}}" id="multauth1" class ="txtMult" name="txtEmmail" readonly />
 					</td>
 					<td>
-						<input value="{{invoice.authorised_day_off}}" id="auth_leave_below" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
+						<input value="{% if invoice.authorised_day_off %}{{invoice.authorised_day_off}}{% else %}0{% endif %}" id="auth_leave_below" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
+						<span data-prefix>$</span><span id="totalauth" class="multTotal">0.00</span>
 					</td>
 				</tr>
 
@@ -376,10 +376,10 @@
 					<td></a><span style="font-weight:bold">Unauthorized Days Off
 					</span></td>
 					<td>
-						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" style="background-color: rgb(96, 221, 96);" />
+						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}"  class ="txtMult" name="txtEmmail" readonly />
 					</td>
 					<td>
-						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
+						<input value="{% if invoice.unauthorised_day_off %}{{invoice.unauthorised_day_off}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="txtEmmail"/>
 					</td>
 					<td>
 						<span data-prefix>$</span><span class="multTotal">0.00</span>
@@ -453,11 +453,14 @@
 				if(!isNaN(this.value) && this.value.length!=0) {
 					sum += parseFloat(this.value);
 				}
-
+				var quan = document.getElementsByName('quantity')[0].value;
+				var tot = quan * sum;
+				document.getElementById("result").value = tot.toFixed(2);
 			});
 			//.toFixed() method will roundoff the final sum to 2 decimal places
 			$("#sum").html(sum.toFixed(2));
 			$("#box1").html(sum.toFixed(2));
+			
 			// var sumtwo = $('#sumtwo').val();
 			// var rate = $('#rate').val();
 			// var totalTotalOne = (sumtwo * rate);
@@ -889,6 +892,16 @@ function minus(tot) {
 				success: function (data) {
 					$("#auth_leave").val(data.leaves)
 					$("#auth_leave_below").val(data.leaves)
+					var auth_day_rate = document.getElementById('multauth1').value;
+					var days_number   = document.getElementById('auth_leave_below').value;
+					var authday_value = auth_day_rate*days_number
+					var multauthdayoff  = document.getElementById('totalauth');
+					var grandTotal      = document.getElementById('grandTotal');
+					var total_deduction = document.getElementById('total_deduction');
+					
+					multauthdayoff.innerHTML = authday_value;
+					grandTotal.innerHTML = authday_value;
+					total_deduction.value = authday_value;
 				}
 		    });
 		})
