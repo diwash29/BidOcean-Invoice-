@@ -10,6 +10,17 @@ class AdminPanelMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff or self.request.user.is_active
 
+class OnlyAdminPanelMixin(LoginRequiredMixin, UserPassesTestMixin):
+    """ Mixin ensures that the views to which this mixin is added can only be accessed after logging in and can only
+        be accessed by editors(is_staff=True) or superusers(is_superuser=True)"""
+    login_url = 'login'
+
+    def test_func(self):
+        user     = self.request.user
+        employee = Employee.objects.get(auth_tbl=user)
+        return employee.role.name.lower() == 'admin'
+
+
 
 class AdminOrHRPanelMixin(LoginRequiredMixin, UserPassesTestMixin):
     """ Mixin ensures that the views to which this mixin is added can only be accessed after logging in and can only
