@@ -21,7 +21,8 @@ def count_leaves(employee, date):
 	    leaves = leaves
 	else: 
 	    for l in app_leaves:
-	        leaves += int(l.requesting_days)  
+	    	if int(l.requesting_days)>int(l.available_days):
+	        	leaves += int(l.requesting_days) - int(l.available_days)
 	return leaves        
 
 def check_invoice(employee):
