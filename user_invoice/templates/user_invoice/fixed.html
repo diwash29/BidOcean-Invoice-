@@ -120,7 +120,7 @@
 				
 					<th><span style="font-weight:bold">Description</span></th>
 					<th><span style="font-weight:bold">Quantity</span></th>
-					<th><span style="font-weight:bold">Rate</span></th>
+					<th><span style="font-weight:bold">Pay</span></th>
 					<th><span style="font-weight:bold">Total</span></th>
 				</tr>
 			</thead>
@@ -129,7 +129,7 @@
 				<td></a><span style="font-weight:bold">Total Pay</span></td>
 
 					<td><input id="z1" type="text" value="1" oninput="calci()" readonly="" /></td>
-					<td><span data-prefix>$</span><input value="{% if invoice.total_pay %}{{invoice.total_pay}}{% else %}{{employee.salary}}{% endif %}" style="background-color: rgb(96, 221, 96);" id="z2" type="text" oninput="calci()" name="total_pay" /></td>
+					<td><span data-prefix>$</span><input value="{% if invoice.total_pay %}{{invoice.total_pay}}{% else %}{{employee.salary}}{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" id="z2"  oninput="calci()" name="total_pay" /></td>
 
 					<td><span data-prefix>$</span><input value="0" id="authres" oninput="dayoff()" /></td>
 				 
@@ -184,7 +184,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
 					<td>
-						<input value="{{invoice.authorised_day_off}}" id="auth_leave" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="authorised_day_off"/>
+						<input value="{{invoice.authorised_day_off}}" type="number" id="auth_leave" style="background-color: rgb(96, 221, 96);"  class ="txtMult" name="authorised_day_off"/>
 					</td>
 					
 				
@@ -192,7 +192,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
 					<td>
-						<input value="{{invoice.unauthorised_day_off}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="unauthorised_day_off"/>
+						<input value="{{invoice.unauthorised_day_off}}" type="number" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="unauthorised_day_off"/>
 					</td>
 					
 				
@@ -201,7 +201,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Working Days</span></td>
 					<td>
-						<input value="{{invoice.total_working_days}}" style="background-color: rgb(96, 221, 96);"  id="totalwd" class ="txtMult" name="total_working_days" oninput="dayoff()" />
+						<input value="{{invoice.total_working_days}}" type="number" style="background-color: rgb(96, 221, 96);"  id="totalwd" class ="txtMult" name="total_working_days" oninput="dayoff()" />
 					</td>
 					
 					
@@ -209,7 +209,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
 					<td>
-						<input value="{{invoice.total_days_worked}}" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="total_days_worked"/>
+						<input value="{{invoice.total_days_worked}}" type="number" style="background-color: rgb(96, 221, 96);"   class ="txtMult" name="total_days_worked"/>
 					</td>					
 				</tr>
 				<thead>
