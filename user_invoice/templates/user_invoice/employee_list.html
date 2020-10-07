@@ -178,7 +178,7 @@ tr:hover .cut { opacity: 1; }
 				<th style="color: teal;"><b>Role</b></th>
 				<th style="color: teal;"><b> Address</b></th>
 				<th style="color: teal;"><b> Phone No</b></th>
-				<th style="color: teal;"><b> Leaves Remaining (CL,SL,EL)</b></th>
+				<th style="color: teal;"><b> Leaves Remaining (PL,SL,OL)</b></th>
 				<th style="color: teal;"><b> Action</b></th>
 			</tr>
 			{% for employee in employees %}
@@ -188,7 +188,7 @@ tr:hover .cut { opacity: 1; }
 					<td style="color: rgb(0, 0, 0);">{{employee.role.name}}</td>
 					<td style="color: rgb(0, 0, 0);;">{{employee.address}}</td>
 					<td style="color: rgb(0, 0, 0);;">{{employee.phone_no}}</td>
-					<td style="color: rgb(0, 128, 6);">{{employee.leave_bal.casual_leave}}, {{employee.leave_bal.sick_leave}}, {{employee.leave_bal.earned_leave}}</td>
+					<td style="color: rgb(0, 128, 6);">{{employee.leave_bal.paid_leave}}, {{employee.leave_bal.sick_leave}}, {{employee.leave_bal.others_leave}}</td>
 					<td style="color: rgb(0, 0, 0);;"><a href="{% url 'employee_edit' employee.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Edit</span></button></a></td>
 
 					<style>

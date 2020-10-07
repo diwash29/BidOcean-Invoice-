@@ -478,9 +478,9 @@ class EmployeeEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         employee.emp_id    = request.POST['emp_id']
         employee.report_to = report_to    
         employee.save()
+        leave_bal.paid_leave   = request.POST['paid_leave']
         leave_bal.sick_leave   = request.POST['sick_leave']
-        leave_bal.casual_leave = request.POST['casual_leave']
-        leave_bal.earned_leave = request.POST['earned_leave']
+        leave_bal.others_leave = request.POST['others_leave']
         leave_bal.save()
         return HttpResponseRedirect('/employee-list')
 
