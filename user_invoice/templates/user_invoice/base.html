@@ -36,7 +36,7 @@
               {% if role == 'hr' or role == 'admin' or user.is_manager == 1 %}
               <a class="nav-item nav-link" href="{% url 'approve_leave' %}">LeaveRequests</a>
               {% endif %}
-              {% if role == 'hr' or role == 'admin' or role == 'accounts' %}
+              {% if role == 'hr' or role == 'admin' or role == 'accountant' %}
                 <!-- <a class="nav-item nav-link" href="{% url 'rate_list' %}" >Rates</a>
                 <a class="nav-item nav-link" href="{% url 'letter:joinee_list' %}" >Letter</a> -->
                 <!-- <a class="nav-item nav-link" href="{% url 'role_list' %}" >Role</a> -->
@@ -50,7 +50,7 @@
                   <option value="{% url 'rate_list' %}" style="color:white">Rates</option>
                   <option value="{% url 'role_list' %}" style="color: white;">Role</option>
                   <!-- <option value="{% url 'approve_leave' %}" style="color:white">LeaveRequests</option> -->
-                  {% if role != 'accounts' and role != 'hr' %}
+                  {% if role != 'accountant' and role != 'hr' %}
                   <option value="{% url 'manage_user' %}" style="color:white">ManageUsers</option>
                   {% endif %}
                   
@@ -59,7 +59,7 @@
 
               </select>​
               {% endif %}
-              {% if role == 'admin' or role == 'accounts' %}
+              {% if role == 'admin' or role == 'accountant' %}
               <select class="browser-default custom-select" style="font-weight: bold;margin-bottom: 15px;width :145px;color: white;background-color: rgb(230, 216, 216);background-color: #5f788a;margin-top: 20px;"  onchange="location = this.options[this.selectedIndex].value;">
                 <option disabled style="font-weight: bold;color: black;" selected value>  Accounts </option>
                 <option value="{% url 'account_management' %}" style="color:white">ManageAccount</option>      
