@@ -6,4 +6,7 @@ admin.site.register(Role)
 admin.site.register(Employee)
 admin.site.register(Rate)
 admin.site.register(Invoice)
+admin.site.register(ProductionReport)
 # admin.site.register(Rate)
+
+	

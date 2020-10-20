@@ -1,95 +1,71 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
 	<article>
-		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;" ><b> {% if 'Add' in submit %}Verify Employee{% else %}{{submit}}{% endif %} Details</b> </legend>
-		
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> {% if 'Edit' in submit %}Edit{% else %}Add{% endif %} Production Report </b></legend>
 		<form method='POST'>
 			{% csrf_token %}
 			<div class="form-group">
-				<p><u class="spelling">Please fill in the details below.</u> </p>
-	<style>
-		.spelling {
-	  text-decoration-line: underline;
-	 
-	  text-decoration-color: black;
-	}
-	</style>
-				<label for="formGropuNameInput">Name*</label>
-				<input name="name" class="form-control" id="formGroupNameInput" value="{% if employee.name %}{{employee.name}} {% else %}{{user.firstname}} {{user.lastname}}{% endif %}" placeholder="Enter your name" required {% if 'Add' in submit %}readonly{% endif %}>
+				<label for="formGropuNameInput">Date</label>
+				<input name="date" value="{{production_report.date|date:'Y-m-d'}}" class="form-control" type="date" id="date" readonly="readonly">
 			</div>
-			<div class="form-group">	
-				<label for="formGropuNameInput">Address*</label>
-				<input name="address" class="form-control" id="formGroupNameInput" value="{% if employee.address %}{{employee.address}}{% else %}{{user.address}}{% endif %}" placeholder="Enter your address" required {% if 'Add' in submit and user.address %}readonly{% endif %}>
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Mobile No*</label>
-				<input type="number" class="form-control" id="mobile_no" maxlength="10" name="phone_no" pattern="[6-9]{1}[0-9]{9}" value="{% if employee.phone_no %}{{employee.phone_no}}{% else %}{{user.phone}}{% endif %}" placeholder="Enter Mobile No" {% if 'Add' in submit and user.phone %}readonly{% endif %} >
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Employee Id*</label>
-				<input type="text" class="form-control" id="emp_id" name="emp_id"  value="{% if employee.emp_id %}{{employee.emp_id}}{% else %}{{user.employee_id}}{% endif %}" placeholder="Enter employee id" required="" {% if 'Add' in submit %}readonly{% endif %} >
-			</div>	
-			<div class="form-group">
-				<label for="mobile_no">Salary*</label>
-				<input type="text" class="form-control" id="salary" name="salary" value="{% if employee.salary %}{{employee.salary}}{% else %}{{user.salary}}{% endif %}" placeholder="Enter salary" {% if 'Add' in submit %}readonly{% endif %}>
-			</div>	
-			<!-- <div class="form-group">
-				<label for="mobile_no">Leaves*</label>
-				<input type="text" class="form-control" id="leaves" name="leaves" value="{{employee.leaves}}" placeholder="Enter no of leaves" required>
-			</div> -->	
-			{% if user.role is None %}
-			<div class="form-group">
-				<label for="mobile_no">Role*</label>
-				<select class="form-control" id="role" name='role' required="">
-					<option value=''>Select Role*</option>	
-					{% for role in roles %}
-						<option value='{{role.id}}'{% if employee.role.id == role.id %}selected{% endif %}  >{{role.name}}</option>
-					{% endfor %}				
-				</select>
-				<!-- <input type="text" class="form-control" id="leaves" name="leaves" placeholder="Enter no of leaves" required> -->
-			</div>	
-			{% endif %}
-			{% if user.is_manager == 0 or employee.is_manager == 0 %}
-			<div class="form-group">
-				<label for="mobile_no">Report to*</label>
-				<select class="form-control" id="report_to" name='report_to' required="">
-					<option value=''>Select Manager</option>
-					{% for manager in managers %}
-						<option {% if employee.report_to.id == manager.id %}selected{% endif %} value='{{manager.id}}'>{{manager.name}}</option>
-					{% endfor %}
-				</select>
-			</div>
-			{% endif %}
-			{% if 'Edit' in submit %}
-			<div class="form-group">
-				<label for="mobile_no">Paid Leave*</label>
-				<input type="text" class="form-control" id="leaves" name="paid_leave" value="{{employee.leave_bal.paid_leave}}" placeholder="Enter no of paid leave" required>
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Sick Leave*</label>
-				<input type="text" class="form-control" id="leaves" name="sick_leave" value="{{employee.leave_bal.sick_leave}}" placeholder="Enter no of sick leaves" required>
-			</div>
-			<div class="form-group">
-				<label for="mobile_no">Other Leave*</label>
-				<input type="text" class="form-control" id="leaves" name="others_leave" value="{{employee.leave_bal.others_leave}}" placeholder="Enter no of others leaves" required>
-			</div>	
 
-			{% endif %}
+			<div class="form-group">
+				<label for="formGropuNameInput">Source</label>
+				<input name="source" value="{{production_report.source}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">Entries</label>
+				<input name="entries" value="{{production_report.entries}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">Addendum</label>
+				<input name="addendum" value="{{production_report.addendum}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">Import Report</label>
+				<input name="import_report" value="{{production_report.import_report}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">Import Reject</label>
+				<input name="import_reject" value="{{production_report.import_reject}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">Solic no</label>
+				<textarea name="solic_no" class="form-control">{{production_report.solic_no}}</textarea>
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">File Attach</label>
+				<input name="file_attach" value="{{production_report.file_attach}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">WDS per day</label>
+				<input name="wds_per_day" value="{{production_report.wds_per_day}}" class="form-control" type="text">
+			</div>
+
+			<div class="form-group">
+				<label for="formGropuNameInput">USD</label>
+				<input name="usd" value="{{production_report.usd}}" class="form-control" type="text">
+			</div>
+				
 			<div class="form-group">
 				
-				
-				<a href="{{submit}}"><button  class="btn btn-primary" style="background-color:teal;border: none;">Add</button></a>
-				{% if 'Edit' in submit %}
-				<a href="{% url 'employee_delete' employee.pk %}"><input onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger" style="height: 36px;" type="button" value="Delete"></a>
-				{% endif %}				
+				<button class="btn btn-primary" type="submit" class="form-control" id="submit" value="{{submit}}" style="background-color:teal;border: none;">Add</button>
+					
 				<style>
 					.btn-primary:hover {
 			 background-color: green !important;
 		 }
-		 
-				</style>
-				
+		</style>
 			</div>	
 		</form>
 	</article>
@@ -226,5 +202,9 @@ tr:hover .cut { opacity: 1; }
 @page { margin: 0; }
 
     </style>
-
+<script type="text/javascript">
+	{% if 'Add' in submit %}
+		document.querySelector("#date").valueAsDate = new Date();
+	{% endif %}
+</script>
 {% endblock content %}

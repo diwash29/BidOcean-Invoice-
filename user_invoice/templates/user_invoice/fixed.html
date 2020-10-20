@@ -1090,8 +1090,12 @@ function minus(tot) {
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		var total_pay = $("#z2").val();
+		var work_days = $("#totalwd").val();
+		var day_off   = total_pay/work_days;
+		$("#authday").val(day_off);
 		calci()
-		sum()
+		/*sum()*/
 		$(function(){
                 $('.in input').each(function(){
                     var p=$(this).parent().parent()
@@ -1112,13 +1116,14 @@ function minus(tot) {
 </script>
 <script type="text/javascript">
 
-	function get_leave(url){
+	function get_leave(url ,emp=null){
 		$("#monthdate").change(function(){
 			var date = $(this).val()
 			$.ajax({
 				url  : url,
 				data : {
 				    date  : date,
+				    emp   : emp,
 				  },
 				type : 'GET',
 				dataType: 'json',
@@ -1129,7 +1134,7 @@ function minus(tot) {
 		    });
 		})
 	}
-	get_leave('{% url "ajax_get_leave" %}')
+	get_leave('{% url "ajax_get_leave" %}' , '{{invoice.emp_ownwer.id}}' )
 {% if 'Add' in submit %}
 document.querySelector("#invoice_date").valueAsDate = new Date();
 {% endif %}

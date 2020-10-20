@@ -1,14 +1,27 @@
 import calendar
 from datetime import datetime
 from leave.models import LeaveRequest
-from .models import Invoice
+from .models import Invoice, ProductionReport
 
 
 def get_first_n_last_day(year,month):
 	first_n_last = calendar.monthrange(year, month)
-	first_day    = datetime.strptime(str(year)+"-"+str(month)+"-"+str(first_n_last[0]),"%Y-%m-%d").date()
+	first_day    = datetime.strptime(str(year)+"-"+str(month)+"-"+str('01'),"%Y-%m-%d").date()
 	last_day     = datetime.strptime(str(year)+"-"+str(month)+"-"+str(first_n_last[1]),"%Y-%m-%d").date()
 	return (first_day, last_day)
+
+
+def listToString(s):  
+    
+    # initialize an empty string 
+    str1 = ""  
+    
+    # traverse in the string   
+    for ele in s:  
+        str1 += ele   
+    
+    # return string   
+    return str1 
 
 
 def count_leaves(employee, date):
@@ -23,7 +36,20 @@ def count_leaves(employee, date):
 	    for l in app_leaves:
 	    	if int(l.requesting_days)>int(l.available_days):
 	        	leaves += int(l.requesting_days) - int(l.available_days)
-	return leaves        
+	return leaves    
+
+def count_file_uploads(employee, date):
+	current_month      = date.month
+	current_year       = date.year
+	start_end_date     = get_first_n_last_day(current_year, current_month) 
+	file_uploads_query = ProductionReport.objects.filter(employee=employee, date__gte=start_end_date[0], date__lte=start_end_date[1])
+	file_upload = 0
+	if not file_uploads_query:
+	    file_upload = file_upload
+	else: 
+	    for f in file_uploads_query:
+	    	file_upload += int(f.file_attach)
+	return file_upload    	    
 
 def check_invoice(employee):
 	today          = datetime.today()

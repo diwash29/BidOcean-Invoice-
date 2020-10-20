@@ -36,5 +36,15 @@ urlpatterns = [
 
     path('change-password/', views.ChangePassword.as_view(), name='change_password'),
 
-    path('ajax/get_leave/', views.ajax_get_leave, name='ajax_get_leave')
+    path('ajax/get_leave/', views.ajax_get_leave, name='ajax_get_leave'),
+
+    path('production_report-add/', views.ProductionReportAddView.as_view(), name='production_report_add'),
+    path('production_report-list/', views.ProductionReportDisplayView.as_view(), name='production_report_list'),
+    path('production_report-edit/<int:pk>', views.ProductionReportEditView.as_view(), name='production_report_edit'),
+
+    path('make_users/', views.make_users, name='make_user'),
+
+    path('deduction-add/',views.DeductionAddView.as_view(),name='deduction_add'),
+    path('deduction-list/',views.DeductionDisplayView.as_view(),name='deduction_list'),
+    path('deduction-edit/<int:pk>',views.DeductionEditView.as_view(),name='deduction_edit'),
 ]

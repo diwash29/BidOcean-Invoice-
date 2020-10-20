@@ -2,70 +2,7 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<form method='POST'>
-	{% csrf_token %}
-	<article>
-		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Internet Researcher Specialist Invoice </b></legend>
-		<aside>
-
-			<div >
-				<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
-				<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
-			</div>
-		</aside>
-			  <div class="form-group">
-				<p><u class="spelling">Please fill in the details below.</u> </p>
-	<style>
-		.spelling {
-	  text-decoration-line: underline;
-	 
-	  text-decoration-color: black;
-	}
-	</style>
-			<label for="formGropuNameInput">Name*</label>
-			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required readonly>
-			</div>
-			<div class="form-group">	
-			<label for="formGropuNameInput">Address*</label>
-			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required readonly>
-			</div>	
-			<div class="form-group">
-			<label for="mobile_no">Mobile No*</label>
-			<input type="text" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No" readonly>
-
-			</div>	
-			<div class="form-group">
-			<label for="formGroupExampleInput2">Invoice Date</label>
-			<input type="date" id="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}" name="invoice_date">
-			</div>
-		
-		<div class="form-group">
-		<label for="formGroupExampleInput2">Month and Year Billed For:</label>
-		<input type="month" id="monthdate" name="monthdate" value="{{invoice.monthdate|date:'Y-m'}}">
-
-		</div>	
-			<div class="form-group">
-			  <label for="formGroupDistrict">Select IR Type</label>
-			  <select name="emp_type" id="formGroupDistrict" required>
-				<option {% if invoice.emp_type == 'basic' %}selected{% endif %} value='basic'>Basic</option>
-				<option {% if invoice.emp_type == 'advanced' %}selected{% endif %} value='advanced'>Advance</option>
-				
-			  </select>
-			  
-			</div>
-			<div class="form-group">
-			<label for="formGroupExampleInput2">Billing Account : </label>
-			{% for account in employee.employee_accounts.all %}
-			<!-- <input type="date" id="invoice_date" name="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}"> -->
-			<input type="radio" class="option-input radio" name="bank_account" {% if invoice.bank_account.pk == account.id %}checked="checked"{% endif %} value={{account.id}}>{% if account.bank == 'others' %}{{account.other_bank|upper}}{% else %}{{account.bank|upper}}{% endif %}
-			{% endfor %}
-		</div>
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-				 
-			  </div>
-			
-	<style>
+<style>
 				.option-input {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -123,657 +60,7 @@
   border-radius: 50%;
 }
 	</style>
-
-		
-		
-			
-		  <table class='in'>
-			<thead>
-				<tr>
-				
-					<th><span style="font-weight:bold">Description</span></th>
-					<th><span style="font-weight:bold">Quantity</span></th>
-					<th><span style="font-weight:bold">Rate</span></th>
-					<th><span style="font-weight:bold">Total</span></th>
-				</tr>
-			</thead>
-			
-			<tr>
-				<td></a><span style="font-weight:bold">Additional Authorized Days Worked</span></td>
-					<td><input id="z1" type="number" style="background-color: rgb(96, 221, 96);" type="text" value="{{invoice.additional_auth_days}}" oninput="calci()" name="additional_auth_days" /></td>
-					<td><span data-prefix>$</span><input value="{{rates.add_auth_days}}"  id="z2" type="text" oninput="calci()" /></td>
-					<td><span data-prefix>$</span><input value="0" id="authres" /></td>
-				 
-			
-			</tr>
-			
-			<tr>
-                <td  align="right">
-                   <span id="wds" style="color:#6a57be; font-weight:bold">WDS WORK PRODUCTION:</span>
-                </td>
-			</tr>
-				
-            <tr>
-		
-				<td></a><span style="font-weight:bold">WDS Sources checked completely</span></td>
-				<td><input class="txt" type="number" style="background-color: rgb(96, 221, 96);" value="{{invoice.wds_source_checked_completely}}" type="text" name="wds_source_checked_completely"/></td>
-			</tr>
-			<tr>
-			
-				<td></a><span style="font-weight:bold">New Solicitations entered correctly</span></td>
-				<td><input class="txt" type="number" value="{{invoice.new_solicitation_entered_correctly}}" style="background-color: rgb(96, 221, 96);" type="text" name="new_solicitation_entered_correctly"/></td>
-			</tr>
-			<tr>
-		
-				<td></a><span style="font-weight:bold">Updated Solicitations by addenda</span></td>
-				<td><input class="txt" type="number" value="{{invoice.updated_solicitation_by_addenda}}" style="background-color: rgb(96, 221, 96);" type="text" name="updated_solicitation_by_addenda"/></td>
-			</tr>
-			
-			
-			
-			<tr id="summation">
-				
-				<td align="right" style="font-weight:bold">Total :</td>
-				<td align="center"><span id="sum">0</span></td>
-			</tr>
-				
-			<tr>
-				<td align="right" style="font-weight:bold">Total :</td>
-				<td><span id="box1" value="0" onClick="calculate()"></span></td>
-
-				<td><span data-prefix>$</span><input readonly="" id="box2" name = "quantity" type="text" value = "0.17" onClick="calculate()" /></td>
-				<td><span data-prefix>$</span><input value="0" id="result" onClick="calculate()"/></td>
-			  </tr>
-			  <tr>
-
-				<tr>
-					<td></a><span style="font-weight:bold">Difficult and Non-Productive Source</span></td>
-						<td><input value="{{invoice.difficult_and_nonproductive_source}}" type="number" name="difficult_and_nonproductive_source" style="background-color: rgb(96, 221, 96);" id="val1"  oninput="cal()" /></td>
-						<td><span data-prefix>$</span><input value="{{rates.difficultnp}}" id="val2" type="text" readonly="" oninput="cal()" /></td>
-						<td><span data-prefix>$</span><input value="0" id="diffres" /></td>
-					 
-				
-				</tr>
-				<script>
-					function cal() {
-					var myBox1 = document.getElementById('val1').value;	
-					var myBox2 = document.getElementById('val2').value;
-					var result = document.getElementById('diffres');	
-					var myResult = myBox1 * myBox2;
-					result.value = myResult;
-				
-		
-					}
-					</script>
-				
-
-				
-					
-				<tr>
-					<td></a><span style="color:#6a57be; font-weight:bold">OTHER WORK: </span></td>
-					
-					
-				</tr>
-				
-			
-				<tr>
-					<td></a><span style="font-weight:bold">Extra Hours Worked</span></td>
-						<td><input id="g1" type="number" style="background-color: rgb(96, 221, 96);" type="text" value="{{invoice.extra_hours_worked}}" oninput="godcal()"  name="extra_hours_worked" /></td>
-						<td><span data-prefix>$</span><input  value="{{rates.extra_hours}}" id="g2" type="text" oninput="godcal()" /></td>
-						<td><span data-prefix>$</span><input value="0" id="godres" /></td>
-					 
-				
-				</tr>
-				<script>
-					function godcal() {
-					var myBox1 = document.getElementById('g1').value;	
-					var myBox2 = document.getElementById('g2').value;
-					var result = document.getElementById('godres');	
-					var myResult = myBox1 * myBox2;
-					result.value = myResult;
-				
-		
-					}
-					</script>
-
-
-				<tr>
-					<td></a><span style="font-weight:bold">File Attached</span></td>
-						<td><input id="f1" type="number" name="file_attached" style="background-color: rgb(96, 221, 96);" type="text" value="{{invoice.file_attached}}" oninput="fcal()" onblur="sum()"/></td>
-						<td><span data-prefix>$</span><input value="{{rates.file_attach}}" id="f2" type="text" oninput="fcal()" /></td>
-						<td><span data-prefix>$</span><input value="0" id="ftotal" /></td>
-					
-
-				</tr>
-				<script>
-					function fcal() {
-					var myBox1 = document.getElementById('f1').value;	
-					var myBox2 = document.getElementById('f2').value;
-					var result = document.getElementById('ftotal');	
-					var myResult = myBox1 * myBox2;
-					result.value = myResult;
-
-
-					}
-					</script>
-
-
-
-				<tr>
-					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
-						Total Amount: <span data-prefix>$</span><input id = "amtotal" name = "money" />
-					</td>
-					
-				</tr>
-				<script>
-						function sum() {
-						var txtFirstNumberValue = document.getElementById('authres').value;
-						
-						var txtThirdNumberValue = document.getElementById('diffres').value;
-						var txtFourthNumberValue = document.getElementById('result').value;
-						var txtSecondNumberValue = document.getElementById('godres').value;
-						var txtFifthNumberValue = document.getElementById('ftotal').value;
-						var result =parseFloat(txtFourthNumberValue)+ parseFloat(txtFirstNumberValue)
-						var result = result + parseFloat(txtFifthNumberValue)
-						var result = result  + parseFloat(txtSecondNumberValue)+parseFloat(txtThirdNumberValue)	
-						if (!isNaN(result)) {
-							document.getElementById('amtotal').value = result;
-						}
-					}
-						// var multauth1 = document.getElementById('multauth1').value;
-						// var auth_leave_below = document.getElementById('auth_leave_below').value
-						// var rest = multauth1 * auth_leave_below
-						
-						// 	document.getElementById('multTotal').value = rest;
-
-
-							
-					
-				</script>
-
-			
-				<tr>
-					<td></a><span style="color:#6a57be; font-weight:bold">DEDUCTIONS:</span></td>
-					
-					
-				</tr>
-				
-				<tr>
-					<td></a><span style="font-weight:bold">Authorized Days Off</span></td>
-					<td>
-						<input value="{{invoice.authorised_day_off}}" type="number" id="auth_leave" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="authorised_day_off"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td></a><span style="font-weight:bold">Unatuthorized Days Off</span></td>
-					<td>
-						<input value="{{invoice.unauthorised_day_off}}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="unauthorised_day_off"/>
-					</td>
-					
-				
-				</tr>
-				
-				<tr>
-					<td></a><span style="font-weight:bold">Total Working Days</span></td>
-					<td>
-						<input value="{{invoice.total_working_days}}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="total_working_days"/>
-					</td>
-					
-					
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">Total Days Worked</span></td>
-					<td>
-						<input value="{{invoice.total_days_worked}}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="total_days_worked"/>
-					</td>					
-				</tr>
-				<thead>
-					<tr>
-					
-						<th><span style="color:#6a57be;font-weight:bold">ERROR DETAILS:</span></th>
-					</tr>
-				</thead>
-				
-				<thead>
-					<tr>
-					
-						<th><span style="font-weight:bold">Description</span></th>
-						<th><span style="font-weight:bold">Rate</span></th>
-						<th><span style="font-weight:bold;color: red;">Errors Incurred</span></th>
-						<th><span style="font-weight:bold;color: red;">Deduction</span></th>
-					</tr>
-				</thead>
-				<tr>
-					<td></a><span style="font-weight:bold">(11) Duplicate Solic. </span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.duplicate_solic}}"  class ="txtMult" readonly="" />
-					</td>
-					<td>
-						<input value="{% if invoice.duplicate_solic %}{{invoice.duplicate_solic}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="duplicate_solic"/>
-					</td>
-					<td>
-						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(1) Entity/Contact wrong/incomplete/not edited
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.entity_cont_wrong}}"  class ="txtMult" readonly="" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.entity_cont_wrong %}{{invoice.entity_cont_wrong}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="entity_cont_wrong"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(21) False Referral
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input readonly="" value="{{rates.false_referal}}"  class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.false_referal %}{{invoice.false_referal}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="false_referal"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(13) Fraudulent solicitation 'update'
-
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.fraudsolic_update}}" readonly=""  class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.fraudulent_solicitation_update %}{{invoice.fraudulent_solicitation_update}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="fraudulent_solicitation_update"/>
-					</td>
-					<td>
-						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(17) Source returned without good reason
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.source_ret_wo_res}}"  class ="txtMult" readonly="" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.source_returned_without_good_res %}{{invoice.source_returned_without_good_res}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="source_returned_without_good_res"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(22) Missed Bid Bond/Incomplete Plans & Specs
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.missed_bond}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.missed_bidbond_and_specs %}{{invoice.missed_bidbond_and_specs}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="missed_bidbond_and_specs"/>
-					</td>
-					<td>
-						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(3) Missed Categories
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.missed_categories}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.missed_categories %}{{invoice.missed_categories}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="missed_categories"/>
-					</td>
-					<td>
-						<span data-prefix>$</span>	<span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(10) Missed Solic./Addend. From Source
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.missed_solic_src}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.missed_solic_or_addend_from_source %}{{invoice.missed_solic_or_addend_from_source}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="missed_solic_or_addend_from_source"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(23) Missed/Incorrect File Type
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.missed_file}}" readonly=""  class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.missed_incorrect_filetype %}{{invoice.missed_incorrect_filetype}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="missed_incorrect_filetype"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(7) Missing or Wrong Outside Link
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.missed_link}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.missing_or_wrong_outside_link %}{{invoice.missing_or_wrong_outside_link}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="missing_or_wrong_outside_link"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(20) Missing or wrong Term Contract
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.missed_term}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.missing_or_wrong_term_contract %}{{invoice.missing_or_wrong_term_contract}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="missing_or_wrong_term_contract"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(9) Not Posted As Lead
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.not_posted_lead}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.not_posted_as_lead %}{{invoice.not_posted_as_lead}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="not_posted_as_lead"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(12) Other error
-					</span></td>
-					<td>
-						<span data-prefix>$</span>	<input value="{{rates.other_error}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.other_error %}{{invoice.other_error}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="other_error"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(18) Other serious error
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.other_serious_err}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.other_serious_error %}{{invoice.other_serious_error}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="other_serious_error"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(14) Refreshing WDS page to a different source
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.refreshing_wds}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.refreshing_wds_page_to_diff_source %}{{invoice.refreshing_wds_page_to_diff_source}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="refreshing_wds_page_to_diff_source"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(19)Setaside/Prequalification/<br>Prevailing Wage not selected
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.wage_not_selected}}" readonly="
-						" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.prevailing_wage_not_selected %}{{invoice.prevailing_wage_not_selected}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="prevailing_wage_not_selected"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(15) Skipped solicitation
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.skipped_solic}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.skipped_solicitation %}{{invoice.skipped_solicitation}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="skipped_solicitation"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(16) Source returned without a note
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.source_ret_wo_note}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.source_returned_without_a_note %}{{invoice.source_returned_without_a_note}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="source_returned_without_a_note"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(24) Unexcused/unjustified absence
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.unjustified_absence}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.unexcused_unjustified_absence %}{{invoice.unexcused_unjustified_absence}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="unexcused_unjustified_absence"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(6) Wrong bid/pre-bid, mandatory
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.wrong_pre_bid}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.wrongbid_prebid_mandatory %}{{invoice.wrongbid_prebid_mandatory}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="wrongbid_prebid_mandatory"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(2) Wrong categories
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.wrong_categories}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.wrong_categories %}{{invoice.wrong_categories}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="wrong_categories"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(8) Wrong geographic location
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.wrong_geo_location}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.wrong_geographic_location %}{{invoice.wrong_geographic_location}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="wrong_geographic_location"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(4) Incomplete or incorrect scope
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.incorrect_scope}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.incomplete_and_incorrect_scope %}{{invoice.incomplete_and_incorrect_scope}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="incomplete_and_incorrect_scope"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-				<tr>
-					<td></a><span style="font-weight:bold">(5) Wrong text format
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.wrong_text_format}}" readonly=""  class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.wrong_text_format %}{{invoice.wrong_text_format}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" name="wrong_text_format"/>
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-
-				<tr>
-					<td></a><span style="font-weight:bold">Authorized Days Off
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.auth_day_off}}" readonly="" class ="txtMult" id="multauth1" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.authorised_day_off %}{{invoice.authorised_day_off}}{% else %}0{% endif %}" type="number" id="auth_leave_below" style="background-color: rgb(96, 221, 96);" class ="txtMult" />
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal" id ="totalauth">0.00</span>
-					</td>
-				</tr>
-
-
-                <tr>
-					<td></a><span style="font-weight:bold">Unauthorized Days Off
-					</span></td>
-					<td>
-						<span data-prefix>$</span><input value="{{rates.unauth_day_off}}" readonly="" class ="txtMult" name="txtEmmail"/>
-					</td>
-					<td>
-						<input value="{% if invoice.unauthorised_day_off %}{{invoice.unauthorised_day_off}}{% else %}0{% endif %}" type="number" style="background-color: rgb(96, 221, 96);" class ="txtMult" />
-					</td>
-					<td>
-						<span data-prefix>$</span><span class="multTotal">0.00</span>
-					</td>
-				</tr>
-
-
-				<tr>
-					<td colspan="3" style="color:#c90000; font-weight:bold" align="right">
-						Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">{{invoice.total_deduction}}</span>
-						<input id = "hidden_total_deduction" type='hidden' name='total_deduction' value="{{invoice.total_deduction}}"/>
-					</td>
-					
-				</tr>
-				
-				<tr>
-					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
-						 Total Amount Payable: <span data-prefix>$</span><input name='total_payable' id = "finaltotal" value="{{invoice.total_payable}}" onclick="minus()"/>
-					</td>
-					
-				</tr>
-
-
-
-		</table>
-		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script>
-					$(document).ready(function(){
-
-			//iterate through each textboxes and add keyup
-			//handler to trigger sum event
-			$(".txt").each(function() {
-
-				$(this).keyup(function(){
-					calculateSum();
-				});
-			});
-
-			});
-
-			function calculateSum() {
-
-			var sum = 0;
-			//iterate through each textboxes and add the values
-			$(".txt").each(function() {
-
-				//add only if the value is number
-				if(!isNaN(this.value) && this.value.length!=0) {
-					sum += parseFloat(this.value);
-					
-				}
-
-
-			});
-			//.toFixed() method will roundoff the final sum to 2 decimal places
-			$("#sum").html(sum.toFixed(2));
-			$("#box1").html(sum.toFixed(2));
-			
-
-			// var sumtwo = $('#sumtwo').val();
-			// var rate = $('#rate').val();
-			// var totalTotalOne = (sumtwo * rate);
-			// $("#wtotal").html(totalTotalOne.toFixed(2));
-			}
-
-			function calculate() {
-				
-			var quan = document.getElementsByName('quantity')[0].value;
-			var pri = document.getElementById('box1').innerHTML;
-			var pr = parseInt(pri, 10);
-			var tot = quan * pr;
-			document.getElementById("result").value = tot.toFixed(2);;
-			}
-		</script>
-
-		</table>
-		<div class="col-auto my-1">
-			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b> Submit</b></button>
-		   <style>
-			   .btn-primary:hover {
-		background-color: green !important;
-	}
-	
-		   </style>
-		  </div>
-	
-	</article>
-
-	
-</form>	
-	<style>
+<style>
  *
 {
 	border: 0;
@@ -889,62 +176,314 @@ tr:hover .cut { opacity: 1; }
 @page { margin: 0; }
 
     </style>
+    <style>
+		.btn-primary:hover {
+			background-color: green !important;
+		}
+	</style>
+<form method='POST'>
+	{% csrf_token %}
+	<article>
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Internet Researcher Specialist Invoice </b></legend>
+		<aside>
 
-<script>
-	$(document).ready(function(){
+			<div >
+				<p style="color: red;" ><strong>**Please fill in the green fields according to your reqiurements </strong></p>
+				<p style="color: red;"><strong>**Monthly compensation is inclusive of government taxes, fees and obligations. Upon payment, Contractor agrees to make payment of these taxes and fees to appropriate governmental organizations.</strong> </p>
+			</div>
+		</aside>
+			  <div class="form-group">
+				<p><u class="spelling">Please fill in the details below.</u> </p>
+	<style>
+		.spelling {
+	  text-decoration-line: underline;
+	 
+	  text-decoration-color: black;
+	}
+	</style>
+	
+			<label for="formGropuNameInput">Name*</label>
+			<input name="name" class="form-control" id="formGroupNameInput" value="{{employee.name}}" placeholder="Enter your name" required readonly>
+			</div>
+			<div class="form-group">	
+			<label for="formGropuNameInput">Address*</label>
+			<input name="address" class="form-control" id="formGroupNameInput" placeholder="Enter your address" value='{{employee.address}}' required readonly>
+			</div>	
+			<div class="form-group">
+			<label for="mobile_no">Mobile No*</label>
+			<input type="text" class="form-control" id="mobile_no" name="mobile_no"  value="{{employee.phone_no}}" pattern="[6-9]{1}[0-9]{9}" maxlength="10" placeholder="Enter Mobile No" readonly>
 
-			//iterate through each textboxes and add keyup
-			//handler to trigger sum event
-			$(".txt").each(function() {
+			</div>	
+			<div class="form-group">
+			<label for="formGroupExampleInput2">Invoice Date</label>
+			<input type="date" id="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}" name="invoice_date">
+			</div>
+		
+		<div class="form-group">
+		<label for="formGroupExampleInput2">Month and Year Billed For:</label>
+		<input type="month" id="monthdate" name="monthdate" value="{{invoice.monthdate|date:'Y-m'}}">
 
-				$(this).keyup(function(){
-					calculateSum();
+		</div>	
+			<div class="form-group">
+			  <label for="formGroupDistrict">Select IR Type</label>
+			  <select name="emp_type" id="formGroupDistrict" required>
+				<option {% if invoice.emp_type == 'basic' %}selected{% endif %} value='basic'>Basic</option>
+				<option {% if invoice.emp_type == 'advanced' %}selected{% endif %} value='advanced'>Advance</option>
+				
+			  </select>
+			  
+			</div>
+			<div class="form-group">
+			<label for="formGroupExampleInput2">Billing Account : </label>
+			{% for account in employee.employee_accounts.all %}
+			<!-- <input type="date" id="invoice_date" name="invoice_date" value="{{invoice.invoice_date|date:'Y-m-d'}}"> -->
+			<input type="radio" class="option-input radio" name="bank_account" {% if invoice.bank_account.pk == account.id %}checked="checked"{% endif %} value={{account.id}}>{% if account.bank == 'others' %}{{account.other_bank|upper}}{% else %}{{account.bank|upper}}{% endif %}
+			{% endfor %}
+		</div>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+				 
+			  </div>	
+		  <table class='in'>
+			<thead>
+				<tr>
+				
+					<th><span style="font-weight:bold">Description</span></th>
+					<th><span style="font-weight:bold">Quantity</span></th>
+					<th><span style="font-weight:bold">Rate</span></th>
+					<th><span style="font-weight:bold">Total</span></th>
+				</tr>
+			</thead>
+			
+			<tr>
+				<td><span style="font-weight:bold">Production Pay</span></td>
+					<td><input id="prod_pay" type="number" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.production_pay %}{{invoice.production_pay}}{% else %}0{% endif %}" oninput="calci()" name="production_pay" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="1"  id="rate_prod_pay" type="text" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="0" id="prod_pay_amt" readonly=""/></td>			
+			</tr>
+			<tr>
+				<td><span style="font-weight:bold">WDS Solicitaion</span></td>
+					<td><input id="wds_solicitaion"  type="number" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.wds_solicitaion %}{{invoice.wds_solicitaion}}{% else %}0{% endif %}"  name="wds_solicitaion" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="{{rates.wds_solicitaion}}" id="rate_wds_solicitaion" type="text" readonly="" /></td>
+					<td><span data-prefix>$</span><input id="wds_solicitaion_amt" value="0" readonly="" /></td>			
+			</tr>
+			<tr>
+				<td><span style="font-weight:bold">WDS Source</span></td>
+					<td><input  type="number" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.wds_source %}{{invoice.wds_source}}{% else %}0{% endif %}" id="wds_source" name="wds_source" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="{{rates.wds_source}}" id="rate_wds_source" type="text" readonly=""  /></td>
+					<td><span data-prefix>$</span><input id="wds_source_amt" value="0" readonly="" /></td>			
+			</tr>
+			<tr>
+				<td><span style="font-weight:bold">WDS Edit</span></td>
+					<td><input type="number" id="wds_edit" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.wds_edit %}{{invoice.wds_edit}}{% else %}0{% endif %}"  name="wds_edit" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="{{rates.wds_edit}}" id="rate_wds_edit" type="text" readonly="" /></td>
+					<td><span data-prefix>$</span><input id="wds_edit_amt" value="0" readonly="" /></td>			
+			</tr>
+			<tr>
+				<td><span style="font-weight:bold">WDS Import</span></td>
+					<td><input type="number" id="wds_import" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.wds_import %}{{invoice.wds_import}}{% else %}0{% endif %}"  name="wds_import" readonly="" /></td>
+					<td><span data-prefix>$</span><input value="{{rates.wds_import}}" id="rate_wds_import" type="text" readonly="" /></td>
+					<td><span data-prefix>$</span><input id="wds_import_amt" value="0" readonly="" /></td>			
+			</tr>
+			<tr>
+				<td><span style="font-weight:bold">File Upload</span></td>
+					<td><input type="number" id="file_upload" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.file_upload %}{{invoice.file_upload}}{% else %}0{% endif %}"  name="file_upload" readonly="" /></td>
+					<td><span data-prefix>$</span><input id="rate_file_upload" value="{{rates.file_attach}}" type="text" readonly="" /></td>
+					<td><span data-prefix>$</span><input id="file_upload_amt" value="0" readonly="" /></td>			
+			</tr>
+			<tr>
+				<td><span style="font-weight:bold">Fixed Salary</span></td>
+					<td><input type="number" id="fixed_salary" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.fixed_salary %}{{invoice.fixed_salary}}{% else %}0{% endif %}" oninput="oninput_fixed()"  name="fixed_salary" /></td>
+					<td><span data-prefix>$</span><input value="1" type="text" readonly=""/></td>
+					<td><span data-prefix>$</span><input value="0" id="fixed_salary_amt" readonly="" /></td>			
+			</tr>				
+					
+			<!-- <tr>
+				<td></a><span style="color:#6a57be; font-weight:bold">OTHER WORK: </span></td>
+			</tr>				
+			
+			<tr>
+				<td></a><span style="font-weight:bold">Extra Hours Worked</span></td>
+					<td><input id="extra_hours_worked" type="number" style="background-color: rgb(96, 221, 96);" type="text" value="{% if invoice.extra_hours_worked %}{{invoice.extra_hours_worked}}{% else %}0{% endif %}" oninput="godcal()"  name="extra_hours_worked" /></td>
+					<td><span data-prefix>$</span><input id="rate_extra_hours_worked"  value="{{rates.extra_hours}}" id="g2" type="text" oninput="godcal()" /></td>
+					<td><span data-prefix>$</span><input value="0" id="extra_hours_worked_amt" /></td>
+				 
+			
+			</tr> -->
+			<tr>
+				<td colspan="3" style="color:#339107; font-weight:bold" align="right">
+					Total Amount: <span data-prefix>$</span><input id = "amtotal" name = "money" />
+				</td>					
+			</tr>
+								
+			<tr>
+			
+				<th><span style="color:#6a57be;font-weight:bold">ERROR DETAILS:</span></th>
+			</tr>
+		</thead>
+				
+		<thead>
+			<tr>
+			
+				<th><span style="font-weight:bold">Description</span></th>
+				<th><span style="font-weight:bold">Rate</span></th>
+				<th><span style="font-weight:bold;color: red;">Errors Incurred</span></th>
+				<th><span style="font-weight:bold;color: red;">Deduction</span></th>
+			</tr>
+		</thead>
+		<tr>
+			<td></a><span style="font-weight:bold">Authorized Days Off
+			</span></td>
+			<td>
+				<span data-prefix>$</span><input value="{{rates.auth_day_off}}" readonly="" class ="txtMult" id="multauth1" name="txtEmmail"/>
+			</td>
+			<td>
+				<input value="{% if invoice.authorised_day_off %}{{invoice.authorised_day_off}}{% else %}0{% endif %}" type="number" name="authorised_day_off" id="auth_leave_below" style="background-color: rgb(96, 221, 96);" class ="txtMult" />
+			</td>
+			<td>
+				<span data-prefix>$</span><span class="multTotal" id ="totalauth">0.00</span>
+			</td>
+		</tr>
+
+        <tr>
+			<td></a><span style="font-weight:bold">Unauthorized Days Off
+			</span></td>
+			<td>
+				<span data-prefix>$</span><input value="{{rates.unauth_day_off}}" readonly="" class ="txtMult" name="txtEmmail"/>
+			</td>
+			<td>
+				<input value="{% if invoice.unauthorised_day_off %}{{invoice.unauthorised_day_off}}{% else %}0{% endif %}" type="number" name="unauthorised_day_off" style="background-color: rgb(96, 221, 96);" class ="txtMult" />
+			</td>
+			<td>
+				<span data-prefix>$</span><span class="multTotal">0.00</span>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="3" style="color:#c90000; font-weight:bold" align="right">
+				Total Error Deduction: <span data-prefix>$</span><span id="grandTotal">{{invoice.total_deduction}}</span>
+				<input id = "hidden_total_deduction" type='hidden' name='total_deduction' value="{{invoice.total_deduction}}"/>
+			</td>
+			
+		</tr>
+				
+		<tr>
+			<td colspan="3" style="color:#339107; font-weight:bold" align="right">
+				 Total Amount Payable: <span data-prefix>$</span><input name='total_payable' id = "finaltotal" value="{{invoice.total_payable}}" onclick="minus()"/>
+			</td>
+			
+		</tr>
+
+
+
+		</table>
+		</table>
+		<div class="col-auto my-1">
+			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-bottom: 20px;"><b> Submit</b></button>
+		   
+		  </div>
+	
+	</article>	
+</form>	
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				//iterate through each textboxes and add keyup
+				//handler to trigger sum event
+				$(".txt").each(function() {
+					$(this).keyup(function(){
+						calculateSum();
+					});
 				});
 			});
 
-			});
-
+			function godtotal(){
+				var prod_pay_amt        = parseFloat($("#prod_pay_amt").val())
+				var wds_solicitaion_amt = parseFloat($("#wds_solicitaion_amt").val())
+				var wds_source_amt      = parseFloat($("#wds_source_amt").val())
+				var wds_edit_amt        = parseFloat($("#wds_edit_amt").val())
+				var wds_import_amt      = parseFloat($("#wds_import_amt").val())
+				var file_upload_amt     = parseFloat($("#file_upload_amt").val())
+				var fixed_salary_amt    = parseFloat($("#fixed_salary_amt").val())
+				var total = prod_pay_amt+wds_solicitaion_amt+wds_source_amt+wds_edit_amt+wds_import_amt+file_upload_amt+fixed_salary_amt
+				$("#amtotal").val(total)
+			}
 			function calculateSum() {
+				var sum = 0;
+				//iterate through each textboxes and add the values
+				$(".txt").each(function() {
+					//add only if the value is number
+					if(!isNaN(this.value) && this.value.length!=0) {
+						sum += parseFloat(this.value);						
+					}
+				});
+				$("#sum").html(sum.toFixed(2));
+				$("#box1").html(sum.toFixed(2));
+			}
 
-			var sum = 0;
-			//iterate through each textboxes and add the values
-			$(".txt").each(function() {
-
-				//add only if the value is number
-				if(!isNaN(this.value) && this.value.length!=0) {
-					sum += parseFloat(this.value);
-				}
+			function calculate() {				
 				var quan = document.getElementsByName('quantity')[0].value;
-				var tot = quan * sum;
-				document.getElementById("result").value = tot.toFixed(2);
-			});
-			//.toFixed() method will roundoff the final sum to 2 decimal places
-			$("#sum").html(sum.toFixed(2));
-			$("#box1").html(sum.toFixed(2));
-			// var sumtwo = $('#sumtwo').val();
-			// var rate = $('#rate').val();
-			// var totalTotalOne = (sumtwo * rate);
-			// $("#wtotal").html(totalTotalOne.toFixed(2));
+				var pri = document.getElementById('box1').innerHTML;
+				var pr = parseInt(pri, 10);
+				var tot = quan * pr;
+				document.getElementById("result").value = tot.toFixed(2);;
 			}
-
-			function calculate(tot) {
-			var quan = document.getElementsByName('quantity')[0].value;
-			var pri = document.getElementById('box1').innerHTML;
-			var pr = parseInt(pri, 10);
-			var tot = quan * pr;
-			document.getElementById("result").value = tot.toFixed(2);;
-			}
-		</script>
+		</script>	
 
 <script>
 	$(document).ready(function(){
-		cal()
-		calci()
+		//iterate through each textboxes and add keyup
+		//handler to trigger sum event
+		$(".txt").each(function() {
+
+			$(this).keyup(function(){
+				calculateSum();
+			});
+		});
+
+	});
+
+	function calculateSum() {
+		var sum = 0;
+		//iterate through each textboxes and add the values
+		$(".txt").each(function() {
+
+			//add only if the value is number
+			if(!isNaN(this.value) && this.value.length!=0) {
+				sum += parseFloat(this.value);
+			}
+			var quan = document.getElementsByName('quantity')[0].value;
+			var tot = quan * sum;
+			document.getElementById("result").value = tot.toFixed(2);
+		});
+		//.toFixed() method will roundoff the final sum to 2 decimal places
+		$("#sum").html(sum.toFixed(2));
+		$("#box1").html(sum.toFixed(2));
+		// var sumtwo = $('#sumtwo').val();
+		// var rate = $('#rate').val();
+		// var totalTotalOne = (sumtwo * rate);
+		// $("#wtotal").html(totalTotalOne.toFixed(2));
+	}
+
+	function calculate(tot) {
+		var quan = document.getElementsByName('quantity')[0].value;
+		var pri = document.getElementById('box1').innerHTML;
+		var pr = parseInt(pri, 10);
+		var tot = quan * pr;
+		document.getElementById("result").value = tot.toFixed(2);;
+	}
+</script>
+
+<script>
+	$(document).ready(function(){
+		/*cal()
+		calci()*/
 		calculateSum()
-		calculate()
+		/*calculate()
 		godcal()
 		fcal()
-		sum()
+		sum()*/
 	})
 	$(function(){
                 $('.in input').each(function(){
@@ -961,288 +500,57 @@ tr:hover .cut { opacity: 1; }
                     $('.in #hidden_total_deduction').val(parseFloat(total).toFixed(2))*/
                 });
             })
-	function calci() {
-		var myBox1 = document.getElementById('z1').value;	
-		var myBox2 = document.getElementById('z2').value;
-		var result = document.getElementById('authres');	
-		var myResult = myBox1 * myBox2;
-		result.value = myResult;
-	}
 </script>
 
 <script>
-        /* Shivving (IE8 is not supported, but at least it won't look as awful)
-/* ========================================================================== */
-
-(function (document) {
-	var
-	head = document.head = document.getElementsByTagName('head')[0] || document.documentElement,
-	elements = 'article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output picture progress section summary time video x'.split(' '),
-	elementsLength = elements.length,
-	elementsIndex = 0,
-	element;
-
-	while (elementsIndex < elementsLength) {
-		element = document.createElement(elements[++elementsIndex]);
-	}
-
-	element.innerHTML = 'x<style>' +
-		'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
-		'audio[controls],canvas,video{display:inline-block}' +
-		'[hidden],audio{display:none}' +
-		'mark{background:#FF0;color:#000}' +
-	'</style>';
-
-	return head.insertBefore(element.lastChild, head.firstChild);
-})(document);
-
-/* Prototyping
-/* ========================================================================== */
-
-(function (window, ElementPrototype, ArrayPrototype, polyfill) {
-	function NodeList() { [polyfill] }
-	NodeList.prototype.length = ArrayPrototype.length;
-
-	ElementPrototype.matchesSelector = ElementPrototype.matchesSelector ||
-	ElementPrototype.mozMatchesSelector ||
-	ElementPrototype.msMatchesSelector ||
-	ElementPrototype.oMatchesSelector ||
-	ElementPrototype.webkitMatchesSelector ||
-	function matchesSelector(selector) {
-		return ArrayPrototype.indexOf.call(this.parentNode.querySelectorAll(selector), this) > -1;
-	};
-
-	ElementPrototype.ancestorQuerySelectorAll = ElementPrototype.ancestorQuerySelectorAll ||
-	ElementPrototype.mozAncestorQuerySelectorAll ||
-	ElementPrototype.msAncestorQuerySelectorAll ||
-	ElementPrototype.oAncestorQuerySelectorAll ||
-	ElementPrototype.webkitAncestorQuerySelectorAll ||
-	function ancestorQuerySelectorAll(selector) {
-		for (var cite = this, newNodeList = new NodeList; cite = cite.parentElement;) {
-			if (cite.matchesSelector(selector)) ArrayPrototype.push.call(newNodeList, cite);
-		}
-
-		return newNodeList;
-	};
-
-	ElementPrototype.ancestorQuerySelector = ElementPrototype.ancestorQuerySelector ||
-	ElementPrototype.mozAncestorQuerySelector ||
-	ElementPrototype.msAncestorQuerySelector ||
-	ElementPrototype.oAncestorQuerySelector ||
-	ElementPrototype.webkitAncestorQuerySelector ||
-	function ancestorQuerySelector(selector) {
-		return this.ancestorQuerySelectorAll(selector)[0] || null;
-	};
-})(this, Element.prototype, Array.prototype);
-
-/* Helper Functions
-/* ========================================================================== */
-
-function generateTableRow() {
-	var emptyColumn = document.createElement('tr');
-
-	emptyColumn.innerHTML = '<td><a class="cut">-</a><span contenteditable></span></td>' +
-		'<td><span contenteditable></span></td>' +
-		'<td><span data-prefix>$</span><span contenteditable>0.00</span></td>' +
-		'<td><span contenteditable>0</span></td>' +
-		'<td><span data-prefix>$</span><span>0.00</span></td>';
-
-	return emptyColumn;
-}
-
-function parseFloatHTML(element) {
-	return parseFloat(element.innerHTML.replace(/[^\d\.\-]+/g, '')) || 0;
-}
-
-function parsePrice(number) {
-	return number.toFixed(2).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,');
-}
-
-/* Update Number
-/* ========================================================================== */
-
-function updateNumber(e) {
-	var
-	activeElement = document.activeElement,
-	value = parseFloat(activeElement.innerHTML),
-	wasPrice = activeElement.innerHTML == parsePrice(parseFloatHTML(activeElement));
-
-	if (!isNaN(value) && (e.keyCode == 38 || e.keyCode == 40 || e.wheelDeltaY)) {
-		e.preventDefault();
-
-		value += e.keyCode == 38 ? 1 : e.keyCode == 40 ? -1 : Math.round(e.wheelDelta * 0.025);
-		value = Math.max(value, 0);
-
-		activeElement.innerHTML = wasPrice ? parsePrice(value) : value;
-	}
-
-	updateInvoice();
-}
-
-/* Update Invoice
-/* ========================================================================== */
-
-function updateInvoice() {
-	var total = 0;
-	var cells, price, total, a, i;
-
-	// update inventory cells
-	// ======================
-
-	for (var a = document.querySelectorAll('table.inventory tbody tr'), i = 0; a[i]; ++i) {
-		// get inventory row cells
-		cells = a[i].querySelectorAll('span:last-child');
-
-		// set price as cell[2] * cell[3]
-		price = parseFloatHTML(cells[2]) * parseFloatHTML(cells[3]);
-
-		// add price to total
-		total += price;
-
-		// set row total
-		cells[4].innerHTML = price;
-	}
-
-	// update balance cells
-	// ====================
-
-	// get balance cells
-	cells = document.querySelectorAll('table.balance td:last-child span:last-child');
-
-	// set total
-	cells[0].innerHTML = total;
-
-	// set balance and meta balance
-	cells[2].innerHTML = document.querySelector('table.meta tr:last-child td:last-child span:last-child').innerHTML = parsePrice(total - parseFloatHTML(cells[1]));
-
-	// update prefix formatting
-	// ========================
-
-	var prefix = document.querySelector('#prefix').innerHTML;
-	for (a = document.querySelectorAll('[data-prefix]'), i = 0; a[i]; ++i) a[i].innerHTML = prefix;
-
-	// update price formatting
-	// =======================
-
-	for (a = document.querySelectorAll('span[data-prefix] + span'), i = 0; a[i]; ++i) if (document.activeElement != a[i]) a[i].innerHTML = parsePrice(parseFloatHTML(a[i]));
-}
-
-/* On Content Load
-/* ========================================================================== */
-
-function onContentLoad() {
-	updateInvoice();
-
-	var
-	input = document.querySelector('input'),
-	image = document.querySelector('img');
-
-	function onClick(e) {
-		var element = e.target.querySelector('[contenteditable]'), row;
-
-		element && e.target != document.documentElement && e.target != document.body && element.focus();
-
-		if (e.target.matchesSelector('.add')) {
-			document.querySelector('table.inventory tbody').appendChild(generateTableRow());
-		}
-		else if (e.target.className == 'cut') {
-			row = e.target.ancestorQuerySelector('tr');
-
-			row.parentNode.removeChild(row);
-		}
-
-		updateInvoice();
-	}
-
-	function onEnterCancel(e) {
-		e.preventDefault();
-
-		image.classList.add('hover');
-	}
-
-	function onLeaveCancel(e) {
-		e.preventDefault();
-
-		image.classList.remove('hover');
-	}
-
-	function onFileInput(e) {
-		image.classList.remove('hover');
-
-		var
-		reader = new FileReader(),
-		files = e.dataTransfer ? e.dataTransfer.files : e.target.files,
-		i = 0;
-
-		reader.onload = onFileLoad;
-
-		while (files[i]) reader.readAsDataURL(files[i++]);
-	}
-
-	function onFileLoad(e) {
-		var data = e.target.result;
-
-		image.src = data;
-	}
-
-	if (window.addEventListener) {
-		document.addEventListener('click', onClick);
-
-		document.addEventListener('mousewheel', updateNumber);
-		document.addEventListener('keydown', updateNumber);
-
-		document.addEventListener('keydown', updateInvoice);
-		document.addEventListener('keyup', updateInvoice);
-
-		input.addEventListener('focus', onEnterCancel);
-		input.addEventListener('mouseover', onEnterCancel);
-		input.addEventListener('dragover', onEnterCancel);
-		input.addEventListener('dragenter', onEnterCancel);
-
-		input.addEventListener('blur', onLeaveCancel);
-		input.addEventListener('dragleave', onLeaveCancel);
-		input.addEventListener('mouseout', onLeaveCancel);
-
-		input.addEventListener('drop', onFileInput);
-		input.addEventListener('change', onFileInput);
-	}
-}
-
-window.addEventListener && document.addEventListener('DOMContentLoaded', onContentLoad);
-
-
-
-
-$(function(){
-                $('.in input').change(function(){
-                    var p=$(this).parent().parent()
-                    var m=p.find('input.txtMult')
-                    var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
-                    var res=p.find('.multTotal')
-                    res.html(mul);
-                    var total=0;
-                    $('.in .multTotal').each(function(){
-                        total+=parseFloat($(this).html())
-                    })
-                    $('.in #grandTotal').html(parseFloat(total).toFixed(2))
-                    $('.in #hidden_total_deduction').val(parseFloat(total).toFixed(2))
-                });
-            })
-
-
-    </script>
-<script>
-function minus(tot) {
-			var quan = document.getElementsByName('money')[0].value;
-			var pri = document.getElementById('grandTotal').innerHTML;
-			var pr = parseInt(pri, 10);
-			var tot = quan - pr;
-
-			document.getElementById("finaltotal").value = tot.toFixed(2);9498
-			}
+	$(function(){
+	    $('.in input').change(function(){
+	        var p=$(this).parent().parent()
+	        var m=p.find('input.txtMult')
+	        var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
+	        var res=p.find('.multTotal')
+	        res.html(mul);
+	        var total=0;
+	        $('.in .multTotal').each(function(){
+	            total+=parseFloat($(this).html())
+	        })
+	        $('.in #grandTotal').html(parseFloat(total).toFixed(2))
+	        $('.in #hidden_total_deduction').val(parseFloat(total).toFixed(2))
+	    });
+	})
 </script>
+<script>
+	function minus(tot) {
+		var quan = document.getElementsByName('money')[0].value;
+		var pri = document.getElementById('grandTotal').innerHTML;
+		var pr = parseInt(pri, 10);
+		var tot = quan - pr;
 
+		document.getElementById("finaltotal").value = tot.toFixed(2);9498
+	}
+</script>
 <script type="text/javascript">
+	function oninput_fixed(){
+		var fixed_salary = $("#fixed_salary").val()
+		$("#fixed_salary_amt").val(fixed_salary)
+		godtotal()
+
+	/*$(function(){*/
+        $('.in input').each(function(){
+            var p=$(this).parent().parent()
+            var m=p.find('input.txtMult')
+            var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
+            var res=p.find('.multTotal')
+            res.html(mul);
+            var total=0;
+            $('.in .multTotal').each(function(){
+                total+=parseFloat($(this).html())
+            })
+            $('.in #grandTotal').html(parseFloat(total).toFixed(2))
+            $('.in #hidden_total_deduction').val(parseFloat(total).toFixed(2))
+        });
+        minus()
+	}
 
 	function get_leave(url){
 		$("#monthdate").change(function(){
@@ -1255,24 +563,37 @@ function minus(tot) {
 				type : 'GET',
 				dataType: 'json',
 				success: function (data) {
-					$("#auth_leave").val(data.leaves)
-					$("#auth_leave_below").val(data.leaves)
-					var auth_day_rate = document.getElementById('multauth1').value;
-					var days_number   = document.getElementById('auth_leave_below').value;
-					var authday_value = auth_day_rate*days_number
-					var multauthdayoff  = document.getElementById('totalauth');
-					var grandTotal      = document.getElementById('grandTotal');
-					var total_deduction = document.getElementById('total_deduction');
+					$("#auth_leave_below").val(data.leaves)	
 					
-					multauthdayoff.innerHTML = authday_value;
-					grandTotal.innerHTML = authday_value;
-					total_deduction.value = authday_value;
+					if (!$.isEmptyObject(data.wds)) {
+						$("#wds_solicitaion").val(data.wds['0']['total_solicitation'])
+						$("#wds_solicitaion_amt").val(data.wds['0']['wds_solocitaion_amt'])
+						$("#wds_source").val(data.wds['0']['total_source_count'])
+						$("#wds_source_amt").val(data.wds['0']['wds_source_amt'])
+						$("#wds_edit").val(data.wds['0']['total_edits'])
+						$("#wds_edit_amt").val(data.wds['0']['wds_edits_amt'])
+					}
+					if (!$.isEmptyObject(data.pp)) {
+						$("#prod_pay").val(data.pp['Sub Total'])
+						$("#prod_pay_amt").val(data.pp['Sub Total'])
+					}	
+					godtotal()
 
-						// var multauth1 = document.getElementById('multauth1').value;
-						// var auth_leave_below = document.getElementById('auth_leave_below').value
-						// var rest = multauth1 * auth_leave_below
-						
-						// 	document.getElementById('multTotal').value = rest;
+					/*$(function(){*/
+		                $('.in input').each(function(){
+		                    var p=$(this).parent().parent()
+		                    var m=p.find('input.txtMult')
+		                    var mul=parseFloat($(m[0]).val()*$(m[1]).val()).toFixed(2)
+		                    var res=p.find('.multTotal')
+		                    res.html(mul);
+		                    var total=0;
+		                    $('.in .multTotal').each(function(){
+		                        total+=parseFloat($(this).html())
+		                    })
+		                    $('.in #grandTotal').html(parseFloat(total).toFixed(2))
+		                    $('.in #hidden_total_deduction').val(parseFloat(total).toFixed(2))
+		                });
+		                minus()
 				}
 				
 		    });

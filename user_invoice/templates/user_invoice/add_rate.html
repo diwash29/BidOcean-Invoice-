@@ -14,84 +14,23 @@
 	{% csrf_token %}
     <div class='tbody'>
       <div class='first'>
-        <div>Base ir rate</div>
-        <div>Base br rate</div>
-        <div>Total pay fixed(store '1')</div> 
-        <div>Difficult & non productive source rate(IR)</div>  
-        <div>Extra hours worked rate(IR)</div>
+        <div>WDS solicitation rate</div>
+        <div>WDS source rate</div>
+        <div>WDS edit rate</div>
+        <div>WDS import rate</div>
+        
         <div>File attached rate(IR)</div>
-        <div>Add authorized days worked rate(IR)</div>
-        <div>New entities added rate(BR)</div>
-        <div>Extra days worked rate(BR)</div>
-        <div>Duplicate entities rate(BR)</div>
-        <div>Errors rate(BR)</div>
-        <div>Fines rate(BR)</div>
-        <div>Duplicate solic rate</div>
-
-        <div>Entity/Contact wrong/incomplete/not edited rate</div>
-        <div>False referal rate</div>
-        <div>Fraudulent solicitation 'update' rate</div> 
-        <div>Source returned without good reason rate</div>  
-        <div>Missed Bid Bond/Incomplete Plans & Specs rate</div>
-        <div>Missed categories rate</div>
-        <div>Missed Solic./Addend. From Source rate</div>
-        <div>Missed/Incorrect File Type rate</div>
-        <div>Missing or Wrong Outside Link rate</div>
-        <div>Missing or wrong Term Contract rate</div>
-        <div>Not Posted As Lead rate</div>
-        <div>Other error rate</div>
-        <div>Other serious error rate</div>
-
-        <div>Refreshing WDS page to a different source rate</div>
-        <div>Setaside/Prequalification/Prevailing Wage not selected rate</div>
-        <div>Skipped solicitation rate</div> 
-        <div>Source returned without a note rate</div>  
-        <div>Unexcused/unjustified absence rate</div>
-        <div>Wrong bid/pre-bid, mandatory rate</div>
-        <div>Wrong categories rate</div>
-        <div>Wrong geographic location rate</div>
-        <div>Incomplete or incorrect scope rate</div>
-        <div>Wrong text format rate</div>
+        
         <div>Authorized day off rate</div>
         <div>Unauthorized day off rate</div>       
       </div>
     <div class='second' style="margin-left: 100px;">
-      <input name="base_ir" value="{{rate.base_ir}}" style="margin-bottom: 15px;margin-top: 10px;" required>
-      <input name="base_br" value="{{rate.base_br}}" style="margin-bottom: 15px;" required>
-      <input name="total_pay" value="{{rate.total_pay}}" style="margin-bottom: 15px;" required> 
-      <input name="difficultnp" value="{{rate.difficultnp}}" style="margin-bottom: 15px;" required>    
-      <input name="extra_hours" value="{{rate.extra_hours}}" style="margin-bottom: 15px;"required> 
+      
+      <input name="wds_solicitaion" value="{{rate.wds_solicitaion}}" style="margin-bottom: 15px;" required>
+      <input name="wds_source" value="{{rate.wds_source}}" style="margin-bottom: 15px;" required>
+      <input name="wds_edit" value="{{rate.wds_edit}}" style="margin-bottom: 15px;" required>
+      <input name="wds_import" value="{{rate.wds_import}}" style="margin-bottom: 15px;" required>
       <input name="file_attach" value="{{rate.file_attach}}" style="margin-bottom: 15px;"required> 
-      <input name="add_auth_days" value="{{rate.add_auth_days}}" style="margin-bottom: 15px;"required> 
-      <input name="new_entities_added" value="{{rate.new_entities_added}}" style="margin-bottom: 15px;"required> 
-      <input name="extra_days" value="{{rate.extra_days}}" style="margin-bottom: 15px;"required> 
-      <input name="duplicate_entities" value="{{rate.duplicate_entities}}" style="margin-bottom: 15px;"required> 
-      <input name="errors" value="{{rate.errors}}" style="margin-bottom: 15px;"required> 
-      <input name="fines" value="{{rate.fines}}" style="margin-bottom: 15px;"required> 
-      <input name="duplicate_solic" value="{{rate.duplicate_solic}}" style="margin-bottom: 15px;"required> 
-      <input name="entity_cont_wrong" value="{{rate.entity_cont_wrong}}" style="margin-bottom: 15px;"required> 
-      <input name="false_referal" value="{{rate.false_referal}}" style="margin-bottom: 15px;"required> 
-      <input name="fraudsolic_update" value="{{rate.fraudsolic_update}}" style="margin-bottom: 15px;"required> 
-      <input name="source_ret_wo_res" value="{{rate.source_ret_wo_res}}" style="margin-bottom: 15px;"required> 
-      <input name="missed_bond" value="{{rate.missed_bond}}" style="margin-bottom: 15px;"required> 
-      <input name="missed_categories" value="{{rate.missed_categories}}" style="margin-bottom: 15px;"required> 
-      <input name="missed_solic_src" value="{{rate.missed_solic_src}}" style="margin-bottom: 15px;"required> 
-      <input name="missed_file" value="{{rate.missed_file}}" style="margin-bottom: 15px;"required> 
-      <input name="missed_link" value="{{rate.missed_link}}" style="margin-bottom: 15px;"required> 
-      <input name="missed_term" value="{{rate.missed_term}}" style="margin-bottom: 15px;"required> 
-      <input name="not_posted_lead" value="{{rate.not_posted_lead}}" style="margin-bottom: 15px;"required> 
-      <input name="other_error" value="{{rate.other_error}}" style="margin-bottom: 15px;"required> 
-      <input name="other_serious_err" value="{{rate.other_serious_err}}" style="margin-bottom: 15px;"required> 
-      <input name="refreshing_wds" value="{{rate.refreshing_wds}}" style="margin-bottom: 15px;"required> 
-      <input name="wage_not_selected" value="{{rate.wage_not_selected}}" style="margin-bottom: 15px;"required> 
-      <input name="skipped_solic" value="{{rate.skipped_solic}}" style="margin-bottom: 15px;"required> 
-      <input name="source_ret_wo_note" value="{{rate.source_ret_wo_note}}" style="margin-bottom: 15px;"required> 
-      <input name="unjustified_absence" value="{{rate.unjustified_absence}}" style="margin-bottom: 15px;"required> 
-      <input name="wrong_pre_bid" value="{{rate.wrong_pre_bid}}" style="margin-bottom: 15px;"required> 
-      <input name="wrong_categories" value="{{rate.wrong_categories}}" style="margin-bottom: 15px;"required> 
-      <input name="wrong_geo_location" value="{{rate.wrong_geo_location}}" style="margin-bottom: 15px;"required> 
-      <input name="incorrect_scope" value="{{rate.incorrect_scope}}" style="margin-bottom: 15px;"required> 
-      <input name="wrong_text_format" value="{{rate.wrong_text_format}}" style="margin-bottom: 15px;"required> 
       <input name="auth_day_off" value="{{rate.auth_day_off}}" style="margin-bottom: 15px;"required> 
       <input name="unauth_day_off" value="{{rate.unauth_day_off}}" style="margin-bottom: 15px;"required> 
       <div class="col-auto my-1" >

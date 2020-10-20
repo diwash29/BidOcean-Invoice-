@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'django_crontab',
   
 ]
 
@@ -153,3 +154,9 @@ CRISPY_TEMPLATE_PACK='bootstrap4'
 LOGIN_REDIRECT_URL='user_invoice-home'
 LOGIN_URL='login'
 AUTH_USER_MODEL = 'manage_user.Userdetail'
+
+
+CRONJOBS = [    
+    # ('*/5 * * * *', 'user_invoice.cron.update_invoice'),
+    ('0 7 * * *', 'user_invoice.cron.update_invoice','>> /home/bds/NewDjango/biocean-invoice/user_invoice/file.log'),
+ ]

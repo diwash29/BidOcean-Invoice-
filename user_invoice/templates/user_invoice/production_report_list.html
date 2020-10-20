@@ -121,12 +121,14 @@ tr:hover .cut { opacity: 1; }
     <div class='container'>	 
 		<table  width="100%">
 			<tr>
-				<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Invoice List </b></legend>
-				<td align="right">
+        <table width="100%"><tr><td align="right">
+				<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: right;"><b> Production Report List </b></legend></td><td align="right"><a href="{% url 'production_report_add' %}"><input class="btn btn-primary" type='button' style="background-color:teal;border: none;" value='Add Production Report'></a></td></tr></table>
+
+				<!-- <td align="right">
           {% if role == 'hr' or role == 'admin' %}
           <a href="{% url 'export_invoice_xls' %}{% if request.GET.search or request.GET.from_date or request.GET.to_date or request.GET.bank or request.GET.page %}?search={{request.GET.search}}&from_date={{request.GET.from_date}}&to_date={{request.GET.to_date}}&bank={{request.GET.bank}}&page={{request.GET.page}}{% endif %}"><button class="custom-btn btn-12" style="margin-bottom: 10px;"><span style="color: white;">To Excel</span><span>Export</span></button></a>
           {% endif %}
-        </td>
+        </td> -->
 			</tr>
 		</table>
 		<form>
@@ -141,27 +143,14 @@ tr:hover .cut { opacity: 1; }
 					<div class="form-group w-40" >
 						<div class="input-group mb-3">
 							
-							<input type="text" name="search" style="width: 30px;height: 30px;" class="form-control border-secondary py-2" value="{{request.GET.search}}" placeholder="search">
-							<div class="input-group-append">
-								
-							 <button class="input-group-text" style="height: 30px;" type="submit" name="submitbtn" value="Search"><i class="fa fa-search"></i>
-								
-							</div>
-                <select   class="form-control"style="width:50px; height:30px;color:white;background-color:teal;margin-left:10px" name="bank"  onchange="this.form.submit()">
-                  <option value="" style="color: white;"><b> Select Bank </b></option>
-                  <option value="axis" {% if request.GET.bank == 'axis' %}selected{% endif %} style="color: white;"><b> AXIS</b></option>
-                  <option value="hdfc" {% if request.GET.bank == 'hdfc' %}selected{% endif %} style="color: white;"><b> HDFC</b></option>
-                  <option value="others" {% if request.GET.bank == 'others' %}selected{% endif %} style="color: white;"><b> Others</b></option>
-
-    
-                  <!-- {% for roledata in roles %}
-                    <option value='{{roledata.id}}' style="color: white;"  {% if roledata.id == request.GET.role|add:"0"  %}  selected  {% endif %}><b>{{roledata.name}}</b> </option>
-    
-                  {% endfor %} -->
-
-                </select>
 							<p style="margin-left: 40px;"><b style="color: teal;"> From date :</b> <input type="date" name="from_date" value="{{request.GET.from_date}}"></p>
 								<p style="margin-left: 40px;"><b style="color: teal;"> To Date :</b><input type="date" name="to_date" value="{{request.GET.to_date}}"></p>
+                <input type="text" name="search" style="width: 30px;height: 30px;" class="form-control border-secondary py-2" value="{{request.GET.search}}" placeholder="search">
+              <div class="input-group-append">
+                
+               <button class="input-group-text" style="height: 30px;" type="submit" name="submitbtn" value="Search"><i class="fa fa-search"></i>
+                
+              </div>
 						</div>	
 					
 						
@@ -174,31 +163,30 @@ tr:hover .cut { opacity: 1; }
 		</form>
 		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
 			<tr>
-				<th style="color: teal;"><b> Employee Name </b></th>
-				<th style="color: teal;"><b> Employee Id </b></th>
-				<th style="color: teal;"><b> Invoice Type</b></th>
-				<th style="color: teal;"><b> Phone No </b></th>
-				<th style="color: teal;"><b> Total Deduction </b></th>
-				<th style="color: teal;"><b> Total Payable </b></th>
-        <th style="color: teal;"><b> Bank Name </b></th>
-        <th style="color: teal;"><b> Acc No </b></th>
-				<th style="color: teal;"><b> Invoice Date</b></th>
-				<th style="color: teal;"><b> Invoice for</b></th>
+				<th style="color: teal;"><b> Date </b></th>
+				<th style="color: teal;"><b> Source </b></th>
+				<th style="color: teal;"><b> Entries</b></th>
+				<th style="color: teal;"><b> Addendum </b></th>
+				<th style="color: teal;"><b> Solic No </b></th>
+				<th style="color: teal;"><b> File Attach </b></th>
+        <th style="color: teal;"><b> WDS per day </b></th>
+        <th style="color: teal;"><b> USD </b></th>
+				<th style="color: teal;"><b> Employee</b></th>
 				<th style="color: teal;"><b> Action</b></th>
 			</tr>
-			{% for invoice in invoices %}
+			{% for report in production_report %}
 			<tr>
-				<td style="color: black;">{{invoice.emp_ownwer.name}}</td>
-				<td style="color: black;">{{invoice.emp_ownwer.emp_id}}</td>
-				<td style="color: black;">{{invoice.emp_ownwer.role.name}}</td>
-				<td style="color: black;">{{invoice.emp_ownwer.phone_no}}</td>
-				<td style="color: black;">{{invoice.total_deduction}}</td>
-				<td style="color: black;">{{invoice.total_payable}}</td>
-        <td style="color: black;">{% if invoice.bank_account.bank == 'others' %}{{invoice.bank_account.other_bank}}<br>({{invoice.bank_account.ifsc_other}}){% else %}{{invoice.bank_account.bank|upper}}{% endif %}</td>
-        <td style="color: black;">{{invoice.bank_account.acc_no}}</td>
-				<td style="color: black;">{{invoice.invoice_date}}</td>
-				<td style="color: black;">{{invoice.monthdate|date:"M, Y"}}</td>
-				<td style="color: black;">{% if invoice.emp_ownwer.role.name|lower == 'ir' %}--{% elif invoice.emp_ownwer.role.name|lower == 'br' %}--{% else %}<a href="{% url 'edit_fixed' invoice.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>View</span></button></a>{% endif %}</td>
+				<td style="color: black;">{{report.date}}</td>
+				<td style="color: black;">{{report.source}}</td>
+				<td style="color: black;">{{report.entries}}</td>
+				<td style="color: black;">{{report.addendum}}</td>
+				<td style="color: black;">{{report.solic_no}}</td>
+				<td style="color: black;">{{report.file_attach}}</td>
+        <td style="color: black;">{{report.wds_per_day}}</td>
+        <td style="color: black;">{{report.usd}}</td>
+				<td style="color: black;">{{report.employee.name}}</td>
+				<td style="color: black;"><a href="{% url 'production_report_edit' report.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Edit</span></button></a></td>
+				
 			</tr>
 			<style>
 				.btn-primary:hover {
@@ -288,35 +276,35 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
   <nav aria-label="Page navigation example" style="margin-bottom: 30px;">
   <ul class="pagination justify-content-center">
     {% if invoices.has_previous %}
-      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.previous_page_number }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">Previous</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.previous_page_number }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">Previous</a></li>
     {% else %}
       <li class="page-item disabled" style="margin-bottom: 20px;"><a class="page-link text-primary font-weight-bolder" href="#">Previous</a></li>
     {% endif %}
     {% if invoices.number|add:'-4' > 1 %}
-      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link font-weight-bolder" href="?page=1{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">1</a></li>
-      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'-5' }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">&hellip;</a></li>
+      <li class="text-dark page-item" style="margin-bottom: 20px;"><a class="page-link font-weight-bolder" href="?page=1{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">1</a></li>
+      <li><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'-5' }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">&hellip;</a></li>
     {% endif %}
     
     {% for i in invoices.paginator.page_range %}
       {% if invoices.number == i %}
         <li class="page-item active">
-          <a class="active" style="" href="?page={{ i }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">{{i}}</a>
+          <a class="active" style="" href="?page={{ i }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{i}}</a>
         </li>
       {% elif i > invoices.number|add:'-5' and i < invoices.number|add:'5' %}
         <li class="page-item {% if i == invoices.number %} active {% endif %}">
-          <a class="page-link font-weight-bolder" href="?page={{ i }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">{{i}}</a>
+          <a class="page-link font-weight-bolder" href="?page={{ i }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{i}}</a>
         </li>
       {% endif %}
     {% endfor %}
     
     {% if invoices.paginator.num_pages > invoices.number|add:'4' %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'5' }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">&hellip;</a></li>
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.number|add:'5' }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">&hellip;</a></li>
       {% if book.number != invoices.paginator.num_pages %}
-      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.paginator.num_pages }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param  %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">{{ invoices.paginator.num_pages }}</a></li>
+      <li class="text-dark page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.paginator.num_pages }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param  %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">{{ invoices.paginator.num_pages }}</a></li>
     {% endif %}
     {% endif %}
     {% if invoices.has_next %}
-      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.next_page_number }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}&bank={{query_param.bank}}{% endif %}">Next</a></li>
+      <li class="page-item"><a class="page-link text-primary font-weight-bolder" href="?page={{ invoices.next_page_number }}{% if 'search' in query_param or 'from_date' in query_param or 'bank' in query_param %}&search={{query_param.search}}&from_date={{query_param.from_date}}&to_date={{query_param.to_date}}{% endif %}">Next</a></li>
     {% else %}
       <li class="page-item disabled"><a class="page-link text-primary font-weight-bolder" href="#">Next</a></li>
     {% endif %}
