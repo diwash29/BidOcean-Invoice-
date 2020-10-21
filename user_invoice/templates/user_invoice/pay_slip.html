@@ -1,24 +1,340 @@
+
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<form method="POST">
+	{% csrf_token %}
+	<article>
+		<legend class="border-bottom mb-4" style="color: black;text-align: center;"><b> BID OCEAN CONSULTANCY </b></legend>
+			  <p style="text-align: center;text-decoration: underline;"> HOTEL SONAMLA BUILDING, INDIRA BYEPASS, AMDO GOLAI, GANGTOK, EAST SIKKIM, PIN 737102 </p>
+			  <aside>
+		
+				
+			</aside>
+
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		  <table class='in'>
 			
-<h2>Pay slip</h2>		
+			
 		
 			
+				
+				
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Employee Name:</span></td>
+					<td>
+						<input  type="text"   name="employee_name"/>
+					</td>
+					
+				
+				</tr>	
+				
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Designation:</span></td>
+					<td>
+						<input  type="text"   name="designation"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Employee PF ID:</span></td>
+					<td>
+						<input  type="text"   name="pf_id"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Employee ESI ID: </span></td>
+					<td>
+						<input  type="text"   name="esi_id"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Month of Deduction:</span></td>
+					<td>
+						<input  type="text"   name="month_of_deduction"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Dollar Rate:</span></td>
+					<td>
+						<input  type="text"   name="dollar_rate"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold"> % Deduction:</span></td>
+					<td>
+						<input  type="text"   name="what_percentage_deduction"/>
+					</td>
+					<td>
+						<input  type="text"   name="percentage_deduction_value"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">After % Deduction:</span></td>
+					<td>
+						<input  type="text"   name="after_percentage_deduction"/>
+					</td>
+					
+				
+				</tr>	
 			
+			
+			<style>
+				.option-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+ 
+  top: 10px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 35px;
+  width: 35px;
+ 
+  background: #cbd1d8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.5rem;
+  outline: none;
+
+  z-index: 1000;
+}
+.option-input:hover {
+  background: #9faab7;
+}
+.option-input:checked {
+  background: teal;
+}
+.option-input:checked::before {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  content: '✔';
+  display: inline-block;
+  font-size: 26.66667px;
+  text-align: center;
+  line-height: 40px;
+}
+.option-input:checked::after {
+  -webkit-animation: click-wave 0.65s;
+  -moz-animation: click-wave 0.65s;
+  animation: click-wave 0.65s;
+  background: #40e0d0;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 100;
+}
+.option-input.radio {
+  border-radius: 50%;
+}
+.option-input.radio::after {
+  border-radius: 50%;
+}
+			</style>
 	
 
 		
 		
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		  <table class='in'>
+			<thead>
+				<tr>
+				
+					<th><span style="font-weight:bold">Earnings</span></th>
+					<th><span style="font-weight:bold">Amount (Rs)</span></th>
+					<th><span style="font-weight:bold">Deductions</span></th>
+					<th><span style="font-weight:bold">Amount (Rs)</span></th>
+				</tr>
+			</thead>
 			
-		  
+			<tr>
+				<td></a><span style="font-weight:bold">Basic Salary</span></td>
 
+					<td><input id="basic_salary" name="basic_salary"    /></td>
+					<td><input  /></td>
+
+					<td><input   /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">House Rent Allowances</span></td>
+
+					<td><input  /></td>
+					<td><input /></td>
+
+					<td><input  /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">City Allowances</span></td>
+
+					<td><input  /></td>
+					<td><input  /></td>
+
+					<td><input   /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">Conveyance Allowance</span></td>
+
+					<td><input  /></td>
+					<td><input  /></td>
+
+					<td><input  /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">Education Allowance</span></td>
+
+					<td><input  /></td>
+					<td><input /></td>
+
+					<td><input  /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">Medical Allowance</span></td>
+
+					<td><input /></td>
+					<td><input  /></td>
+
+					<td><input  /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">Special Allowance</span></td>
+
+					<td><input  /></td>
+					<td><input /></td>
+
+					<td><input  /></td>
+				 
+			
+			</tr>
+			<tr>
+				<td></a><span style="font-weight:bold">Commission</span></td>
+
+					<td><input /></td>
+					<td><input /></td>
+
+					<td><input /></td>
+				 
+			
+			</tr>
 		
+		
+		
+				
+			
 
-		  
+
+				<tr>
+					<td colspan="3" style=" font-weight:bold" align="right">
+						Gross Salary: <span data-prefix>₹</span><input  />
+					</td>
+					
+				</tr>
+				<tr>
+					<td colspan="3" style="font-weight:bold" align="right">
+						Total Deductions: <span data-prefix>₹</span><input  />
+					</td>
+					
+				</tr>
+				<tr>
+					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
+						Net Salary Payable: <span data-prefix>₹</span><input  />
+					</td>
+					
+				</tr>
+				
+				<tr>
+					<td></a><span style=" font-weight:bold">Payment Informations:</span></td>
+					
+					
+				</tr>
+				
+				<tr>
+					<td></a><span style="font-weight:bold">Cheque/Cash:</span></td>
+					<td>
+						<input    name="cheque/Cash"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td></a><span style="font-weight:bold">Cheque No:</span></td>
+					<td>
+						<input name="cheque_no" />
+					</td>
+					
+				
+				</tr>
+				
+				<tr>
+					<td></a><span style="font-weight:bold">Date</span></td>
+					<td>
+						<input type="date" />
+					</td>
+					
+					
+				</tr>
+				<tr>
+					<td></a><span style="font-weight:bold">Bank</span></td>
+					<td>
+						<input name="bank" />
+					</td>					
+				</tr>
+				
+
+
+		</table>
 	
+	
+			
+
+	
+		</table>
+		<div class="col-auto my-1">
+			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-top: 10px;margin-left: 550px;"><b> Submit</b></button>
+		   <style>
+			   .btn-primary:hover {
+		background-color: green !important;
+	
+	}
+	
+		   </style>
+		  </div>
 		
+	</article>
+
+	
+</form>	
 	<style>
+
+		
  *
 {
 	border: 0;
@@ -134,5 +450,8 @@ tr:hover .cut { opacity: 1; }
 @page { margin: 0; }
 
     </style>
+  
+
+
 
 {% endblock content %}
