@@ -88,15 +88,11 @@ def update_invoice():
 			wds_edits_amt           = total_edits*float(rate.wds_edit)
 			file_upload_amt         = file_upload*float(rate.file_attach)
 			leaves_deduction        = (leaves*float(rate.auth_day_off)) + float(production_data['Total Fine'])
-			print(float(wds_solocitaion_amt))
-			print(float(wds_source_amt))
-			print(float(wds_edits_amt))
-			print(float(file_upload_amt))
-			print(float(emp_fixed_salary))
-			print(leaves_deduction)
+			leaves_deduction        = round(leaves_deduction, 2)
 			total_pay        = float(wds_solocitaion_amt)+float(wds_source_amt)+float(wds_edits_amt)+float(file_upload_amt)+float(emp_fixed_salary)-leaves_deduction
-			total_pay = total_pay*(1.0-(percentage_deduction/100))
-			ch_invoice    = check_invoice(employee)
+			total_pay        = float(round(total_pay*(1.0-(percentage_deduction/100))))
+			
+			ch_invoice       = check_invoice(employee)
 			print(ch_invoice)
 			print("~~~~~~~~~~~~~~~")
 			if ch_invoice is None:
@@ -123,7 +119,7 @@ def update_invoice():
 				invoice_edit.authorised_day_off       = leaves 
 				invoice_edit.total_deduction          = leaves_deduction
 				invoice_edit.total_payable            = total_pay
-				invoice_edit.percent_deduction       = percentage_deduction
+				invoice_edit.percent_deduction        = percentage_deduction
 				invoice_edit.wds_solicitaion_rate     = rate.wds_solicitaion
 				invoice_edit.wds_source_rate          = rate.wds_source
 				invoice_edit.wds_edit_rate            = rate.wds_edit
