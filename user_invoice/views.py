@@ -194,6 +194,17 @@ def export_invoice_xls(request):
     wb.save(response)
     return response   
 
+class PaySlip(TemplateView):
+    template_name = "user_invoice/pay_slip.html"
+    def get(self, request, pk):
+        context = {
+            'pay_slip_emp' : Employee.objects.get(id=pk),
+            'roles'        : Role.objects.all(),
+            'title'        : 'Role list',
+            'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+        }
+        return render(request, self.template_name, context)
+
 class ChangePassword(TemplateView):
     template_name = 'user_invoice/change_password.html'
     def get(self, request):
@@ -597,107 +608,118 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         rolename           = employee.role.name.lower()
         today              = datetime.now()   
         date               = today.strftime("%Y-%m")
-        first_and_last_day = get_first_n_last_day(today.year,today.month)    
+        first_and_last_day = get_first_n_last_day(today.year,today.month) 
+        # if rolename == 'ir' or rolename == 'br':
+        rate =  Rate.objects.get(is_approved=1)    
+        monthdate   = datetime.strptime(date, '%Y-%m').date()  
+        print(monthdate)      
+        leaves      = count_leaves(employee, monthdate)
+        file_upload = count_file_uploads(employee, monthdate)
+        employee_id = employee.emp_id
+        params = {'empid': employee_id, 'year_month': date}
+
+
+        url1   = 'http://1.7.151.12:8181/bidocean/api/production/request.php'
+        token1 = "developement_Pr85SNYWOadeIOlP53VjZpA6lHoegm"
+
+        requestData1               = {}
+        requestData1["empid"]      = int(employee_id)#1296#
+        requestData1["year_month"] = date
+        requestData1["request"]    = 'emp_production'
+        requestData1["token"]      = token1
+
+        requestDataJson1 = json.dumps(requestData1, ensure_ascii = 'False')
+        result1 = requests.post(url1, json = requestDataJson1)
+
+        url2   = "https://www.bidocean.com/api/production/request.php"
+        token2 = "Pr85SNYWOV3GQdKProdReqstwer53VjZpA6lHoegm"
+
+        requestData2               = {}
+        requestData2['empid']      = int(employee_id)#1211#
+        requestData2['date_start'] = first_and_last_day[0].strftime("%Y-%m-%d")
+        requestData2['date_end']   = first_and_last_day[1].strftime("%Y-%m-%d")
+        requestData2['request']    = 'wds_researcher_stats'
+        requestData2['token']      = token2
+        requestDataJson2           = json.dumps(requestData2, ensure_ascii = 'False')
+
+        result2 = requests.post(url2, json = requestDataJson2)
+
+        result2_json = result2.json()
+        
+        #wds_import_amt      = result2_json['0']['total_import']*(rate.wds_import)
+        
+        data                = {}
+        data['wds']         = result2.json()
+        total_solocitaion_count = 0
+        total_source_count      = 0
+        total_edits             = 0
+
+
+        
+        emp_fixed_salary = employee.salary
+        if employee.salary == 'None':
+            print("hhhhhhhhhhh")
+            emp_fixed_salary = 0.0 
+            
+        print(emp_fixed_salary)    
+        if data['wds']:
+            total_solocitaion_count = result2_json['0']['total_solicitation']
+            total_source_count      = result2_json['0']['total_source_count']
+            total_edits             = result2_json['0']['total_edits']
+            data['wds']['0']['wds_solocitaion_amt'] = total_solocitaion_count*float(rate.wds_solicitaion)
+            data['wds']['0']['wds_source_amt']      = total_source_count*float(rate.wds_source)
+            data['wds']['0']['wds_edits_amt']       = total_edits*float(rate.wds_edit)
+        wds_solocitaion_amt = total_solocitaion_count*float(rate.wds_solicitaion)
+        wds_source_amt      = total_source_count*float(rate.wds_source)
+        wds_edits_amt       = total_edits*float(rate.wds_edit)
+            
+        #data['wds']['0']['wds_import_amt']      = wds_import_amt
+        data['pp']              = result1.json()
+        data['leaves']          = leaves
+        data['file_upload']     = file_upload
+        data['file_upload_amt'] = file_upload*float(rate.file_attach)
+
+        leaves_deduction        = (leaves*float(rate.auth_day_off)) + float(data['pp']['Total Fine'])
+        # print(data)
+        try:
+            month                = int(monthdate.month)
+            pdeduction_obj       = MonthlyDeduction.objects.get(month=month)
+            percentage_deduction = float(pdeduction_obj.deduction_percent)       
+        except:
+            percentage_deduction = 0.0
+        # print(float(wds_solocitaion_amt))
+        # print(float(wds_source_amt))  
+        # print(float(wds_edits_amt))
+        # print(float(data['file_upload_amt']))  
+        # print(float(emp_fixed_salary))
+        total_pay        = float(wds_solocitaion_amt)+float(wds_source_amt)+float(wds_edits_amt)+float(data['file_upload_amt'])+float(emp_fixed_salary)-leaves_deduction
+        total_pay = total_pay*(1.0-(percentage_deduction/100))
+        ch_invoice    = check_invoice(employee)
+        if ch_invoice is None:
+            invoice_add = Invoice.objects.create(invoice_date=today, monthdate=today, production_pay_deduction=data['pp']['Total Fine'], wds_solicitaion=total_solocitaion_count, wds_source=total_source_count, wds_edit=total_edits, file_upload=data['file_upload'], authorised_day_off = leaves,  total_deduction = leaves_deduction , total_payable = total_pay, emp_ownwer = employee, percent_deduction=percentage_deduction, wds_solicitaion_rate=rate.wds_solicitaion, wds_source_rate=rate.wds_source, wds_edit_rate=rate.wds_edit,fixed_salary=emp_fixed_salary, auth_day_rate=rate.auth_day_off)    
+        else:
+            invoice_edit                          = Invoice.objects.get(pk=ch_invoice)
+            invoice_edit.production_pay_deduction = data['pp']['Total Fine']
+            invoice_edit.wds_solicitaion          = total_solocitaion_count
+            invoice_edit.wds_source               = total_source_count
+            invoice_edit.wds_edit                 = total_edits
+            invoice_edit.file_upload              = data['file_upload']
+            invoice_edit.authorised_day_off       = leaves 
+            invoice_edit.total_deduction          = leaves_deduction
+            invoice_edit.total_payable            = total_pay
+            invoice_edit.percent_deduction        = percentage_deduction
+            invoice_edit.wds_solicitaion_rate     = rate.wds_solicitaion
+            invoice_edit.wds_source_rate          = rate.wds_source
+            invoice_edit.wds_edit_rate            = rate.wds_edit
+            invoice_edit.fixed_salary             = emp_fixed_salary
+            invoice_edit.auth_day_rate            = rate.auth_day_off
+            invoice_edit.save()
+
+
+
         if rolename == 'admin' or  rolename == 'hr' :
             invoice = Invoice.objects.all()
         else:
-            # if rolename == 'ir' or rolename == 'br':
-            rate =  Rate.objects.get(is_approved=1)    
-            monthdate   = datetime.strptime(date, '%Y-%m').date()  
-            print(monthdate)      
-            leaves      = count_leaves(employee, monthdate)
-            file_upload = count_file_uploads(employee, monthdate)
-            employee_id = employee.emp_id
-            params = {'empid': employee_id, 'year_month': date}
-
-
-            url1   = 'http://1.7.151.12:8181/bidocean/api/production/request.php'
-            token1 = "developement_Pr85SNYWOadeIOlP53VjZpA6lHoegm"
-
-            requestData1               = {}
-            requestData1["empid"]      = int(employee_id)#1296#
-            requestData1["year_month"] = date
-            requestData1["request"]    = 'emp_production'
-            requestData1["token"]      = token1
-
-            requestDataJson1 = json.dumps(requestData1, ensure_ascii = 'False')
-            result1 = requests.post(url1, json = requestDataJson1)
-
-            url2   = "https://www.bidocean.com/api/production/request.php"
-            token2 = "Pr85SNYWOV3GQdKProdReqstwer53VjZpA6lHoegm"
-
-            requestData2               = {}
-            requestData2['empid']      = int(employee_id)#1211#
-            requestData2['date_start'] = first_and_last_day[0].strftime("%Y-%m-%d")
-            requestData2['date_end']   = first_and_last_day[1].strftime("%Y-%m-%d")
-            requestData2['request']    = 'wds_researcher_stats'
-            requestData2['token']      = token2
-            requestDataJson2           = json.dumps(requestData2, ensure_ascii = 'False')
-
-            result2 = requests.post(url2, json = requestDataJson2)
-
-            result2_json = result2.json()
-            
-            #wds_import_amt      = result2_json['0']['total_import']*(rate.wds_import)
-            
-            data                = {}
-            data['wds']         = result2.json()
-            total_solocitaion_count = 0
-            total_source_count      = 0
-            total_edits             = 0
-
-
-            emp_fixed_salary = 0
-            if employee.salary:
-                emp_fixed_salary = employee.salary
-
-            if data['wds']:
-                total_solocitaion_count = result2_json['0']['total_solicitation']
-                total_source_count      = result2_json['0']['total_source_count']
-                total_edits             = result2_json['0']['total_edits']
-                data['wds']['0']['wds_solocitaion_amt'] = total_solocitaion_count*float(rate.wds_solicitaion)
-                data['wds']['0']['wds_source_amt']      = total_source_count*float(rate.wds_source)
-                data['wds']['0']['wds_edits_amt']       = total_edits*float(rate.wds_edit)
-            wds_solocitaion_amt = total_solocitaion_count*float(rate.wds_solicitaion)
-            wds_source_amt      = total_source_count*float(rate.wds_source)
-            wds_edits_amt       = total_edits*float(rate.wds_edit)
-                
-            #data['wds']['0']['wds_import_amt']      = wds_import_amt
-            data['pp']              = result1.json()
-            data['leaves']          = leaves
-            data['file_upload']     = file_upload
-            data['file_upload_amt'] = file_upload*float(rate.file_attach)
-
-            leaves_deduction        = (leaves*float(rate.auth_day_off)) + float(data['pp']['Total Fine'])
-            print(data)
-            try:
-                month                = int(monthdate.month)
-                pdeduction_obj       = MonthlyDeduction.objects.get(month=month)
-                percentage_deduction = float(pdeduction_obj.deduction_percent)       
-            except:
-                percentage_deduction = 0.0
-
-            total_pay        = float(wds_solocitaion_amt)+float(wds_source_amt)+float(wds_edits_amt)+float(data['file_upload_amt'])+float(emp_fixed_salary)-leaves_deduction
-            total_pay = total_pay*(1.0-(percentage_deduction/100))
-            ch_invoice    = check_invoice(employee)
-            if ch_invoice is None:
-                invoice_add = Invoice.objects.create(invoice_date=today, monthdate=today, production_pay_deduction=data['pp']['Total Fine'], wds_solicitaion=total_solocitaion_count, wds_source=total_source_count, wds_edit=total_edits, file_upload=data['file_upload'], authorised_day_off = leaves,  total_deduction = leaves_deduction , total_payable = total_pay, emp_ownwer = employee, percent_deduction=percentage_deduction, wds_solicitaion_rate=rate.wds_solicitaion, wds_source_rate=rate.wds_source, wds_edit_rate=rate.wds_edit,fixed_salary=emp_fixed_salary)    
-            else:
-                invoice_edit                      = Invoice.objects.get(pk=ch_invoice)
-                invoice_edit.production_pay       = data['pp']['Sub Total']
-                invoice_edit.wds_solicitaion      = total_solocitaion_count
-                invoice_edit.wds_source           = total_source_count
-                invoice_edit.wds_edit             = total_edits
-                invoice_edit.file_upload          = data['file_upload']
-                invoice_edit.authorised_day_off   = leaves 
-                invoice_edit.total_deduction      = leaves_deduction
-                invoice_edit.total_payable        = total_pay
-                invoice_edit.percentage_deduction = percentage_deduction
-                invoice_edit.wds_solicitaion_rate = rate.wds_solicitaion
-                invoice_edit.wds_source_rate      = rate.wds_source
-                invoice_edit.wds_edit_rate        = rate.wds_edit
-                invoice_edit.fixed_salary         = emp_fixed_salary
-                invoice_edit.save()
             invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
 
         search        = request.GET.get('search', None)

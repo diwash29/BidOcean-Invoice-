@@ -47,4 +47,6 @@ urlpatterns = [
     path('deduction-add/',views.DeductionAddView.as_view(),name='deduction_add'),
     path('deduction-list/',views.DeductionDisplayView.as_view(),name='deduction_list'),
     path('deduction-edit/<int:pk>',views.DeductionEditView.as_view(),name='deduction_edit'),
+
+    path('pay-slip/<int:pk>',views.PaySlip.as_view(),name='pay_slip'),    
 ]

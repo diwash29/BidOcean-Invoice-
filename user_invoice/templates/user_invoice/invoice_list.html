@@ -198,7 +198,7 @@ tr:hover .cut { opacity: 1; }
         <td style="color: black;">{{invoice.bank_account.acc_no}}</td>
 				<td style="color: black;">{{invoice.invoice_date}}</td>
 				<td style="color: black;">{{invoice.monthdate|date:"M, Y"}}</td>
-				<td style="color: black;">{% if invoice.emp_ownwer.role.name|lower == 'ir' %}--{% elif invoice.emp_ownwer.role.name|lower == 'br' %}--{% else %}<a href="{% url 'edit_fixed' invoice.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>View</span></button></a>{% endif %}</td>
+				<td style="color: black;"><a href="{% url 'pay_slip' invoice.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Slip</span></button></a></td>
 			</tr>
 			<style>
 				.btn-primary:hover {

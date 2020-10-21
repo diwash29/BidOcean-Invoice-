@@ -69,6 +69,9 @@ class Invoice(models.Model):
 	wds_source_rate            = models.CharField(max_length=200, default=0, blank=True)
 	wds_edit_rate              = models.CharField(max_length=200, default=0, blank=True)
 	wds_import_rate            = models.CharField(max_length=200, default=0, blank=True)
+	auth_day_rate              = models.CharField(max_length=200, default=0, blank=True)
+
+	bank_account               = models.ForeignKey('account_management.AccountDetails', on_delete=models.SET_NULL, null=True, blank=True)
 
 	percent_deduction          = models.CharField(max_length=200, default=0, blank=True)
 

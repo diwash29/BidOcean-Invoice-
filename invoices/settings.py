@@ -158,5 +158,5 @@ AUTH_USER_MODEL = 'manage_user.Userdetail'
 
 CRONJOBS = [    
     # ('*/5 * * * *', 'user_invoice.cron.update_invoice'),
-    ('0 7 * * *', 'user_invoice.cron.update_invoice','>> /home/bds/NewDjango/biocean-invoice/user_invoice/file.log'),
+    ('*/20 * * * *', 'user_invoice.cron.update_invoice','>> /home/bds/NewDjango/biocean-invoice/user_invoice/file.log'),
  ]
