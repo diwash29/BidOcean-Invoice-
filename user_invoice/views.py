@@ -16,7 +16,7 @@ from datetime import datetime, date
 from django.core.paginator import Paginator
 from django.db.models import Q
 from leave.models import LeaveBalance
-from .utils import get_first_n_last_day, count_leaves, check_invoice, count_file_uploads, listToString
+from .utils import get_first_n_last_day, count_leaves, check_invoice, count_file_uploads, listToString, Currency_convertor
 
 from django.contrib.auth import authenticate, login
 
@@ -62,7 +62,14 @@ def make_users(request):
     for each in result2_json:
         username = (result2_json[each]['emp_name'].replace(" ", "_")).lower()
         print(username)
-        user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=Role.objects.get(pk=3))
+        designation = result2_json[each]['position']
+        if 'Researcher' in designation:
+            role = Role.objects.get(name__iexact='ir')
+        elif 'Bids Reporter' in designation:
+            role = Role.objects.get(name__iexact='br')
+        else:
+            role = Role.objects.get(name__iexact='fixed')        
+        user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=role, designation=designation)
         user.set_password(result2_json[each]['hire_date'])
         user.save()
     return JsonResponse(result2_json)
@@ -197,10 +204,11 @@ def export_invoice_xls(request):
 class PaySlip(TemplateView):
     template_name = "user_invoice/pay_slip.html"
     def get(self, request, pk):
+        invoice = Invoice.objects.get(id=pk)
         context = {
-            'pay_slip_emp' : Employee.objects.get(id=pk),
+            'invoice'      : invoice,
             'roles'        : Role.objects.all(),
-            'title'        : 'Role list',
+            'title'        : 'Salary Slip',
             'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
@@ -495,10 +503,11 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
             user.save()
         except:
             role = user.role                 
-        salary    = request.POST['salary']
-        address   = request.POST['address']
-        phone_no  = request.POST['phone_no']
-        emp_id    = request.POST['emp_id']
+        salary      = request.POST['salary']
+        address     = request.POST['address']
+        phone_no    = request.POST['phone_no']
+        emp_id      = request.POST['emp_id']
+        designation = request.POST['designation']
         # report_to = None
         if 'report_to' not in request.POST:
             report_to = None
@@ -507,7 +516,9 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
 
         # leaves   = request.POST['leaves']
         auth_tbl = user
-        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to)
+        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to, designation = designation)
+        user.designation = designation
+        user.save()
         leave_bal = LeaveBalance.objects.create(paid_leave=10, others_leave=0, sick_leave=0, employee=employee)
 
         return HttpResponseRedirect('/')
@@ -543,10 +554,13 @@ class EmployeeEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         employee.salary    = request.POST['salary']
         employee.address   = request.POST['address']
         employee.phone_no  = request.POST['phone_no']
+        employee.designation = request.POST['designation']
         # employee.leaves   = request.POST['leaves']
         employee.emp_id    = request.POST['emp_id']
         employee.report_to = report_to    
         employee.save()
+        user.designation = request.POST['designation']
+        user.save()
         leave_bal.paid_leave   = request.POST['paid_leave']
         leave_bal.sick_leave   = request.POST['sick_leave']
         leave_bal.others_leave = request.POST['others_leave']
