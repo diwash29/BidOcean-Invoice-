@@ -317,14 +317,35 @@
 
 	
 		</table>
+
+
 		<div class="col-auto my-1">
-			<button type="submit" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-top: 10px;margin-left: 550px;"><b> Submit</b></button>
+			<button type="download" id="printPageButton"  onclick="window.print()" class="btn btn-primary shadow-none" style="background-color: teal;border: none;margin-top: 10px;margin-left: 550px;"><b> Download</b></button>
 		   <style>
 			   .btn-primary:hover {
 		background-color: green !important;
 	
 	}
+	@media print {
+  #printPageButton {
+    display: none;
+  }
+}
+		   </style>
+		  </div>
+
+		<div class="col-auto my-1">
+			<button type="submit" id="submit_button" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-top: 10px;margin-left: 550px;"><b> Submit</b></button>
+		   <style>
+			   .btn-primary:hover {
+		background-color: green !important;
 	
+	}
+	@media print {
+  #submit_button {
+    display: none;
+  }
+}
 		   </style>
 		  </div>
 		
