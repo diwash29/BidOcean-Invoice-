@@ -158,7 +158,7 @@ class ExpenseTypeAddView(AdminOrAccountsPanelMixin,TemplateView):
         expensetype_form = ExpenseTypeAddForm()
         context = {
             'expensetype_form' : expensetype_form,
-            'submit'           : 'Add Expence Type',
+            'submit'           : 'Add Expense Type',
             'title'            : 'Add expense type',
             'role'             : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
