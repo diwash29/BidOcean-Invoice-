@@ -643,8 +643,8 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 
         requestData2               = {}
         requestData2['empid']      = int(employee_id)#1211#
-        requestData2['date_start'] = first_and_last_day[0].strftime("%Y-%m-%d")
-        requestData2['date_end']   = first_and_last_day[1].strftime("%Y-%m-%d")
+        requestData2['date_start'] = first_and_last_day[0].strftime("%m/%d/%y")
+        requestData2['date_end']   = first_and_last_day[1].strftime("%m/%d/%y")
         requestData2['request']    = 'wds_researcher_stats'
         requestData2['token']      = token2
         requestDataJson2           = json.dumps(requestData2, ensure_ascii = 'False')
@@ -652,6 +652,8 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         result2 = requests.post(url2, json = requestDataJson2)
 
         result2_json = result2.json()
+
+        print(result2_json)
         
         #wds_import_amt      = result2_json['0']['total_import']*(rate.wds_import)
         

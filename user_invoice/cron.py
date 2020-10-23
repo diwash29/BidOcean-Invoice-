@@ -45,8 +45,8 @@ def update_invoice():
 
 	mainData               = {}
 	mainData['empid']      = ""
-	mainData['date_start'] = first_and_last_day[0].strftime("%Y-%m-%d")
-	mainData['date_end']   = first_and_last_day[1].strftime("%Y-%m-%d")
+	mainData['date_start'] = first_and_last_day[0].strftime("%m/%d/%y")
+	mainData['date_end']   = first_and_last_day[1].strftime("%m/%d/%y")
 	mainData['request']    = 'wds_researcher_stats'
 	mainData['token']      = main_token
 	mainDataJson           = json.dumps(mainData, ensure_ascii = 'False')
