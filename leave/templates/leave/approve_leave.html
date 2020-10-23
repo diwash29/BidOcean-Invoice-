@@ -199,7 +199,7 @@ span:empty { display: none; }
 					<td style="color: rgb(0, 128, 6);">{{requests.requesting_days}}</td>
 					<td style="color: rgb(0, 0, 0);;">{{requests.reason_msg}}</td>
 					<td style="color: rgb(0, 0, 0);;">{% if requests.available_days|subtract:requests.requesting_days < 0 %}0{% else %}{{requests.available_days|subtract:requests.requesting_days}}{% endif %}</td>
-					<td>{% if requests.leave_file %}<a target="_blank" href="{{requests.leave_file.url}}">view File</a>{% endif %}</td>
+					<td>{% if requests.leave_file %}<a target="_blank" href="{{requests.leave_file.url}}"><b> View File</b></a>{% endif %}</td>
 					<td style="color: rgb(0, 0, 0);;"><!-- <a href="{% url 'employee_edit' employee.pk %}"><button  class="btn btn-primary shadow-none"  style="background-color:teal;border: none;">Edit</button></a> -->
 					<!--your if code below-->
 						<!-- {% if requests.status == 0 %}<a href="#"><button  class="btn btn-success shadow-none"  >Approve</button></a><a href="#"><button  class="btn btn-danger shadow-none"  >Decline</button></a>{% elif requests.status == 1 %}<span style="color:green">Approved</span>{% else %}<span style="color:red">Declined</span>{% endif %} -->
