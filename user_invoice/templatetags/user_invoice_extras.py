@@ -10,7 +10,12 @@ def subtract(value, arg):
 
 
 
-
-# @register.filter
+@register.filter
 def month_name(month_number):
-    return calendar.month_name[month_number]    
+    return calendar.month_name[month_number]
+
+
+
+@register.filter
+def multiplication(value, arg):
+    return round(float(value) * float(arg), 2)

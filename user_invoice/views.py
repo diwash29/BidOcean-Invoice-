@@ -61,18 +61,20 @@ def make_users(request):
     result2_json = result2.json()
     for each in result2_json:
         username = (result2_json[each]['emp_name'].replace(" ", "_")).lower()
-        print(username)
         designation = result2_json[each]['position']
         if 'Researcher' in designation:
             role = Role.objects.get(name__iexact='ir')
         elif 'Bids Reporter' in designation:
             role = Role.objects.get(name__iexact='br')
         else:
-            role = Role.objects.get(name__iexact='fixed')        
-        user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=role, designation=designation)
-        user.set_password(result2_json[each]['hire_date'])
-        user.save()
-    return JsonResponse(result2_json)
+            role = Role.objects.get(name__iexact='fixed') 
+        try:           
+            user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=role, designation=designation)
+            user.set_password(result2_json[each]['hire_date'])
+            user.save()
+        except:
+            pass    
+    return HttpResponseRedirect('/manage_user/')
 
 
 def ajax_get_leave(request):
@@ -205,13 +207,34 @@ class PaySlip(TemplateView):
     template_name = "user_invoice/pay_slip.html"
     def get(self, request, pk):
         invoice = Invoice.objects.get(id=pk)
+        total   = float(invoice.total_payable)+(float(invoice.total_payable)*(float(invoice.percent_deduction)/100))
         context = {
+            'total'        : round(total),
             'invoice'      : invoice,
             'roles'        : Role.objects.all(),
             'title'        : 'Salary Slip',
             'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
+    def post(self, request, pk):
+        invoice = Invoice.objects.get(id=pk)
+        try:
+            invoice.emp_pf_id             = request.POST['emp_pf_id']
+            invoice.emp_esi_id            = request.POST['emp_esi_id']
+            invoice.dollar_rate           = request.POST['dollar_rate']
+            invoice.emp_ins_fund          = request.POST['emp_ins_fund']
+            invoice.percent_pf_prev_month = request.POST['percent_pf_prev_month']
+            invoice.advance               = request.POST['advance']            
+            invoice.is_approved           = 1
+            invoice.save()
+            messages.success(request, "Successfully saved invoice")   
+            return HttpResponseRedirect('/pay-slip/'+str(pk))
+        except:
+            print("error")
+            messages.error(request, "There was a problem saving invoice")
+            return HttpResponseRedirect('/pay-slip/'+str(pk))
+
+
 
 class ChangePassword(TemplateView):
     template_name = 'user_invoice/change_password.html'
@@ -677,7 +700,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         # print(float(data['file_upload_amt']))  
         # print(float(emp_fixed_salary))
         total_pay        = float(wds_solocitaion_amt)+float(wds_source_amt)+float(wds_edits_amt)+float(data['file_upload_amt'])+float(emp_fixed_salary)-leaves_deduction
-        total_pay = float(round(total_pay*(1.0-(percentage_deduction/100))))
+        total_pay = float(round(total_pay*(1.0-(percentage_deduction/100)), 2))
         ch_invoice    = check_invoice(employee)
         if ch_invoice is None:
             invoice_add = Invoice.objects.create(invoice_date=today, monthdate=today, production_pay_deduction=data['pp']['Total Fine'], wds_solicitaion=total_solocitaion_count, wds_source=total_source_count, wds_edit=total_edits, file_upload=data['file_upload'], authorised_day_off = leaves,  total_deduction = leaves_deduction , total_payable = total_pay, emp_ownwer = employee, percent_deduction=percentage_deduction, wds_solicitaion_rate=rate.wds_solicitaion, wds_source_rate=rate.wds_source, wds_edit_rate=rate.wds_edit,fixed_salary=emp_fixed_salary, auth_day_rate=rate.auth_day_off)    
@@ -701,7 +724,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 
 
 
-        if rolename == 'admin' or  rolename == 'hr' :
+        if rolename == 'admin' or  rolename == 'hr' or  rolename == 'accountant':
             invoice = Invoice.objects.all()
         else:
             invoice = Invoice.objects.filter(emp_ownwer=employee).all()	

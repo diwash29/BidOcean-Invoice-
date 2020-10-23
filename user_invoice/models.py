@@ -78,6 +78,16 @@ class Invoice(models.Model):
 
 	authorised_day_off         = models.CharField(max_length=200, default=0, blank=True)
 	unauthorised_day_off       = models.CharField(max_length=200, default=0, blank=True)
+
+	emp_pf_id                  = models.CharField(max_length=200, default=0, blank=True)
+	emp_esi_id                 = models.CharField(max_length=200, default=0, blank=True)
+	dollar_rate                = models.CharField(max_length=200, default=0, blank=True)
+
+	emp_ins_fund               = models.CharField(max_length=200, default=0, blank=True)
+	percent_pf_prev_month      = models.CharField(max_length=200, default=0, blank=True)
+	advance                    = models.CharField(max_length=200, default=0, blank=True)
+
+	commission                 = models.CharField(max_length=200, default=0, blank=True)
 	
 	total_deduction            = models.CharField(max_length=200, default=0, blank=True)
 	total_payable              = models.CharField(max_length=200, default=0, blank=True)
