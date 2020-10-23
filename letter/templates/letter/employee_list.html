@@ -43,8 +43,9 @@
 					{% for e in emps %}
 					<tr>
 						<th scope="row">{{ forloop.counter }}</th>
-						<td class="text-left">{{ e }}</td>
-						<td class="text-left"><a href="{% url 'letter:pdf-generate' e.id %}">Generate</a></td>
+						
+						<td class="text-left"><a href="{% url 'letter:edit_joinee' e.id %}" class='text-info'><button class="btn btn-primary" style="margin-bottom: 15px;float: right;"> Edit</button></a>{{ e }}</td>
+						<td class="text-left"><a href="{% url 'letter:pdf-generate' e.id %}"><button class="btn btn-primary">Generate</button></a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
