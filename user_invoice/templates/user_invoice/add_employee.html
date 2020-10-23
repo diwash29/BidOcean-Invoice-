@@ -21,6 +21,10 @@
 			<div class="form-group">	
 				<label for="formGropuNameInput">Address*</label>
 				<input name="address" class="form-control" id="formGroupNameInput" value="{% if employee.address %}{{employee.address}}{% else %}{{user.address}}{% endif %}" placeholder="Enter your address" required {% if 'Add' in submit and user.address %}readonly{% endif %}>
+			</div>
+			<div class="form-group">	
+				<label for="formGropuNameInput">Designation*</label>
+				<input name="designation" class="form-control" id="formGroupNameInput" value="{% if employee.designation %}{{employee.designation}}{% else %}{{user.designation}}{% endif %}" placeholder="Enter your address" required {% if 'Add' in submit and user.designation %}readonly{% endif %}>
 			</div>	
 			<div class="form-group">
 				<label for="mobile_no">Mobile No*</label>

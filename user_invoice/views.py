@@ -16,7 +16,7 @@ from datetime import datetime, date
 from django.core.paginator import Paginator
 from django.db.models import Q
 from leave.models import LeaveBalance
-from .utils import get_first_n_last_day, count_leaves, check_invoice, count_file_uploads, listToString
+from .utils import get_first_n_last_day, count_leaves, check_invoice, count_file_uploads, listToString, Currency_convertor
 
 from django.contrib.auth import authenticate, login
 
@@ -61,11 +61,20 @@ def make_users(request):
     result2_json = result2.json()
     for each in result2_json:
         username = (result2_json[each]['emp_name'].replace(" ", "_")).lower()
-        print(username)
-        user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=Role.objects.get(pk=3))
-        user.set_password(result2_json[each]['hire_date'])
-        user.save()
-    return JsonResponse(result2_json)
+        designation = result2_json[each]['position']
+        if 'Researcher' in designation:
+            role = Role.objects.get(name__iexact='ir')
+        elif 'Bids Reporter' in designation:
+            role = Role.objects.get(name__iexact='br')
+        else:
+            role = Role.objects.get(name__iexact='fixed') 
+        try:           
+            user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=role, designation=designation)
+            user.set_password(result2_json[each]['hire_date'])
+            user.save()
+        except:
+            pass    
+    return HttpResponseRedirect('/manage_user/')
 
 
 def ajax_get_leave(request):
@@ -197,13 +206,35 @@ def export_invoice_xls(request):
 class PaySlip(TemplateView):
     template_name = "user_invoice/pay_slip.html"
     def get(self, request, pk):
+        invoice = Invoice.objects.get(id=pk)
+        total   = float(invoice.total_payable)+(float(invoice.total_payable)*(float(invoice.percent_deduction)/100))
         context = {
-            'pay_slip_emp' : Employee.objects.get(id=pk),
+            'total'        : round(total),
+            'invoice'      : invoice,
             'roles'        : Role.objects.all(),
-            'title'        : 'Role list',
+            'title'        : 'Salary Slip',
             'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
         }
         return render(request, self.template_name, context)
+    def post(self, request, pk):
+        invoice = Invoice.objects.get(id=pk)
+        try:
+            invoice.emp_pf_id             = request.POST['emp_pf_id']
+            invoice.emp_esi_id            = request.POST['emp_esi_id']
+            invoice.dollar_rate           = request.POST['dollar_rate']
+            invoice.emp_ins_fund          = request.POST['emp_ins_fund']
+            invoice.percent_pf_prev_month = request.POST['percent_pf_prev_month']
+            invoice.advance               = request.POST['advance']            
+            invoice.is_approved           = 1
+            invoice.save()
+            messages.success(request, "Successfully saved invoice")   
+            return HttpResponseRedirect('/pay-slip/'+str(pk))
+        except:
+            print("error")
+            messages.error(request, "There was a problem saving invoice")
+            return HttpResponseRedirect('/pay-slip/'+str(pk))
+
+
 
 class ChangePassword(TemplateView):
     template_name = 'user_invoice/change_password.html'
@@ -353,13 +384,13 @@ class RatePullView(AdminOrHROrAccountsPanelMixin, TemplateView):
         employee      = Employee.objects.get(auth_tbl=user)
         try:
             Rate.objects.all().update(is_approved=0)
-            rate = Rate.objects.create(base_ir=request.POST['base_ir'], base_br=request.POST['base_br'], total_pay=request.POST['total_pay'], difficultnp=request.POST['difficultnp'], extra_hours=request.POST['extra_hours'], file_attach=request.POST['file_attach'], add_auth_days=request.POST['add_auth_days'], new_entities_added=request.POST['new_entities_added'], extra_days=request.POST['extra_days'], duplicate_entities=request.POST['duplicate_entities'], errors=request.POST['errors'], fines=request.POST['fines'], duplicate_solic=request.POST['duplicate_solic'], entity_cont_wrong= request.POST['entity_cont_wrong'], false_referal=request.POST['false_referal'], fraudsolic_update=request.POST['fraudsolic_update'], source_ret_wo_res=request.POST['source_ret_wo_res'], missed_bond=request.POST['missed_bond'], missed_categories=request.POST['missed_categories'], missed_solic_src=request.POST['missed_solic_src'], missed_file=request.POST['missed_file'], missed_link=request.POST['missed_link'], missed_term=request.POST['missed_term'], not_posted_lead=request.POST['not_posted_lead'], other_error=request.POST['other_error'], other_serious_err=request.POST['other_serious_err'], refreshing_wds=request.POST['refreshing_wds'], wage_not_selected=request.POST['wage_not_selected'], skipped_solic=request.POST['skipped_solic'], source_ret_wo_note=request.POST['source_ret_wo_note'], unjustified_absence=request.POST['unjustified_absence'], wrong_pre_bid=request.POST['wrong_pre_bid'], wrong_categories=request.POST['wrong_categories'], wrong_geo_location=request.POST['wrong_geo_location'], incorrect_scope=request.POST['incorrect_scope'], wrong_text_format=request.POST['wrong_text_format'], auth_day_off=request.POST['auth_day_off'], unauth_day_off=request.POST['unauth_day_off'], added_by=employee, is_approved=1)
+            rate = Rate.objects.create(wds_solicitaion=request.POST['wds_solicitaion'], wds_source=request.POST['wds_source'], wds_edit=request.POST['wds_edit'], wds_import=request.POST['wds_import'], file_attach=request.POST['file_attach'], auth_day_off=request.POST['auth_day_off'], unauth_day_off=request.POST['unauth_day_off'], added_by=employee, is_approved=1)
             messages.success(request, "Successfully added rate")   
             return HttpResponseRedirect('/rate-list/')
         except:
             print("error")
             messages.error(request, "There was a problem adding rate")
-        return HttpResponseRedirect('/rate-pull/'+pk)
+        return HttpResponseRedirect('/rate-pull/'+str(pk))
               
 
 
@@ -378,44 +409,14 @@ class RateEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         rate = Rate.objects.get(pk=pk)
         Rate.objects.all().update(is_approved=0)
         try:
-            rate.base_ir            = request.POST['base_ir']
-            rate.base_br            = request.POST['base_br']
-            rate.total_pay          = request.POST['total_pay']
-            rate.difficultnp        = request.POST['difficultnp']
-            rate.extra_hours        = request.POST['extra_hours']
-            rate.file_attach        = request.POST['file_attach']
-            rate.add_auth_days      = request.POST['add_auth_days']
-            rate.new_entities_added = request.POST['new_entities_added']
-            rate.extra_days         = request.POST['extra_days']
-            rate.duplicate_entities = request.POST['duplicate_entities']
-            rate.errors             = request.POST['errors']
-            rate.fines              = request.POST['fines']
-            rate.duplicate_solic    = request.POST['duplicate_solic']
-            rate.entity_cont_wrong  = request.POST['entity_cont_wrong']
-            rate.false_referal      = request.POST['false_referal']
-            rate.fraudsolic_update  = request.POST['fraudsolic_update']
-            rate.source_ret_wo_res  = request.POST['source_ret_wo_res']
-            rate.missed_bond        = request.POST['missed_bond']
-            rate.missed_categories  = request.POST['missed_categories']
-            rate.missed_solic_src   = request.POST['missed_solic_src']
-            rate.missed_file        = request.POST['missed_file']
-            rate.missed_link        = request.POST['missed_link']
-            rate.missed_term        = request.POST['missed_term']
-            rate.not_posted_lead    = request.POST['not_posted_lead']
-            rate.other_error        = request.POST['other_error']
-            rate.other_serious_err  = request.POST['other_serious_err']
-            rate.refreshing_wds     = request.POST['refreshing_wds']
-            rate.wage_not_selected  = request.POST['wage_not_selected']
-            rate.skipped_solic      = request.POST['skipped_solic']
-            rate.source_ret_wo_note = request.POST['source_ret_wo_note']
-            rate.unjustified_absence= request.POST['unjustified_absence']
-            rate.wrong_pre_bid      = request.POST['wrong_pre_bid']
-            rate.wrong_categories   = request.POST['wrong_categories']
-            rate.wrong_geo_location = request.POST['wrong_geo_location']
-            rate.incorrect_scope    = request.POST['incorrect_scope']
-            rate.wrong_text_format  = request.POST['wrong_text_format']
-            rate.auth_day_off       = request.POST['auth_day_off']
-            rate.unauth_day_off     = request.POST['unauth_day_off']
+            rate.wds_solicitaion = request.POST['wds_solicitaion']
+            rate.wds_source      = request.POST['wds_source']
+            rate.wds_edit        = request.POST['wds_edit']
+            rate.wds_import      = request.POST['wds_import']
+            rate.file_attach     = request.POST['file_attach']
+            rate.auth_day_off    = request.POST['auth_day_off']
+            rate.unauth_day_off  = request.POST['unauth_day_off']
+            
             rate.is_approved        = 1
             rate.save()
             messages.success(request, "Successfully edited rate")   
@@ -423,7 +424,7 @@ class RateEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         except:
             print("error")
             messages.error(request, "There was a problem adding rate")
-        return HttpResponseRedirect('/rate-edit/'+pk)    
+        return HttpResponseRedirect('/rate-edit/'+str(pk))    
 
 
 class RateAddView(AdminOrHROrAccountsPanelMixin,TemplateView):
@@ -444,7 +445,7 @@ class RateAddView(AdminOrHROrAccountsPanelMixin,TemplateView):
         employee      = Employee.objects.get(auth_tbl=user)
         try:
             Rate.objects.all().update(is_approved=0)
-            rate = Rate.objects.create(base_ir=request.POST['base_ir'], base_br=request.POST['base_br'], total_pay=request.POST['total_pay'], difficultnp=request.POST['difficultnp'], extra_hours=request.POST['extra_hours'], file_attach=request.POST['file_attach'], add_auth_days=request.POST['add_auth_days'], new_entities_added=request.POST['new_entities_added'], extra_days=request.POST['extra_days'], duplicate_entities=request.POST['duplicate_entities'], errors=request.POST['errors'], fines=request.POST['fines'], duplicate_solic=request.POST['duplicate_solic'], entity_cont_wrong= request.POST['entity_cont_wrong'], false_referal=request.POST['false_referal'], fraudsolic_update=request.POST['fraudsolic_update'], source_ret_wo_res=request.POST['source_ret_wo_res'], missed_bond=request.POST['missed_bond'], missed_categories=request.POST['missed_categories'], missed_solic_src=request.POST['missed_solic_src'], missed_file=request.POST['missed_file'], missed_link=request.POST['missed_link'], missed_term=request.POST['missed_term'], not_posted_lead=request.POST['not_posted_lead'], other_error=request.POST['other_error'], other_serious_err=request.POST['other_serious_err'], refreshing_wds=request.POST['refreshing_wds'], wage_not_selected=request.POST['wage_not_selected'], skipped_solic=request.POST['skipped_solic'], source_ret_wo_note=request.POST['source_ret_wo_note'], unjustified_absence=request.POST['unjustified_absence'], wrong_pre_bid=request.POST['wrong_pre_bid'], wrong_categories=request.POST['wrong_categories'], wrong_geo_location=request.POST['wrong_geo_location'], incorrect_scope=request.POST['incorrect_scope'], wrong_text_format=request.POST['wrong_text_format'], auth_day_off=request.POST['auth_day_off'], unauth_day_off=request.POST['unauth_day_off'], added_by=employee, is_approved=1)
+            rate = Rate.objects.create(wds_solicitaion=request.POST['wds_solicitaion'], wds_source=request.POST['wds_source'], wds_edit=request.POST['wds_edit'], wds_import=request.POST['wds_import'], file_attach=request.POST['file_attach'], auth_day_off=request.POST['auth_day_off'], unauth_day_off=request.POST['unauth_day_off'], added_by=employee, is_approved=1)
             messages.success(request, "Successfully added rate")   
             return HttpResponseRedirect('/rate-list/')
         except:
@@ -525,10 +526,11 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
             user.save()
         except:
             role = user.role                 
-        salary    = request.POST['salary']
-        address   = request.POST['address']
-        phone_no  = request.POST['phone_no']
-        emp_id    = request.POST['emp_id']
+        salary      = request.POST['salary']
+        address     = request.POST['address']
+        phone_no    = request.POST['phone_no']
+        emp_id      = request.POST['emp_id']
+        designation = request.POST['designation']
         # report_to = None
         if 'report_to' not in request.POST:
             report_to = None
@@ -537,7 +539,9 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
 
         # leaves   = request.POST['leaves']
         auth_tbl = user
-        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to)
+        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to, designation = designation)
+        user.designation = designation
+        user.save()
         leave_bal = LeaveBalance.objects.create(paid_leave=10, others_leave=0, sick_leave=0, employee=employee)
 
         return HttpResponseRedirect('/')
@@ -573,10 +577,13 @@ class EmployeeEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         employee.salary    = request.POST['salary']
         employee.address   = request.POST['address']
         employee.phone_no  = request.POST['phone_no']
+        employee.designation = request.POST['designation']
         # employee.leaves   = request.POST['leaves']
         employee.emp_id    = request.POST['emp_id']
         employee.report_to = report_to    
         employee.save()
+        user.designation = request.POST['designation']
+        user.save()
         leave_bal.paid_leave   = request.POST['paid_leave']
         leave_bal.sick_leave   = request.POST['sick_leave']
         leave_bal.others_leave = request.POST['others_leave']
@@ -657,8 +664,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 
         
         emp_fixed_salary = employee.salary
-        if employee.salary == 'None':
-            print("hhhhhhhhhhh")
+        if employee.salary == 'None' or employee.salary is None or employee.salary == "":
             emp_fixed_salary = 0.0 
             
         print(emp_fixed_salary)    
@@ -680,6 +686,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         data['file_upload_amt'] = file_upload*float(rate.file_attach)
 
         leaves_deduction        = (leaves*float(rate.auth_day_off)) + float(data['pp']['Total Fine'])
+        leaves_deduction        = round(leaves_deduction, 2)
         # print(data)
         try:
             month                = int(monthdate.month)
@@ -693,7 +700,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         # print(float(data['file_upload_amt']))  
         # print(float(emp_fixed_salary))
         total_pay        = float(wds_solocitaion_amt)+float(wds_source_amt)+float(wds_edits_amt)+float(data['file_upload_amt'])+float(emp_fixed_salary)-leaves_deduction
-        total_pay = total_pay*(1.0-(percentage_deduction/100))
+        total_pay = float(round(total_pay*(1.0-(percentage_deduction/100)), 2))
         ch_invoice    = check_invoice(employee)
         if ch_invoice is None:
             invoice_add = Invoice.objects.create(invoice_date=today, monthdate=today, production_pay_deduction=data['pp']['Total Fine'], wds_solicitaion=total_solocitaion_count, wds_source=total_source_count, wds_edit=total_edits, file_upload=data['file_upload'], authorised_day_off = leaves,  total_deduction = leaves_deduction , total_payable = total_pay, emp_ownwer = employee, percent_deduction=percentage_deduction, wds_solicitaion_rate=rate.wds_solicitaion, wds_source_rate=rate.wds_source, wds_edit_rate=rate.wds_edit,fixed_salary=emp_fixed_salary, auth_day_rate=rate.auth_day_off)    
@@ -717,7 +724,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 
 
 
-        if rolename == 'admin' or  rolename == 'hr' :
+        if rolename == 'admin' or  rolename == 'hr' or  rolename == 'accountant':
             invoice = Invoice.objects.all()
         else:
             invoice = Invoice.objects.filter(emp_ownwer=employee).all()	

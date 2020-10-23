@@ -24,6 +24,7 @@ class Userdetail(AbstractBaseUser, PermissionsMixin):
     phone           = models.CharField(max_length=200,null=True)
     email           = models.CharField(max_length=200,null=True)
     address         = models.CharField(max_length=300,null=True)
+    designation     = models.CharField(max_length=300,null=True)
     role            = models.ForeignKey('user_invoice.Role', on_delete=models.SET_NULL, null=True, blank=True)
     employee_id     = models.CharField(max_length=200, null=True)
     salary          = models.CharField(max_length=200, null=True)

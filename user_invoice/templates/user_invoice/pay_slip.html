@@ -1,97 +1,11 @@
 
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
+{% load user_invoice_extras %}
 {% block content %}
-<form method="POST">
-	{% csrf_token %}
-	<article>
-		<legend class="border-bottom mb-4" style="color: black;text-align: center;"><b> BID OCEAN CONSULTANCY </b></legend>
-			  <p style="text-align: center;text-decoration: underline;"> HOTEL SONAMLA BUILDING, INDIRA BYEPASS, AMDO GOLAI, GANGTOK, EAST SIKKIM, PIN 737102 </p>
-			  <aside>
-		
-				
-			</aside>
-
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		  <table class='in'>
-			
-			
-		
-			
-				
-				
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">Employee Name:</span></td>
-					<td>
-						<input  type="text"   name="employee_name"/>
-					</td>
-					
-				
-				</tr>	
-				
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">Designation:</span></td>
-					<td>
-						<input  type="text"   name="designation"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">Employee PF ID:</span></td>
-					<td>
-						<input  type="text"   name="pf_id"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">Employee ESI ID: </span></td>
-					<td>
-						<input  type="text"   name="esi_id"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">Month of Deduction:</span></td>
-					<td>
-						<input  type="text"   name="month_of_deduction"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">Dollar Rate:</span></td>
-					<td>
-						<input  type="text"   name="dollar_rate"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold"> % Deduction:</span></td>
-					<td>
-						<input  type="text"   name="what_percentage_deduction"/>
-					</td>
-					<td>
-						<input  type="text"   name="percentage_deduction_value"/>
-					</td>
-					
-				
-				</tr>	
-				<tr>
-					<td style="width: 150px;"></a><span style="font-weight:bold">After % Deduction:</span></td>
-					<td>
-						<input  type="text"   name="after_percentage_deduction"/>
-					</td>
-					
-				
-				</tr>	
-			
-			
-			<style>
-				.option-input {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<style>
+.option-input {
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
@@ -147,13 +61,123 @@
 .option-input.radio::after {
   border-radius: 50%;
 }
-			</style>
-	
+</style>
+<style>
+.btn-primary:hover {
+	background-color: green !important;
 
+}
+@media print {
+	#printPageButton {
+		display: none;
+	}
+}
+</style>
+<style>
+   .btn-primary:hover {
+		background-color: green !important;
+	}
+@media print {
+	#submit_button {
+		display: none;
+	}
+}
+</style>
+<form method="POST">
+	{% csrf_token %}
+	<article>
+		<legend class="border-bottom mb-4" style="color: black;text-align: center;"><b> BID OCEAN CONSULTANCY </b></legend>
+			  <p style="text-align: center;text-decoration: underline;"> HOTEL SONAMLA BUILDING, INDIRA BYEPASS, AMDO GOLAI, GANGTOK, EAST SIKKIM, PIN 737102 </p>
+			  <aside>
 		
-		
+				
+			</aside>
+
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		  <table class='in'>
+			
+			
+		
+			
+				
+				
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Employee Name:</span></td>
+					<td>
+						<input  type="text" value="{{invoice.emp_ownwer.name}}"  name="employee_name" readonly="" />
+					</td>
+					
+				
+				</tr>	
+				
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Designation:</span></td>
+					<td>
+						<input  type="text" value="{{invoice.emp_ownwer.designation}}"  name="designation" readonly="" />
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Employee PF ID:</span></td>
+					<td>
+						<input  type="text" value="{{invoice.emp_pf_id}}" name="emp_pf_id"  />
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Employee ESI ID: </span></td>
+					<td>
+						<input  type="text" value="{{invoice.emp_esi_id}}"  name="emp_esi_id"/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Month of Deduction:</span></td>
+					<td>
+						<input  type="text" value="{{invoice.monthdate|date:'M Y'}}"  name="month_of_deduction" readonly="" />
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Dollar Rate:</span></td>
+					<td>
+						<input  type="text" id="dollar_rate" value="{{invoice.dollar_rate}}"  name="dollar_rate" required="" alt="{{role|lower}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
+					</td>
+					
+				
+				</tr>
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">Total In Amount:</span></td>
+					<td>
+						<input  type="text" value="{{total}}" name="total" readonly/>
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold"> % Deduction:</span></td>
+					<td>
+						<input  type="text" value="{{invoice.percent_deduction}}"  name="what_percentage_deduction" readonly="" />
+					</td>
+					<td>
+						<!-- <input  type="text"   name="percentage_deduction_value"/> -->
+					</td>
+					
+				
+				</tr>	
+				<tr>
+					<td style="width: 150px;"></a><span style="font-weight:bold">After % Deduction:</span></td>
+					<td>
+						<input  type="text"  value="{{invoice.total_payable}}"  name="after_percentage_deduction" id="total_payable" readonly="" />
+					</td>
+					
+				
+				</tr>	
+		 <table class='in'>
 			<thead>
 				<tr>
 				
@@ -167,75 +191,74 @@
 			<tr>
 				<td><span style="font-weight:bold">Basic Salary</span></td>
 
-					<td><input id="basic_salary" name="basic_salary"    /></td>
+					<td><input id="basic_salary" name="basic_salary" id="basic_salary" readonly="" /></td>
 					<td><span style="font-weight:bold">Provident Fund</span></td>
 
 
-					<td><input   /></td>
+					<td><input id="provident_fund" name="provident_fund" readonly="" /></td>
 				 
 			
 			</tr>
 			<tr>
 				<td></a><span style="font-weight:bold">House Rent Allowances</span></td>
 
-					<td><input  /></td>
+					<td><input id="house_rent_allowances" readonly="" /></td>
 					
 					<td><span style="font-weight:bold">Employee State Insurance Fund</span></td>
 
-					<td><input  /></td>
-				 
+					<td><input name="emp_ins_fund" id="emp_ins_fund"  value="{% if invoice.emp_ins_fund %}{{invoice.emp_ins_fund}}{% else %}0{% endif %}" /></td>	 
 			
 			</tr>
 			<tr>
 				<td></a><span style="font-weight:bold">City Allowances</span></td>
 
-					<td><input  /></td>
+					<td><input id="city_allowances" readonly="" /></td>
 					
-					<td><span style="font-weight:bold">2% PF for the month of aug</span></td>
+					<td><span style="font-weight:bold">2% PF for the month of prev month</span></td>
 
-					<td><input   /></td>
+					<td><input name="percent_pf_prev_month" id="pf_percent" value='{% if invoice.percent_pf_prev_month %}{{invoice.percent_pf_prev_month}}{% else %}0{% endif %}' /></td>
 				 
 			
 			</tr>
 			<tr>
 				<td></a><span style="font-weight:bold">Conveyance Allowance</span></td>
 
-					<td><input  /></td>
+					<td><input id="conveyance_allowance" readonly="" /></td>
 					
 					<td><span style="font-weight:bold">Absent </span></td>
 
 
-					<td><input  /></td>
+					<td><input id="absent" value="{{invoice.authorised_day_off|multiplication:invoice.auth_day_rate}}" name="absent"/></td>
 				 
 			
 			</tr>
 			<tr>
 				<td></a><span style="font-weight:bold">Education Allowance</span></td>
 
-					<td><input  /></td>
+					<td><input id="education_allowance" readonly="" /></td>
 				
 					<td><span style="font-weight:bold">	error </span></td>
 
-
-					<td><input  /></td>
+					<input id="hidden_error" type="hidden" value="{{invoice.total_deduction}}" name="error" />
+					<td><input id="error" value="" name="error" readonly="" /></td>
 				 
 			
 			</tr>
 			<tr>
 				<td></a><span style="font-weight:bold">Medical Allowance</span></td>
 
-					<td><input /></td>
+					<td><input id="medical_allowance" readonly="" /></td>
 					
 					<td><span style="font-weight:bold">	Advance </span></td>
 
-					<td><input  /></td>
+					<td><input id="advance" value="{% if invoice.advance %}{{invoice.advance}}{% else %}0{% endif %}" name="advance"/></td>
 				 
 			
 			</tr>
 			<tr>
 				<td></a><span style="font-weight:bold">Special Allowance</span></td>
 
-					<td><input  /></td>
+					<td><input id="special_allowance" readonly="" /></td>
 					<td><input /></td>
 
 					<td><input  /></td>
@@ -245,7 +268,7 @@
 			<tr>
 				<td></a><span style="font-weight:bold">Commission</span></td>
 
-					<td><input /></td>
+					<td><input id="commission" value="{% if invoice.commission %}{{invoice.commission}}{% else %}0{% endif %}" name="commission" /></td>
 					<td><input /></td>
 
 					<td><input /></td>
@@ -261,19 +284,19 @@
 
 				<tr>
 					<td colspan="3" style=" font-weight:bold" align="right">
-						Gross Salary: <span data-prefix>₹</span><input  />
+						Gross Salary: <span data-prefix>₹</span><input id="gross_salary" readonly="" />
 					</td>
 					
 				</tr>
 				<tr>
 					<td colspan="3" style="font-weight:bold" align="right">
-						Total Deductions: <span data-prefix>₹</span><input  />
+						Total Deductions: <span data-prefix>₹</span><input id="total_deduction" readonly="" />
 					</td>
 					
 				</tr>
 				<tr>
 					<td colspan="3" style="color:#339107; font-weight:bold" align="right">
-						Net Salary Payable: <span data-prefix>₹</span><input  />
+						Net Salary Payable: <span data-prefix>₹</span><input id="net_payable_salary" readonly="" />
 					</td>
 					
 				</tr>
@@ -328,34 +351,15 @@
 
 
 		<div class="col-auto my-1">
-			<button type="download" id="printPageButton"  onclick="window.print()" class="btn btn-primary shadow-none" style="background-color: teal;border: none;margin-top: 10px;margin-left: 550px;"><b> Download</b></button>
-		   <style>
-			   .btn-primary:hover {
-		background-color: green !important;
-	
-	}
-	@media print {
-  #printPageButton {
-    display: none;
-  }
-}
-		   </style>
+			<button type="button" id="printPageButton"  onclick="window.print()" class="btn btn-primary shadow-none" style="background-color: teal;border: none;margin-top: 10px;margin-left: 550px;"><b> Download</b></button>
+		   
 		  </div>
 
+		{% if role|lower == 'accountant' %}  
 		<div class="col-auto my-1">
-			<button type="submit" id="submit_button" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-top: 10px;margin-left: 550px;"><b> Submit</b></button>
-		   <style>
-			   .btn-primary:hover {
-		background-color: green !important;
-	
-	}
-	@media print {
-  #submit_button {
-    display: none;
-  }
-}
-		   </style>
-		  </div>
+			<button type="submit" id="submit_button" class="btn btn-primary shadow-none" style="background-color: #6a57be;border: none;margin-top: 10px;margin-left: 550px;"><b> Submit</b></button>		   
+		</div>
+		{% endif %}
 		
 	</article>
 
@@ -481,6 +485,81 @@ tr:hover .cut { opacity: 1; }
     </style>
   
 
+<script type="text/javascript">
 
+	function gross_salary(){
+		var dollar_rate           = $("#dollar_rate").val()
+		var total_payable         = $("#total_payable").val()
+		var commission            = $("#commission").val()
+		var gross_salary          = (dollar_rate*total_payable).toFixed(2)		 
+		var basic_salary          = (gross_salary*0.4).toFixed(2)		
+		var house_rent_allowances = (basic_salary*0.4).toFixed(2)		
+		var city_allowances       = (house_rent_allowances/2).toFixed(2)		
+		var conveyance_allowance  = (city_allowances/2).toFixed(2)
+		var provident_fund        = Math.round(basic_salary*0.12)
+		var special_allowance     = (parseFloat(gross_salary)-(parseFloat(basic_salary)+parseFloat(house_rent_allowances)+parseFloat(city_allowances)+parseFloat(conveyance_allowance)+parseFloat(conveyance_allowance)+parseFloat(conveyance_allowance))).toFixed(2)
+
+		var emp_ins_fund          = $("#emp_ins_fund").val()
+		var pf_percent            = $("#pf_percent").val()
+		var absent                = $("#absent").val()
+		var error                 = $("#error").val()
+		var advance               = $("#advance").val()
+
+		var total_deduction = (parseFloat(emp_ins_fund)+ parseFloat(provident_fund)+ parseFloat(pf_percent)+ parseFloat(absent)+ parseFloat(error)+ parseFloat(advance)).toFixed(2)
+
+		var net_payable_salary = (parseFloat(gross_salary)+parseFloat(commission)-parseFloat(total_deduction)).toFixed(2)
+
+		$("#gross_salary").val(gross_salary)
+		$("#basic_salary").val(basic_salary)
+		$("#house_rent_allowances").val(house_rent_allowances)
+		$("#city_allowances").val(city_allowances)
+		$("#conveyance_allowance").val(conveyance_allowance)
+		$("#education_allowance").val(conveyance_allowance)
+		$("#medical_allowance").val(conveyance_allowance)
+		$("#special_allowance").val(special_allowance)
+		$("#provident_fund").val(provident_fund)
+		$("#total_deduction").val(total_deduction)
+		$("#net_payable_salary").val(net_payable_salary)
+	}
+
+	function deduction_calculation(){
+		var gross_salary       = $("#gross_salary").val()
+		var provident_fund     = $("#provident_fund").val()
+		var emp_ins_fund       = $("#emp_ins_fund").val()
+		var pf_percent         = $("#pf_percent").val()
+		var absent             = $("#absent").val()
+		var error              = $("#error").val()
+		var advance            = $("#advance").val()
+		var commission         = $("#commission").val()
+		var total_deduction    = (parseFloat(emp_ins_fund)+ parseFloat(provident_fund)+ parseFloat(pf_percent)+ parseFloat(absent)+ parseFloat(error)+ parseFloat(advance)).toFixed(2)
+
+		var net_payable_salary = (parseFloat(gross_salary)+parseFloat(commission)-parseFloat(total_deduction)).toFixed(2)
+		$("#total_deduction").val(total_deduction)
+		$("#net_payable_salary").val(net_payable_salary)
+	}
+
+	$(document).ready(function(){
+		var full_ded    = $("#hidden_error").val()
+		var absent      = $("#absent").val()
+		var error_value = full_ded-absent
+		$("#error").val(error_value) 
+		gross_salary()
+	})
+	$("#emp_ins_fund, #pf_percent, #absent, #error, #advance ").on('input', function(){
+		deduction_calculation()
+	})
+	$("#commission").on('input', function(){
+		var commission      = $("#commission").val()
+		var gross_salary    = $("#gross_salary").val()
+		var total_deduction = $("#total_deduction").val()
+		/*alert(net_payable_salary)
+		alert(commission)*/
+		net_payable_salary = (parseFloat(gross_salary)+parseFloat(commission)-parseFloat(total_deduction)).toFixed(2)
+		$("#net_payable_salary").val(net_payable_salary)
+	})
+	$("#dollar_rate").on('input',function(){
+		gross_salary()
+	})	
+</script>
 
 {% endblock content %}

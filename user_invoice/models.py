@@ -16,18 +16,19 @@ class Role(models.Model):
         return '%s' % self.name 
 
 class Employee(models.Model):
-	id         = models.AutoField(primary_key=True)
-	name       = models.CharField(max_length=300)
-	role       = models.ForeignKey(Role,on_delete=models.CASCADE)
-	salary     = models.CharField(max_length=300, null=True, blank=True)
-	address    = models.CharField(max_length=300)
-	emp_id     = models.CharField(max_length=300, null=True, blank=True)
-	phone_no   = models.CharField(max_length=300)
+	id          = models.AutoField(primary_key=True)
+	name        = models.CharField(max_length=300)
+	role        = models.ForeignKey(Role,on_delete=models.CASCADE)
+	salary      = models.CharField(max_length=300, null=True, blank=True)
+	address     = models.CharField(max_length=300)
+	emp_id      = models.CharField(max_length=300, null=True, blank=True)
+	phone_no    = models.CharField(max_length=300)
+	designation = models.CharField(max_length=300, null=True, blank=True)
 	# leaves   = models.IntegerField()
-	auth_tbl   = models.OneToOneField(Userdetail, on_delete=models.CASCADE)
-	added_at   = models.DateTimeField(auto_now_add=True)
-	is_manager = models.SmallIntegerField(default=0)
-	report_to  = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='empreport_to')
+	auth_tbl    = models.OneToOneField(Userdetail, on_delete=models.CASCADE)
+	added_at    = models.DateTimeField(auto_now_add=True)
+	is_manager  = models.SmallIntegerField(default=0)
+	report_to   = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='empreport_to')
 
 	def __str__(self):
 		return '%s' % self.name
@@ -77,10 +78,20 @@ class Invoice(models.Model):
 
 	authorised_day_off         = models.CharField(max_length=200, default=0, blank=True)
 	unauthorised_day_off       = models.CharField(max_length=200, default=0, blank=True)
+
+	emp_pf_id                  = models.CharField(max_length=200, default=0, blank=True)
+	emp_esi_id                 = models.CharField(max_length=200, default=0, blank=True)
+	dollar_rate                = models.CharField(max_length=200, default=0, blank=True)
+
+	emp_ins_fund               = models.CharField(max_length=200, default=0, blank=True)
+	percent_pf_prev_month      = models.CharField(max_length=200, default=0, blank=True)
+	advance                    = models.CharField(max_length=200, default=0, blank=True)
+
+	commission                 = models.CharField(max_length=200, default=0, blank=True)
 	
 	total_deduction            = models.CharField(max_length=200, default=0, blank=True)
 	total_payable              = models.CharField(max_length=200, default=0, blank=True)
-	emp_ownwer                 = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
+	emp_ownwer                 = models.ForeignKey(Employee, on_delete=models.CASCADE)
 	is_approved                = models.SmallIntegerField(default=0)
 
 class ProductionReport(models.Model):
