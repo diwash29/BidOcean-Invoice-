@@ -25,6 +25,8 @@ class Employee(models.Model):
 	phone_no    = models.CharField(max_length=300)
 	designation = models.CharField(max_length=300, null=True, blank=True)
 	# leaves   = models.IntegerField()
+	pf_id       = models.CharField(max_length=300, null=True, blank=True)
+	esi_id      = models.CharField(max_length=300, null=True, blank=True)
 	auth_tbl    = models.OneToOneField(Userdetail, on_delete=models.CASCADE)
 	added_at    = models.DateTimeField(auto_now_add=True)
 	is_manager  = models.SmallIntegerField(default=0)

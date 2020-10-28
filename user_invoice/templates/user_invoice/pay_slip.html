@@ -121,7 +121,7 @@
 				<tr>
 					<td style="width: 150px;"></a><span style="font-weight:bold">Employee PF ID:</span></td>
 					<td>
-						<input  type="text" value="{{invoice.emp_pf_id}}" name="emp_pf_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input  type="text" value="{% if invoice.emp_pf_id %}{{invoice.emp_pf_id}}{% else %}{{invoice.emp_ownwer.pf_id}}{% endif %}" name="emp_pf_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -129,7 +129,7 @@
 				<tr>
 					<td style="width: 150px;"></a><span style="font-weight:bold">Employee ESI ID: </span></td>
 					<td>
-						<input  type="text" value="{{invoice.emp_esi_id}}"  name="emp_esi_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input  type="text" value="{% if invoice.emp_esi_id %}{{invoice.emp_esi_id}}{% else %}{{invoice.emp_ownwer.esi_id}}{% endif %}"  name="emp_esi_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				

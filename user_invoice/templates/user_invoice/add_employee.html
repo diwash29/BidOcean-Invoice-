@@ -37,6 +37,14 @@
 			<div class="form-group">
 				<label for="mobile_no">Salary*</label>
 				<input type="text" class="form-control" id="salary" name="salary" value="{% if employee.salary %}{{employee.salary}}{% else %}{{user.salary}}{% endif %}" placeholder="Enter salary" {% if 'Add' in submit %}readonly{% endif %}>
+			</div>
+			<div class="form-group">
+				<label for="mobile_no">PF Id*</label>
+				<input type="text" class="form-control" id="pf_id" name="pf_id" value="{% if employee.pf_id %}{{employee.pf_id}}{% else %}0{% endif %}" placeholder="Enter PF Id">
+			</div>
+			<div class="form-group">
+				<label for="mobile_no">ESI Id*</label>
+				<input type="text" class="form-control" id="esi_id" name="esi_id" value="{% if employee.esi_id %}{{employee.esi_id}}{% else %}0{% endif %}" placeholder="Enter ESI Id">
 			</div>	
 			<!-- <div class="form-group">
 				<label for="mobile_no">Leaves*</label>

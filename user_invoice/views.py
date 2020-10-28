@@ -538,6 +538,8 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         phone_no    = request.POST['phone_no']
         emp_id      = request.POST['emp_id']
         designation = request.POST['designation']
+        pf_id       = request.POST['pf_id']
+        esi_id      = request.POST['esi_id']
         # report_to = None
         if 'report_to' not in request.POST:
             report_to = None
@@ -546,7 +548,7 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
 
         # leaves   = request.POST['leaves']
         auth_tbl = user
-        employee = Employee.objects.create(name=name, role=role, salary=salary, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to, designation = designation)
+        employee = Employee.objects.create(name=name, role=role, salary=salary, pf_id=pf_id, esi_id=esi_id, address=address, phone_no=phone_no, emp_id=emp_id, auth_tbl=auth_tbl, is_manager=user.is_manager, report_to=report_to, designation = designation)
         user.designation = designation
         user.save()
         leave_bal = LeaveBalance.objects.create(paid_leave=10, others_leave=0, sick_leave=0, employee=employee)
@@ -585,6 +587,8 @@ class EmployeeEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         employee.address   = request.POST['address']
         employee.phone_no  = request.POST['phone_no']
         employee.designation = request.POST['designation']
+        employee.pf_id       = request.POST['pf_id']
+        employee.esi_id      = request.POST['esi_id']
         # employee.leaves   = request.POST['leaves']
         employee.emp_id    = request.POST['emp_id']
         employee.report_to = report_to    
