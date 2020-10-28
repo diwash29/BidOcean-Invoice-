@@ -206,14 +206,21 @@ def export_invoice_xls(request):
 class PaySlip(TemplateView):
     template_name = "user_invoice/pay_slip.html"
     def get(self, request, pk):
-        invoice = Invoice.objects.get(id=pk)
-        total   = float(invoice.total_payable)+(float(invoice.total_payable)*(float(invoice.percent_deduction)/100))
+        invoice     = Invoice.objects.get(id=pk)
+        total       = float(invoice.total_payable)+(float(invoice.total_payable)*(float(invoice.percent_deduction)/100))
+        dollar_rate = 0.0
+        try:
+            dollar_rate = float(DollarRate.objects.all()[0].dollar_rate)
+        except:
+            dollar_rate = 0.0
+                 
         context = {
             'total'        : round(total),
             'invoice'      : invoice,
             'roles'        : Role.objects.all(),
             'title'        : 'Salary Slip',
-            'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower()
+            'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'dollar_rate'  : dollar_rate
         }
         return render(request, self.template_name, context)
     def post(self, request, pk):
@@ -1309,3 +1316,64 @@ class DeductionAddView(AdminOrAccountsPanelMixin, TemplateView):
         #     print("error")
         #     messages.error(request, "There was a problem editing deduction")
         #     return HttpResponseRedirect('/deduction-add/')            
+class DollarRateEditView(AdminOrAccountsPanelMixin, TemplateView):
+    template_name = 'user_invoice/add_dollar_rate.html'
+    def get(self, request, pk):
+        dollar_rate = DollarRate.objects.get(pk=pk)
+        context ={
+            'submit'      : 'Edit Dollar Rate',
+            'title'       : 'Edit dollar rate',
+            'role'        : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'dollar_rate' : dollar_rate
+        }
+        return render(request, self.template_name, context)   
+    def post(self, request, pk):
+        user          = self.request.user
+        employee      = Employee.objects.get(auth_tbl=user)
+        dollar_rate   = DollarRate.objects.get(pk=pk)
+        try:
+            dollar_rate.dollar_rate = request.POST['dollar_rate']
+            dollar_rate.save()
+            messages.success(request, "Successfully edited dollar rate")   
+            return HttpResponseRedirect('/dollar-rate-list/')
+        except:
+            print("error")
+            messages.error(request, "There was a problem editing dollar rate")
+            return HttpResponseRedirect('/dollar-rate-edit/'+pk)
+
+
+class AddDollarRateView(AdminOrAccountsPanelMixin, TemplateView):
+    template_name = 'user_invoice/add_dollar_rate.html'
+    def get(self, request):
+        
+        context ={
+            'submit'    : 'Add Dollar Rate',
+            'title'     : 'Add dollar rate',
+            'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+        }
+        return render(request, self.template_name, context)   
+    def post(self, request):
+        user          = self.request.user
+        employee      = Employee.objects.get(auth_tbl=user)
+        # try:
+        deduction = DollarRate.objects.create(dollar_rate=request.POST['dollar_rate'])
+        messages.success(request, "Successfully added dollar rate")   
+        return HttpResponseRedirect('/dollar-rate-list/')
+
+class DollarRateDisplayView(AdminOrAccountsPanelMixin,TemplateView):
+    template_name = "user_invoice/dollar_rate_list.html"
+    def get(self, request):
+        employee    = Employee.objects.get(auth_tbl=self.request.user)
+        role        = employee.role.name.lower()
+        dollar_rate = DollarRate.objects.all()
+        if dollar_rate:
+            context = {
+                'role'        : role,
+                'dollar_rate' : dollar_rate,
+                'title'       : 'Dollar rate list', 
+                'employee'    : employee
+            }
+            return render(request, self.template_name, context)      
+        else:
+            return HttpResponseRedirect('/add-dollar-rate/')
+                  

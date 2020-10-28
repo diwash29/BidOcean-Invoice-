@@ -145,7 +145,7 @@
 				<tr>
 					<td style="width: 150px;"></a><span style="font-weight:bold">Dollar Rate:</span></td>
 					<td>
-						<input  type="text" id="dollar_rate" value="{{invoice.dollar_rate}}"  name="dollar_rate" required="" alt="{{role|lower}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input  type="text" id="dollar_rate" value="{% if invoice.dollar_rate %}{{invoice.dollar_rate}}{% else %}{{dollar_rate}}{% endif %}"  name="dollar_rate" required="" alt="{{role|lower}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -228,7 +228,7 @@
 					<td><span style="font-weight:bold">Absent </span></td>
 
 
-					<td><input id="absent" value="{{invoice.authorised_day_off|multiplication:invoice.auth_day_rate}}" name="absent"/></td>
+					<td><input id="absent" value="{{invoice.authorised_day_off|multiplication:invoice.auth_day_rate}}" name="absent"/ {% if role|lower != 'accountant' %}readonly{% endif %} ></td>
 				 
 			
 			</tr>

@@ -48,5 +48,9 @@ urlpatterns = [
     path('deduction-list/',views.DeductionDisplayView.as_view(),name='deduction_list'),
     path('deduction-edit/<int:pk>',views.DeductionEditView.as_view(),name='deduction_edit'),
 
-    path('pay-slip/<int:pk>',views.PaySlip.as_view(),name='pay_slip'),    
+    path('pay-slip/<int:pk>',views.PaySlip.as_view(),name='pay_slip'),
+
+    path('add-dollar-rate/',views.AddDollarRateView.as_view(),name='add_dollar_rate'),  
+    path('dollar-rate-list/',views.DollarRateDisplayView.as_view(),name='dollar_rate_list'),
+    path('dollar-rate-edit/<int:pk>',views.DollarRateEditView.as_view(),name='dollar_rate_edit'),  
 ]

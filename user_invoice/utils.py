@@ -56,7 +56,7 @@ def check_invoice(employee):
 	current_month  = today.month
 	current_year   = today.year
 	start_end_date = get_first_n_last_day(today.year, today.month) 
-	print(start_end_date)
+	# print(start_end_date)
 	invoice        = Invoice.objects.filter(emp_ownwer=employee, monthdate__gte=start_end_date[0], monthdate__lte=start_end_date[1])
 	if not invoice:
 		return None

@@ -94,6 +94,9 @@ class Invoice(models.Model):
 	emp_ownwer                 = models.ForeignKey(Employee, on_delete=models.CASCADE)
 	is_approved                = models.SmallIntegerField(default=0)
 
+	def __str__(self):
+		return '%s' % self.emp_ownwer+str(self.monthdate)
+
 class ProductionReport(models.Model):
 	id            = models.AutoField(primary_key=True)
 	date          = models.DateField()
@@ -114,6 +117,15 @@ class MonthlyDeduction(models.Model):
 	month             = models.IntegerField(unique=True)
 	deduction_percent = models.CharField(max_length=200)	
 	is_approved       = models.SmallIntegerField(default=0)
+
+
+class DollarRate(models.Model):
+	id                = models.AutoField(primary_key=True)
+	dollar_rate       = models.CharField(max_length=200)
+
+	def __str__(self):
+		return '%s' % self.dollar_rate
+
 
 
 
