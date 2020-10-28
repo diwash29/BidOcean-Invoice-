@@ -129,6 +129,13 @@ class DollarRate(models.Model):
 		return '%s' % self.dollar_rate
 
 
+class Banner(models.Model):
+	id          = models.AutoField(primary_key=True)
+	banner_name = models.CharField(max_length=200)
+	banner_pic  = models.FileField(upload_to='banner/')
+
+	def __str__(self):
+		return '%s' % self.banner_name
 
 
 

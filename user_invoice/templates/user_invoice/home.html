@@ -85,12 +85,14 @@
 <div class="slider fullscreen">
 	<ul class="slides">
 	  <li>
-		<img src="{% static 'images/bidgrp.png' %}" alt="">
+	  	{% if banner %}
+		<img src="{{banner.banner_pic.url}}" alt="">
+		{% endif %}
 		<div class="caption center-align">
 
-			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
+			<!-- <h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
 			
-		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
+		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a> -->
 		  
 		</div>
 	  </li>
@@ -127,8 +129,8 @@
 			<h3 style="color: aliceblue;">Please Click Below To Add Invoice</h3>
 		  <a class="btn btn-outline-success mb-4 mr-2 ml-2" href="{% url url %}">Add Invoice</a>
 		</div>
-	  </li>
-	</ul> -->
+	  </li>-->
+	</ul> 
   </div>
 <!-- <style>
 	

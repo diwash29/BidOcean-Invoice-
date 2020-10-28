@@ -30,19 +30,23 @@ from django.http import JsonResponse
 # 3650-8243-248
 @login_required(login_url='/login/')
 def index(request):
-	user = request.user
-	try:
-		employee = Employee.objects.get(auth_tbl=user)
-		rolename = employee.role.name.lower()
-		url = 'fixed'
-		if rolename=='ir':
-			url = 'ir'
-		elif rolename=='br':
-			url = 'br'	
-		context = {'url':url, 'title':'home', 'role':rolename}	
-		return render(request,'user_invoice/home.html',context)
-	except:
-		return HttpResponseRedirect('/employee/'+str(user.pk))
+    user = request.user
+    banner_obj = Banner.objects.all()
+    banner = None
+    if banner_obj:
+        banner = banner_obj[0]
+    try:
+        employee = Employee.objects.get(auth_tbl=user)
+        rolename = employee.role.name.lower()
+        url = 'fixed'
+        if rolename=='ir':
+            url = 'ir'
+        elif rolename=='br':
+            url = 'br'	
+        context = {'url':url, 'title':'home', 'role':rolename, 'banner':banner}	
+        return render(request,'user_invoice/home.html',context)
+    except:
+        return HttpResponseRedirect('/employee/'+str(user.pk))
 
 def make_users(request):
     url2   = "https://www.bidocean.com/api/production/request.php"
