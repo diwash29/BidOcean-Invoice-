@@ -113,6 +113,9 @@ class ProductionReport(models.Model):
 	usd           = models.CharField(max_length=200)
 	employee      = models.ForeignKey(Employee, on_delete=models.CASCADE)
 
+	def __str__(self):
+		return '%s' % self.employee+str(self.date)
+
 
 class MonthlyDeduction(models.Model):
 	id                = models.AutoField(primary_key=True)
