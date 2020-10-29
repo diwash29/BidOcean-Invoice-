@@ -64,8 +64,8 @@
 			{% endif %}
 			{% if user.is_manager == 0 or employee.is_manager == 0 %}
 			<div class="form-group">
-				<label for="mobile_no">Report to*</label>
-				<select class="form-control" id="report_to" name='report_to' required="">
+				<label for="mobile_no">Report to</label>
+				<select class="form-control" id="report_to" name='report_to' >
 					<option value=''>Select Manager</option>
 					{% for manager in managers %}
 						<option {% if employee.report_to.id == manager.id %}selected{% endif %} value='{{manager.id}}'>{{manager.name}}</option>

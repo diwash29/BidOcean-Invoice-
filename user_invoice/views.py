@@ -66,12 +66,14 @@ def make_users(request):
     for each in result2_json:
         username = (result2_json[each]['emp_name'].replace(" ", "_")).lower()
         designation = result2_json[each]['position']
-        if 'Researcher' in designation:
-            role = Role.objects.get(name__iexact='ir')
-        elif 'Bids Reporter' in designation:
-            role = Role.objects.get(name__iexact='br')
-        else:
-            role = Role.objects.get(name__iexact='fixed') 
+        role = None
+        if designation is not None:
+            if 'Researcher' in designation:
+                role = Role.objects.get(name__iexact='ir')
+            elif 'Bids Reporter' in designation:
+                role = Role.objects.get(name__iexact='br')
+            else:
+                role = Role.objects.get(name__iexact='fixed') 
         try:           
             user = Userdetail.objects.create(username=username, firstname=result2_json[each]['emp_name'].split(" ")[0], lastname=listToString(result2_json[each]['emp_name'].split(" ")[1:]), employee_id=result2_json[each]['emp_id'], role=role, designation=designation)
             user.set_password(result2_json[each]['hire_date'])
@@ -548,7 +550,10 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         if 'report_to' not in request.POST:
             report_to = None
         else:
-            report_to = Employee.objects.get(pk=request.POST['report_to'])
+            try:
+                report_to = Employee.objects.get(pk=request.POST['report_to'])
+            except:
+                report_to =None
 
         # leaves   = request.POST['leaves']
         auth_tbl = user
