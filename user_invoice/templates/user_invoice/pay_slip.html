@@ -121,7 +121,7 @@
 				<tr>
 					<td style="width: 150px;"></a><span style="font-weight:bold">Employee PF ID:</span></td>
 					<td>
-						<input  type="text" value="{% if invoice.emp_pf_id %}{{invoice.emp_pf_id}}{% else %}{{invoice.emp_ownwer.pf_id}}{% endif %}" name="emp_pf_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input  type="text" value="{% if invoice.emp_pf_id != '0'  %}{{invoice.emp_pf_id}}{% else %}{{invoice.emp_ownwer.pf_id}}{% endif %}" name="emp_pf_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -129,7 +129,7 @@
 				<tr>
 					<td style="width: 150px;"></a><span style="font-weight:bold">Employee ESI ID: </span></td>
 					<td>
-						<input  type="text" value="{% if invoice.emp_esi_id %}{{invoice.emp_esi_id}}{% else %}{{invoice.emp_ownwer.esi_id}}{% endif %}"  name="emp_esi_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input  type="text" value="{% if invoice.emp_esi_id != '0' %}{{invoice.emp_esi_id}}{% else %}{{invoice.emp_ownwer.esi_id}}{% endif %}"  name="emp_esi_id" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -145,7 +145,7 @@
 				<tr>
 					<td style="width: 150px;"></a><span style="font-weight:bold">Dollar Rate:</span></td>
 					<td>
-						<input  type="text" id="dollar_rate" value="{% if invoice.dollar_rate %}{{invoice.dollar_rate}}{% else %}{{dollar_rate}}{% endif %}"  name="dollar_rate" required="" alt="{{role|lower}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input  type="text" id="dollar_rate" value="{% if invoice.dollar_rate != '0' %}{{invoice.dollar_rate}}{% else %}{{dollar_rate}}{% endif %}"  name="dollar_rate" required="" alt="{{role|lower}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -310,7 +310,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Cheque/Cash:</span></td>
 					<td>
-						<input    name="cheque/Cash"/>
+						<input name="cheque/Cash" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -318,7 +318,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Cheque No:</span></td>
 					<td>
-						<input name="cheque_no" />
+						<input name="cheque_no" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -327,7 +327,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Date</span></td>
 					<td>
-						<input type="date" />
+						<input type="date" {% if role|lower != 'accountant' %}readonly{% endif %}/>
 					</td>
 					
 					
@@ -335,7 +335,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Bank</span></td>
 					<td>
-						<input name="bank" />
+						<input name="bank" {% if role|lower != 'accountant' %}readonly{% endif %}/>
 					</td>					
 				</tr>
 				
@@ -349,11 +349,11 @@
 	
 		</table>
 
-
-		<div class="col-auto my-1">
-			<button type="button" id="printPageButton"  onclick="window.print()" class="btn btn-primary shadow-none" style="background-color: teal;border: none;margin-top: 10px;margin-left: 550px;"><b> Download</b></button>
-		   
-		  </div>
+		{% if invoice.is_approved == 1 %}
+			<div class="col-auto my-1">
+			<button type="button" id="printPageButton"  onclick="window.print()" class="btn btn-primary shadow-none" style="background-color: teal;border: none;margin-top: 10px;margin-left: 550px;"><b> Download</b></button>		   
+		  	</div>
+		{% endif %}
 
 		{% if role|lower == 'accountant' %}  
 		<div class="col-auto my-1">

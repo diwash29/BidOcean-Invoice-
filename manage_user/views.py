@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
+from leave.models import LeaveBalance
 from user_invoice.models import Role, Employee
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, View
@@ -68,7 +69,10 @@ class ManageUser(OnlyAdminPanelMixin,TemplateView):
                         emp.report_to = None
                     emp.save()
                 except:
-                    pass    
+                    print(request.POST['editis_manager'])
+                    if request.POST['editis_manager'] == '1':
+                        employee = Employee.objects.create(name=request.POST['firstname']+" "+request.POST['lastname'], role=Role.objects.get(pk=request.POST['role']), salary=request.POST['salary'], address=request.POST['address'], phone_no=request.POST['phone'], emp_id=request.POST['employee_id'],auth_tbl=user, is_manager=request.POST['editis_manager'])    
+                        leave_bal = LeaveBalance.objects.create(paid_leave=10, others_leave=0, sick_leave=0, employee=employee)
                 messages.success(request, "Successfully edited user")
             else:
                 try:

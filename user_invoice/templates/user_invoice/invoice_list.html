@@ -147,19 +147,13 @@ tr:hover .cut { opacity: 1; }
 							 <button class="input-group-text" style="height: 30px;" type="submit" name="submitbtn" value="Search"><i class="fa fa-search"></i>
 								
 							</div>
-                <select   class="form-control"style="width:50px; height:30px;color:white;background-color:teal;margin-left:10px" name="bank"  onchange="this.form.submit()">
+                <!-- <select   class="form-control"style="width:50px; height:30px;color:white;background-color:teal;margin-left:10px" name="bank"  onchange="this.form.submit()">
                   <option value="" style="color: white;"><b> Select Bank </b></option>
                   <option value="axis" {% if request.GET.bank == 'axis' %}selected{% endif %} style="color: white;"><b> AXIS</b></option>
                   <option value="hdfc" {% if request.GET.bank == 'hdfc' %}selected{% endif %} style="color: white;"><b> HDFC</b></option>
                   <option value="others" {% if request.GET.bank == 'others' %}selected{% endif %} style="color: white;"><b> Others</b></option>
 
-    
-                  <!-- {% for roledata in roles %}
-                    <option value='{{roledata.id}}' style="color: white;"  {% if roledata.id == request.GET.role|add:"0"  %}  selected  {% endif %}><b>{{roledata.name}}</b> </option>
-    
-                  {% endfor %} -->
-
-                </select>
+                </select> -->
 							<p style="margin-left: 40px;"><b style="color: teal;"> From date :</b> <input type="date" name="from_date" value="{{request.GET.from_date}}"></p>
 								<p style="margin-left: 40px;"><b style="color: teal;"> To Date :</b><input type="date" name="to_date" value="{{request.GET.to_date}}"></p>
 						</div>	
@@ -187,7 +181,7 @@ tr:hover .cut { opacity: 1; }
 				<th style="color: teal;"><b> Action</b></th>
 			</tr>
 			{% for invoice in invoices %}
-			<tr>
+			<tr {% if invoice.is_approved == 1 %} style="background-color:#C8FF9D" {% endif %} >
 				<td style="color: black;">{{invoice.emp_ownwer.name}}</td>
 				<td style="color: black;">{{invoice.emp_ownwer.emp_id}}</td>
 				<td style="color: black;">{{invoice.emp_ownwer.role.name}}</td>

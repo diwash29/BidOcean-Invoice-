@@ -211,7 +211,7 @@ class PaySlip(TemplateView):
     template_name = "user_invoice/pay_slip.html"
     def get(self, request, pk):
         invoice     = Invoice.objects.get(id=pk)
-        total       = float(invoice.total_payable)+(float(invoice.total_payable)*(float(invoice.percent_deduction)/100))
+        total       = float(invoice.total_payable)/(1.0-(float(invoice.percent_deduction)/100))
         dollar_rate = 0.0
         try:
             dollar_rate = float(DollarRate.objects.all()[0].dollar_rate)
