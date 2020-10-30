@@ -310,7 +310,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Cheque/Cash:</span></td>
 					<td>
-						<input name="cheque/Cash" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input name="cheque_cash" value="{{invoice.cheque_cash}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -318,7 +318,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Cheque No:</span></td>
 					<td>
-						<input name="cheque_no" {% if role|lower != 'accountant' %}readonly{% endif %} />
+						<input name="cheque_no" value="{{invoice.cheque_no}}" {% if role|lower != 'accountant' %}readonly{% endif %} />
 					</td>
 					
 				
@@ -327,7 +327,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Date</span></td>
 					<td>
-						<input type="date" {% if role|lower != 'accountant' %}readonly{% endif %}/>
+						<input type="date" name="payslip_date" value="{{invoice.payslip_date|date:'Y-m-d'}}" {% if role|lower != 'accountant' %}readonly{% endif %}/>
 					</td>
 					
 					
@@ -335,7 +335,7 @@
 				<tr>
 					<td></a><span style="font-weight:bold">Bank</span></td>
 					<td>
-						<input name="bank" {% if role|lower != 'accountant' %}readonly{% endif %}/>
+						<input name="payslip_bank" value="{{invoice.payslip_bank}}" {% if role|lower != 'accountant' %}readonly{% endif %}/>
 					</td>					
 				</tr>
 				

@@ -90,6 +90,11 @@ class Invoice(models.Model):
 	advance                    = models.CharField(max_length=200, default=0, blank=True)
 
 	commission                 = models.CharField(max_length=200, default=0, blank=True)
+
+	cheque_cash                = models.CharField(max_length=200, null=True, blank=True)
+	cheque_no                  = models.CharField(max_length=200, null=True, blank=True)
+	payslip_date               = models.DateField(null=True, blank=True)
+	payslip_bank               = models.CharField(max_length=200, null=True, blank=True)
 	
 	total_deduction            = models.CharField(max_length=200, default=0, blank=True)
 	total_payable              = models.CharField(max_length=200, default=0, blank=True)

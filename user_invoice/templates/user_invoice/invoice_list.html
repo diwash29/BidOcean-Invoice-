@@ -174,8 +174,8 @@ tr:hover .cut { opacity: 1; }
 				<th style="color: teal;"><b> Phone No </b></th>
 				<th style="color: teal;"><b> Total Deduction </b></th>
 				<th style="color: teal;"><b> Total Payable </b></th>
-        <th style="color: teal;"><b> Bank Name </b></th>
-        <th style="color: teal;"><b> Acc No </b></th>
+        <th style="color: teal;"><b> File Upload </b></th>
+        <!-- <th style="color: teal;"><b> Acc No </b></th> -->
 				<th style="color: teal;"><b> Invoice Date</b></th>
 				<th style="color: teal;"><b> Invoice for</b></th>
 				<th style="color: teal;"><b> Action</b></th>
@@ -188,8 +188,8 @@ tr:hover .cut { opacity: 1; }
 				<td style="color: black;">{{invoice.emp_ownwer.phone_no}}</td>
 				<td style="color: black;">{{invoice.total_deduction}}</td>
 				<td style="color: black;">{{invoice.total_payable}}</td>
-        <td style="color: black;">{% if invoice.bank_account.bank == 'others' %}{{invoice.bank_account.other_bank}}<br>({{invoice.bank_account.ifsc_other}}){% else %}{{invoice.bank_account.bank|upper}}{% endif %}</td>
-        <td style="color: black;">{{invoice.bank_account.acc_no}}</td>
+        <td style="color: black;">{{invoice.file_upload}}</td>
+        <!-- <td style="color: black;">{{invoice.bank_account.acc_no}}</td> -->
 				<td style="color: black;">{{invoice.invoice_date}}</td>
 				<td style="color: black;">{{invoice.monthdate|date:"M, Y"}}</td>
 				<td style="color: black;">{% if invoice.is_approved == 1 or role|lower == 'accountant' %}<a href="{% url 'pay_slip' invoice.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Slip</span></button></a>{% else %}--{% endif %}</td>

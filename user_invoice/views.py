@@ -231,13 +231,20 @@ class PaySlip(TemplateView):
         return render(request, self.template_name, context)
     def post(self, request, pk):
         invoice = Invoice.objects.get(id=pk)
+        payslip_date = None
+        if request.POST['payslip_date'] != '':
+            payslip_date = datetime.strptime(request.POST['payslip_date'], '%Y-%m-%d').date()   
         try:
             invoice.emp_pf_id             = request.POST['emp_pf_id']
             invoice.emp_esi_id            = request.POST['emp_esi_id']
             invoice.dollar_rate           = request.POST['dollar_rate']
             invoice.emp_ins_fund          = request.POST['emp_ins_fund']
             invoice.percent_pf_prev_month = request.POST['percent_pf_prev_month']
-            invoice.advance               = request.POST['advance']            
+            invoice.advance               = request.POST['advance']  
+            invoice.payslip_date          = payslip_date
+            invoice.cheque_cash           = request.POST['cheque_cash']
+            invoice.cheque_no             = request.POST['cheque_no']
+            invoice.payslip_bank          = request.POST['payslip_bank']               
             invoice.is_approved           = 1
             invoice.save()
             messages.success(request, "Successfully saved invoice")   
@@ -474,7 +481,7 @@ class RateAddView(AdminOrHROrAccountsPanelMixin,TemplateView):
 class EmployeeDisplayView(AdminOrHROrAccountsPanelMixin,TemplateView):
     template_name = 'user_invoice/employee_list.html'
     def get(self, request):
-        employee_list    = Employee.objects.all()
+        employee_list    = Employee.objects.exclude(Q(name__icontains="None None")).all()
         try:
             search     = request.GET['search']
         except:
@@ -547,6 +554,8 @@ class EmployeeAddView(AdminPanelMixin,TemplateView):
         pf_id       = request.POST['pf_id']
         esi_id      = request.POST['esi_id']
         # report_to = None
+        if emp_id == 'None' or emp_id == '':
+            emp_id = 999999999
         if 'report_to' not in request.POST:
             report_to = None
         else:
@@ -583,10 +592,14 @@ class EmployeeEditView(AdminOrHROrAccountsPanelMixin,TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
+        print(request.POST)
         if 'report_to' not in request.POST:
             report_to = None
         else:
-            report_to = Employee.objects.get(pk=request.POST['report_to'])
+            try:
+                report_to = Employee.objects.get(pk=request.POST['report_to'])
+            except:
+                report_to =None
         user               = request.user
         employee           = Employee.objects.get(pk=pk)
         leave_bal          = LeaveBalance.objects.get(employee=employee)
@@ -673,7 +686,6 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 
         result2_json = result2.json()
 
-        print(result2_json)
         
         #wds_import_amt      = result2_json['0']['total_import']*(rate.wds_import)
         
@@ -689,7 +701,6 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         if employee.salary == 'None' or employee.salary is None or employee.salary == "":
             emp_fixed_salary = 0.0 
             
-        print(emp_fixed_salary)    
         if data['wds']:
             total_solocitaion_count = result2_json['0']['total_solicitation']
             total_source_count      = result2_json['0']['total_source_count']
@@ -747,7 +758,7 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
 
 
         if rolename == 'admin' or  rolename == 'hr' or  rolename == 'accountant':
-            invoice = Invoice.objects.all()
+            invoice = Invoice.objects.exclude(Q(emp_ownwer__name__icontains="None None")).all()
         else:
             invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
 
