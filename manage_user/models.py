@@ -26,7 +26,7 @@ class Userdetail(AbstractBaseUser, PermissionsMixin):
     address         = models.CharField(max_length=300,null=True)
     designation     = models.CharField(max_length=300,null=True)
     role            = models.ForeignKey('user_invoice.Role', on_delete=models.SET_NULL, null=True, blank=True)
-    employee_id     = models.CharField(max_length=200, null=True)
+    employee_id     = models.CharField(max_length=200, unique=True, null=True)
     salary          = models.CharField(max_length=200, null=True)
     is_manager      = models.SmallIntegerField(default=0)
     # report_to       = models.ForeignKey('user_invoice.Employee', on_delete=models.SET_NULL, null=True, blank=True)
