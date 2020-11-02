@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect,reverse
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect,reverse, get_object_or_404
 from django.core.paginator import Paginator
 from django.views.generic import View
 from django.contrib import messages
@@ -45,6 +45,40 @@ def createEmployee(request):
 		return HttpResponseRedirect(reverse('letter:joinee_list'))
 	
 	return render(request,'letter/add_employee.html', {'role':rolename, "employee":employee, 'users':users})
+
+def editEmployee(request, pk):
+	user           = request.user
+	employee       = Employee.objects.get(auth_tbl=user)
+	rolename       = employee.role.name.lower()
+	users          = Userdetail.objects.all().order_by('firstname')
+	joinee         = EmployeeDetail.objects.get(pk=pk)
+	print(joinee)
+	joinee         = get_object_or_404(EmployeeDetail, pk=pk)
+
+	print(request.POST)
+	if request.method=="POST":
+		print(request.POST['first_name'])
+		print(request.POST['last_name'])
+		print(request.POST['designation'])
+		print(request.POST['email'])
+		print(request.POST['phone'])
+		print(request.POST['joining_date'])
+		print(request.POST['ctc'])
+		
+		joinee.first_name 		= request.POST['first_name']
+		joinee.last_name 		= request.POST['last_name']
+		joinee.designation 	    = request.POST['designation']
+		joinee.email 			= request.POST['email']
+		joinee.phone 			= request.POST['phone']
+		joinee.joining_date 	= request.POST['joining_date']
+		joinee.ctc 		     	= request.POST['ctc']
+		print(joinee)
+		joinee.save()
+		messages.success(request,'Employee Just Edited')
+		return HttpResponseRedirect(reverse('letter:joinee_list'))
+	
+	return render(request,'letter/add_employee.html', {'role':rolename, "employee":employee, 'users':users,'joinee':joinee})
+
 
 def employeeList(request):
 	employee_list = EmployeeDetail.objects.all()

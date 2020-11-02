@@ -15,7 +15,8 @@ class EmployeeDetail(models.Model):
 
 
     def __str__(self):
-        return self.first_name+" "+self.last_name
+        return '%s' % self.first_name+' '+self.last_name
+        # return self.first_name+" "+self.last_name
 
     class Meta:
         verbose_name_plural = "Employee Details"
