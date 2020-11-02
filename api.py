@@ -1,8 +1,8 @@
 import json
 import requests
-url = 'http://1.7.151.12:8181/bidocean/api/production/request.php'
+url = 'http://www.bidocean.com/api/production/request.php'
 
-token = "developement_Pr85SNYWOadeIOlP53VjZpA6lHoegm"
+token = "Pr85SNYWOV3GQdKProdReqstwer53VjZpA6lHoegm"
 
 requestData = {}
 requestData["empid"] = 1296
