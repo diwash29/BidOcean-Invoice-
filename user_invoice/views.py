@@ -105,8 +105,8 @@ def ajax_get_leave(request):
     params = {'empid': employee_id, 'year_month': date}
 
 
-    url1   = 'http://1.7.151.12:8181/bidocean/api/production/request.php'
-    token1 = "developement_Pr85SNYWOadeIOlP53VjZpA6lHoegm"
+    url1   = 'https://www.bidocean.com/api/production/request.php'
+    token1 = "Pr85SNYWOV3GQdKProdReqstwer53VjZpA6lHoegm"
 
     requestData1               = {}
     requestData1["empid"]      = int(employee_id)#1296#
@@ -659,8 +659,8 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
         params = {'empid': employee_id, 'year_month': date}
 
 
-        url1   = 'http://1.7.151.12:8181/bidocean/api/production/request.php'
-        token1 = "developement_Pr85SNYWOadeIOlP53VjZpA6lHoegm"
+        url1   = 'https://www.bidocean.com/api/production/request.php'
+        token1 = "Pr85SNYWOV3GQdKProdReqstwer53VjZpA6lHoegm"
 
         requestData1               = {}
         requestData1["empid"]      = int(employee_id)#1296#
