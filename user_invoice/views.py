@@ -1399,5 +1399,22 @@ class DollarRateDisplayView(AdminOrAccountsPanelMixin,TemplateView):
             }
             return render(request, self.template_name, context)      
         else:
-            return HttpResponseRedirect('/add-dollar-rate/')
+            return HttpResponseRedirect('/add-payslip-other/')
                   
+
+class AddPaySlipOthersView(AdminOrAccountsPanelMixin, TemplateView):
+    template_name = 'user_invoice/add_pay_slip_others.html'
+    def get(self, request):     
+        context ={
+            'submit'    : 'Add PaySlip Others',
+            'title'     : 'Add payslip others',
+            'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+        }
+        return render(request, self.template_name, context)   
+    def post(self, request):
+        user          = self.request.user
+        employee      = Employee.objects.get(auth_tbl=user)
+        # try:
+        deduction = DollarRate.objects.create(dollar_rate=request.POST['dollar_rate'])
+        messages.success(request, "Successfully added dollar rate")   
+        return HttpResponseRedirect('/payslip-list/')                  

@@ -145,6 +145,19 @@ class Banner(models.Model):
 	def __str__(self):
 		return '%s' % self.banner_name
 
+class PaySlipOthers(models.Model):
+	id                    = models.AutoField(primary_key=True)
+	employee              = models.ForeignKey(Employee, on_delete=models.CASCADE)
+	month_year            = models.DateField()  
+	emp_state_ins_fund    = models.CharField(max_length=200, default=0, blank=True)
+	percent_pf_prev_month = models.CharField(max_length=200, default=0, blank=True)
+	advance               = models.CharField(max_length=200, default=0, blank=True)
+	commission            = models.CharField(max_length=200, default=0, blank=True)
+	other_field           = models.CharField(max_length=200, null=True, blank=True)
+	other_value           = models.CharField(max_length=200, null=True, blank=True)
+
+	def __str__(self):
+		return '%s' % self.employee+"-"+str(self.month_year)
 
 
 
