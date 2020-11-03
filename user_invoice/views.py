@@ -1415,6 +1415,17 @@ class AddPaySlipOthersView(AdminOrAccountsPanelMixin, TemplateView):
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
         # try:
-        deduction = DollarRate.objects.create(dollar_rate=request.POST['dollar_rate'])
+        deduction = PaySlipOthers.objects.create(dollar_rate=request.POST['dollar_rate'])
         messages.success(request, "Successfully added dollar rate")   
         return HttpResponseRedirect('/payslip-list/')                  
+
+
+class PaySlipOthersDisplayView(AdminOrAccountsPanelMixin, TemplateView):
+    template_name = 'user_invoice/pay_slip_others_list.html'
+    def get(self, request):
+        context = {
+            'title'          : 'PaySlip other list',
+            'role'           : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'payslip_others' : PaySlipOthers.objects.all()
+        }
+        return render(request, self.template_name, context)

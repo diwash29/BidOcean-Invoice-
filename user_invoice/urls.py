@@ -52,5 +52,8 @@ urlpatterns = [
 
     path('add-dollar-rate/',views.AddDollarRateView.as_view(),name='add_dollar_rate'),  
     path('dollar-rate-list/',views.DollarRateDisplayView.as_view(),name='dollar_rate_list'),
-    path('dollar-rate-edit/<int:pk>',views.DollarRateEditView.as_view(),name='dollar_rate_edit'),  
+    path('dollar-rate-edit/<int:pk>',views.DollarRateEditView.as_view(),name='dollar_rate_edit'),
+
+    path('add-payslips-others/',views.AddPaySlipOthersView.as_view(),name='add_payslips_others'), 
+    path('payslips-others-list/',views.PaySlipOthersDisplayView.as_view(), name='payslips_others_list')   
 ]
