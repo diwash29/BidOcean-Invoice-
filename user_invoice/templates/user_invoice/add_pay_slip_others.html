@@ -1,43 +1,7 @@
 {% extends "user_invoice/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<article>
-		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Add Pay Slip Others Fields </b></legend>
-		<form method='POST'>
-			{% csrf_token %}
-			
 
-			
-				
-			<div class="form-group">
-				
-				<button class="btn btn-primary" type="submit" class="form-control" id="submit" value="{{submit}}" style="background-color:teal;border: none;">Add</button>
-				{% if 'Edit' in submit %}
-				{% endif %}		
-				<style>
-					.btn-primary:hover {
-			 background-color: green !important;
-		 }
-		</style>
-			</div>	
-		</form>
-	</article>
-			
-		
-		
-			
-			
-	
-
-		
-		
-			
-		  
-
-		
-
-		  
-	
 		
 	<style>
  *
@@ -155,5 +119,91 @@ tr:hover .cut { opacity: 1; }
 @page { margin: 0; }
 
     </style>
+<style>
+	.btn-primary:hover {
+		background-color: green !important;
+ 	}
+</style>    
+
+
+	<article>
+		<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Add Pay Slip Others Fields </b></legend>
+		<form method='POST'>
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="formGropuNameInput">Date</label>
+				<input type="date" class="form-control" id="date" name="month_year" value="{{ps_others.month_year|date:'Y-m-d'}}" placeholder="" required="">
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Employee</label>
+				<select class="form-control" id="employee" name="employee" required="">
+					<option value= "">Select Employee</option>
+					{% for emp in employees %}
+					<option {% if ps_others.employee.pk == emp.pk %}selected{% endif %} value={{emp.id}}>{{emp.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Employee state insurance fund</label>
+				<input type="number" class="form-control" id="emp_state_ins_fund" name="emp_state_ins_fund" value="{{ps_others.emp_state_ins_fund}}" placeholder="Enter employee state insurance fund">
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Percentage pf of previous month</label>
+				<input type="number" class="form-control" id="percent_pf_prev_month" name="percent_pf_prev_month" value="{{ps_others.percent_pf_prev_month}}" placeholder="Enter employee state insurance fund">
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Advance</label>
+				<input type="number" class="form-control" id="advance" name="advance" value="{{ps_others.advance}}" placeholder="Enter advance">
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Commission</label>
+				<input type="number" class="form-control" id="commission" name="commission" value="{{ps_others.commission}}" placeholder="Enter commission">
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Other field name</label>
+				<input type="text" class="form-control" id="other_field" name="other_field" value="{{ps_others.other_field}}" placeholder="Enter other field name">
+			</div>
+			<div class="form-group">
+				<label for="formGropuNameInput">Other field value</label>
+				<input type="number" class="form-control" id="other_value" name="other_value" value="{{ps_others.other_value}}" placeholder="Enter other field name">
+			</div>				
+			<div class="form-group">				
+				<button class="btn btn-primary" type="submit" class="form-control" id="submit" value="{{submit}}" style="background-color:teal;border: none;">Add</button>
+				{% if 'Edit' in submit %}
+
+				{% endif %}		
+				<input type="hidden" id="add_or_edit" value="{% if 'Edit' in submit %}edit{% else %}add{% endif %}">
+			</div>	
+		</form>
+	</article>
+
+<script type="text/javascript">
+	$("#employee").change(function(){
+		var emp_id      = $(this).val()
+		var add_or_edit = $("#add_or_edit").val()
+		var date        = $("#date").val()
+		if (emp_id != ''){
+			$.ajax({
+		      url  : '{% url "check_ps_others" %}',
+		      data : {
+		            emp_id  : emp_id,
+		            add_or_edit : add_or_edit,
+		            date        : date
+		          },
+		      type : 'GET',
+		      dataType: 'json',
+		      success: function (data) {
+		      	if (data.redirect_page != null){
+		      		window.location.href = data.redirect_page;
+		      	}
+		        /*$("#available_days").val(data.leave)*/
+		      }
+		    });
+		}
+	})
+	{% if 'Add' in submit %}
+		document.querySelector("#date").valueAsDate = new Date();
+	{% endif %}
+</script>
 
 {% endblock content %}

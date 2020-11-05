@@ -212,21 +212,31 @@ def export_invoice_xls(request):
 class PaySlip(TemplateView):
     template_name = "user_invoice/pay_slip.html"
     def get(self, request, pk):
-        invoice     = Invoice.objects.get(id=pk)
-        total       = float(invoice.total_payable)/(1.0-(float(invoice.percent_deduction)/100))
+        invoice            = Invoice.objects.get(id=pk)
+        employee           = invoice.emp_ownwer
+        today              = datetime.today()
+        first_and_last_day = get_first_n_last_day(today.year,today.month)
+        ps_others          =  PaySlipOthers.objects.filter(month_year__gte=first_and_last_day[0], month_year__lte=first_and_last_day[1], employee=employee)
+        ps_others_data     = {'emp_state_ins_fund':0, 'percent_pf_prev_month':0, 'advance':0, 'commission':0, 'other_field': '', 'other_value':0}
+        if ps_others:
+            ps_others_data = ps_others[0]
+
+        total       = round(float(invoice.total_payable)/(1.0-(float(invoice.percent_deduction)/100)), 2)
         dollar_rate = 0.0
+
         try:
             dollar_rate = float(DollarRate.objects.all()[0].dollar_rate)
         except:
             dollar_rate = 0.0
                  
         context = {
-            'total'        : round(total),
-            'invoice'      : invoice,
-            'roles'        : Role.objects.all(),
-            'title'        : 'Salary Slip',
-            'role'         : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
-            'dollar_rate'  : dollar_rate
+            'total'          : round(total),
+            'invoice'        : invoice,
+            'roles'          : Role.objects.all(),
+            'title'          : 'Salary Slip',
+            'role'           : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'dollar_rate'    : dollar_rate,
+            'ps_others_data' : ps_others_data
         }
         return render(request, self.template_name, context)
     def post(self, request, pk):
@@ -1409,15 +1419,18 @@ class AddPaySlipOthersView(AdminOrAccountsPanelMixin, TemplateView):
             'submit'    : 'Add PaySlip Others',
             'title'     : 'Add payslip others',
             'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'employees' : Employee.objects.exclude(Q(name__icontains="None None")).all().order_by('name')
         }
         return render(request, self.template_name, context)   
     def post(self, request):
+        print(request.POST)
         user          = self.request.user
         employee      = Employee.objects.get(auth_tbl=user)
+        payslipother  = PaySlipOthers.objects.create(month_year=request.POST['month_year'], employee=Employee.objects.get(id=request.POST['employee']), emp_state_ins_fund=request.POST['emp_state_ins_fund'], percent_pf_prev_month=request.POST['percent_pf_prev_month'], advance=request.POST['advance'], commission=request.POST['commission'], other_field=request.POST['other_field'], other_value=request.POST['other_value']) 
         # try:
-        deduction = PaySlipOthers.objects.create(dollar_rate=request.POST['dollar_rate'])
-        messages.success(request, "Successfully added dollar rate")   
-        return HttpResponseRedirect('/payslip-list/')                  
+        #deduction = PaySlipOthers.objects.create(dollar_rate=request.POST['dollar_rate'])
+        #messages.success(request, "Successfully added dollar rate")   
+        return HttpResponseRedirect('/payslips-others-list/')                  
 
 
 class PaySlipOthersDisplayView(AdminOrAccountsPanelMixin, TemplateView):
@@ -1429,3 +1442,37 @@ class PaySlipOthersDisplayView(AdminOrAccountsPanelMixin, TemplateView):
             'payslip_others' : PaySlipOthers.objects.all()
         }
         return render(request, self.template_name, context)
+
+class EditPaySlipOthersView(AdminOrAccountsPanelMixin, TemplateView):
+    template_name = 'user_invoice/add_pay_slip_others.html'
+    def get(self, request, pk):
+        ps_others =  PaySlipOthers.objects.get(pk=pk)     
+        context ={
+            'submit'    : 'EditPaySlip Others',
+            'title'     : 'Edit payslip others',
+            'role'      : Employee.objects.get(auth_tbl=self.request.user).role.name.lower(),
+            'employees' : Employee.objects.exclude(Q(name__icontains="None None")).all().order_by('name'),
+            'ps_others' : ps_others
+        }
+        return render(request, self.template_name, context)
+
+def ajax_check_ps_others(request):
+    emp_id             = request.GET.get('emp_id', None)
+    add_or_edit        = request.GET.get('add_or_edit', None)
+    date               = request.GET.get('date', None)
+    employee           = Employee.objects.get(pk=emp_id)
+    date               = datetime.strptime(date,"%Y-%m-%d").date()
+    first_and_last_day = get_first_n_last_day(date.year,date.month)  
+    # print(first_and_last_day)
+    data               = {}
+    ps_others          = PaySlipOthers.objects.filter(month_year__gte=first_and_last_day[0], month_year__lte=first_and_last_day[1], employee=employee)  
+    data['redirect_page'] = None
+    if ps_others:
+        data['is_present']    = 'yes'
+        data['redirect_page'] = '/edit-payslips-others/'+str(ps_others[0].pk)
+    else:
+        data['is_present'] = 'no'
+        if add_or_edit == 'edit':
+            data['redirect_page'] = '/add-payslips-others/'  
+    
+    return JsonResponse(data)   

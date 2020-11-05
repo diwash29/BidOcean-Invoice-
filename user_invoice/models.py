@@ -154,7 +154,7 @@ class PaySlipOthers(models.Model):
 	advance               = models.CharField(max_length=200, default=0, blank=True)
 	commission            = models.CharField(max_length=200, default=0, blank=True)
 	other_field           = models.CharField(max_length=200, null=True, blank=True)
-	other_value           = models.CharField(max_length=200, null=True, blank=True)
+	other_value           = models.CharField(max_length=200, default=0, blank=True)
 
 	def __str__(self):
 		return '%s' % self.employee+"-"+str(self.month_year)

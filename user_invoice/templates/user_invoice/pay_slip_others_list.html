@@ -120,15 +120,13 @@ tr:hover .cut { opacity: 1; }
 
     <div class='container'>	 
 		<table  width="100%">
-			<tr>
-				<legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b> Pay Slips others List </b></legend>
-				<td align="right">
-          {% if role == 'hr' or role == 'admin' %}
-          <!-- <a href="{% url 'export_invoice_xls' %}{% if request.GET.search or request.GET.from_date or request.GET.to_date or request.GET.bank or request.GET.page %}?search={{request.GET.search}}&from_date={{request.GET.from_date}}&to_date={{request.GET.to_date}}&bank={{request.GET.bank}}&page={{request.GET.page}}{% endif %}"><button class="custom-btn btn-12" style="margin-bottom: 10px;"><span style="color: white;">To Excel</span><span>Export</span></button></a> -->
-          {% endif %}
-        </td>
-			</tr>
-		</table>
+      <tr>
+        <td><legend class="border-bottom mb-4" style="color: rgb(15, 9, 105);text-align: center;"><b>Pay Slip Others List</b> </legend></td>
+        <td align="right"><a href="{% url 'add_payslips_others' %}"><button class="custom-btn btn-12"><span>Click!</span><span><b> Add PS others</b></span></button></a></td>
+        
+  
+      </tr>
+    </table>
 		<form>
 			<table>
 				<tr>
@@ -168,16 +166,24 @@ tr:hover .cut { opacity: 1; }
 		</form>
 		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped  display" width="100%">
 			<tr>
-        <th></th>
-				<th style="color: teal;"><b>HEaders</b></th>
-        <th></th>
+        <th style="color: teal;"><b>Employee</b></th>
+				<th style="color: teal;"><b>Date</b></th>
+        <th style="color: teal;"><b>State ins fund</b></th>
+        <th style="color: teal;"><b>2% pf ded</b></th>
+        <th style="color: teal;"><b>Advance</b></th>
+        <th style="color: teal;"><b>Commission</b></th>
+        <th style="color: teal;"><b>Action</b></th>
 			</tr>
-			{% for invoice in invoices %}
+			{% for ps_other in payslip_others %}
 			<tr {% if invoice.is_approved == 1 %} style="background-color:#C8FF9D" {% endif %} >
-				<td style="color: black;">{{invoice.emp_ownwer.name}}</td>
+				<td style="color: black;">{{ps_other.employee.name}}</td>
 				
-				<td style="color: black;">{{invoice.monthdate|date:"M, Y"}}</td>
-				<td style="color: black;">{% if invoice.is_approved == 1 or role|lower == 'accountant' %}<a href="{% url 'pay_slip' invoice.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Slip</span></button></a>{% else %}--{% endif %}</td>
+				<td style="color: black;">{{ps_other.month_year|date:"d, M, Y"}}</td>
+        <td style="color: black;">{{ps_other.emp_state_ins_fund}}</td>
+        <td style="color: black;">{{ps_other.percent_pf_prev_month}}</td>
+        <td style="color: black;">{{ps_other.advance}}</td>
+        <td style="color: black;">{{ps_other.commission}}</td>
+				<td style="color: black;"><a href="{% url 'edit_payslips_others' ps_other.pk %}"><button class="custom-btn btn-12"><span>Click!</span><span>Slip</span></button></a></td>
 			</tr>
 			<style>
 				.btn-primary:hover {

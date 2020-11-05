@@ -206,7 +206,7 @@
 					
 					<td><span style="font-weight:bold">Employee State Insurance Fund</span></td>
 
-					<td><input name="emp_ins_fund" id="emp_ins_fund"  value="{% if invoice.emp_ins_fund %}{{invoice.emp_ins_fund}}{% else %}0{% endif %}" {% if role|lower != 'accountant' %}readonly{% endif %} /></td>	 
+					<td><input name="emp_ins_fund" id="emp_ins_fund"  value="{{ps_others_data.emp_state_ins_fund}}" readonly /></td>	 
 			
 			</tr>
 			<tr>
@@ -216,7 +216,7 @@
 					
 					<td><span style="font-weight:bold">2% PF for the month of prev month</span></td>
 
-					<td><input name="percent_pf_prev_month" id="pf_percent" value='{% if invoice.percent_pf_prev_month %}{{invoice.percent_pf_prev_month}}{% else %}0{% endif %}' {% if role|lower != 'accountant' %}readonly{% endif %} /></td>
+					<td><input name="percent_pf_prev_month" id="pf_percent" value='{{ps_others_data.percent_pf_prev_month}}' readonly /></td>
 				 
 			
 			</tr>
@@ -251,7 +251,7 @@
 					
 					<td><span style="font-weight:bold">	Advance </span></td>
 
-					<td><input id="advance" value="{% if invoice.advance %}{{invoice.advance}}{% else %}0{% endif %}" name="advance" {% if role|lower != 'accountant' %}readonly{% endif %} /></td>
+					<td><input id="advance" value="{{ps_others_data.advance}}" name="advance"readonly/></td>
 				 
 			
 			</tr>
@@ -268,7 +268,7 @@
 			<tr>
 				<td></a><span style="font-weight:bold">Commission</span></td>
 
-					<td><input id="commission" value="{% if invoice.commission %}{{invoice.commission}}{% else %}0{% endif %}" name="commission" {% if role|lower != 'accountant' %}readonly{% endif %} /></td>
+					<td><input id="commission" value="{{ps_others_data.commission}}" name="commission" readonly/></td>
 					<td><input /></td>
 
 					<td><input /></td>
