@@ -765,12 +765,15 @@ class InvoiceDisplayView(AdminPanelMixin, TemplateView):
             invoice_edit.auth_day_rate            = rate.auth_day_off
             invoice_edit.save()
 
-
-
+        today          = datetime.now()    
+        current_month  = today.month
+        current_year   = today.year
+        start_end_date = get_first_n_last_day(current_year, current_month)    
+        invoice = Invoice.objects.exclude(monthdate__gte=start_end_date[0], monthdate__lte=start_end_date[1])    
         if rolename == 'admin' or  rolename == 'hr' or  rolename == 'accountant':
-            invoice = Invoice.objects.exclude(Q(emp_ownwer__name__icontains="None None")).all()
+            invoice = invoice.exclude(Q(emp_ownwer__name__icontains="None None")).all()
         else:
-            invoice = Invoice.objects.filter(emp_ownwer=employee).all()	
+            invoice = invoice.filter(emp_ownwer=employee).all()	
 
         search        = request.GET.get('search', None)
         from_date     = request.GET.get('from_date', None)
